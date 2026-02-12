@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:web": "npm --prefix web run build",
+    "start:web": "npm --prefix web run start"
   },
   "dependencies": {
     "@portabletext/react": "^6.0.2",
