@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "eslint",
     "build:web": "npm --prefix web run build",
-    "install:web": "npm --prefix web install",
     "start:web": "npm --prefix web run start"
   },
   "dependencies": {
