@@ -1,4 +1,4 @@
-// import Image from "next/image";
+import Image from "next/image";
 
 // export default function Home() {
 //   return (
@@ -63,24 +63,24 @@
 //     </div>
 //   );
 // }
-import { sanity } from "@/lib/sanity/client";
-
-type Chapter = { _id: string; title: string; slug: { current: string } };
 
 export default async function Home() {
-  const chapters: Chapter[] = await sanity.fetch(`
-    *[_type=="chapter"]|order(_createdAt desc){_id,title,slug}
-  `);
 
   return (
-    <main className="p-8 space-y-4">
-      <h1 >Kapitel (aus Sanity)</h1>
-      <h2>H2 Haeding</h2>
-      <ul className="list-disc pl-6">
-        {chapters.map((c) => (
-          <li key={c._id}>{c.title}</li>
-        ))}
-      </ul>
+    <main className="min-h-screen flex items-center justify-center px-6 py-12">
+      <div className="w-full max-w-3xl flex flex-col items-center text-center gap-4">
+        <Image
+          src="./Logo_full.svg"
+          alt="ki360 logomark"
+          className="w-full h-auto max-w-[320px] sm:max-w-[420px] md:max-w-[560px]"
+          width={500}
+          height={500}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        <h5 className="text-sm sm:text-base md:text-lg font-medium tracking-wide">
+          COMING SOON
+        </h5>
+      </div>
     </main>
   );
 }
