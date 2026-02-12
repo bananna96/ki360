@@ -1,27 +1,71 @@
 @import "tailwindcss";
 
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-softLinen: #F3EFE3; /* Primary */
+  --color-deepWalnut: #492E19;  /* Primary */
+  --color-granite: #5B6C5D;  /* Secondary */
+  --color-skyBlue: #95CFFF;  /* Secondary */
+  --color-ochre: #DB761C;  /* Secondary */
+  --color-glossyBlack: #252324;  /* Tertiary */
+  --color-frost: #FCFBFC;  /* Tertiary */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-frost);
+  color: var(--color-glossyBlack);
+  font-family: var(--font-satoshi);
+  font-size: 1.25rem;
+}
+
+.font-outward {
+  font-family: var(--font-outward);
+}
+
+@layer base {
+  h1 {
+    font-family: var(--font-outward);
+    font-size: 21em;
+    font-weight: bold;
+    color: var(--color-deepWalnut);
+    text-box-trim: trim-both; /* TODO: doesn't work in firwfox -> alternative */
+  }
+
+  h2 {
+    font-family: var(--font-satoshi);
+    font-size: 3em;
+    font-weight: bold;
+    text-box-trim: trim-both; /* TODO: doesn't work in firwfox -> alternative */
+
+  }
+
+  h3 {
+    font-family: var(--font-satoshi);
+    font-size: 2em;
+    font-weight: bold;
+  }
+
+  h4{
+    font-family: var(--font-satoshi);
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  h5 {
+    font-family: var(--font-satoshi);
+    font-size: 1.25em;
+    font-weight: bold;
+  }
+}
+
+.text-body-big{
+    font-family: var(--font-satoshi);
+    font-size: 1.5em;
+    font-weight: bold;
 }

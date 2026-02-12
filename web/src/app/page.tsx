@@ -74,7 +74,8 @@ export default async function Home() {
 
   return (
     <main className="p-8 space-y-4">
-      <h1 className="text-3xl font-bold">Kapitel (aus Sanity)</h1>
+      <h1 >Kapitel (aus Sanity)</h1>
+      <h2>H2 Haeding</h2>
       <ul className="list-disc pl-6">
         {chapters.map((c) => (
           <li key={c._id}>{c.title}</li>
