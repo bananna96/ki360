@@ -2,7 +2,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Icon } from './Icons'
-import { getIconColor } from '@/lib/utils'
 
 function TextLink({
 	href,
@@ -27,7 +26,6 @@ function TextLink({
 }
 
 function IconTextLink({
-	// TODO: ausarbeiten
 	href,
 	ariaLabel,
 	className,
@@ -47,17 +45,20 @@ function IconTextLink({
 	return (
 		<Link
 			href={href}
-			className={`${className} group flex justify-end text-[var(${colorVar})] transition-colors`}
 			aria-label={ariaLabel}
+			className={`${className ?? ''} group flex items-center gap-2 justify-end transition-colors`}
+			style={{
+				// TODO: Umbauen oder schöner machen
+				['--link-color' as any]: `var(${colorVar})`,
+				['--link-hover' as any]: `var(${hoverColorVar})`,
+			}}
 		>
 			<Icon
 				name={icon}
 				color='currentColor'
-				className={`transition-colors group-hover:text-[var(${hoverColorVar})]`}
+				className='text-[color:var(--link-color)] group-hover:text-[color:var(--link-hover)] transition-colors'
 			/>
-			<span
-				className={`transition-colors group-hover:text-[var(${hoverColorVar})]`}
-			>
+			<span className='text-[color:var(--link-color)] group-hover:text-[color:var(--link-hover)] transition-colors'>
 				{text}
 			</span>
 		</Link>

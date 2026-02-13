@@ -5,13 +5,6 @@ import { chaptersQuery } from '@/lib/sanity/queries'
 import { Icon } from '@/components/custom/Icons'
 import { IconTextLink } from '@/components/custom/Link'
 
-interface Chapter {
-	_id: string
-	title: string
-	slug: string
-	intro?: string
-}
-
 export default async function Home() {
 	const chapters = await client.fetch(chaptersQuery)
 
@@ -24,6 +17,7 @@ export default async function Home() {
 						name='arrow-down'
 						color='#492e19'
 						size={64}
+						className='mb-8 animate-bounce'
 					/>
 				</div>
 			</div>
