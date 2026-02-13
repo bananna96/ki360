@@ -3,6 +3,7 @@ export const revalidate = 3600 // 3600 seconds = 1 hour, 86400 seconds = 1 day, 
 import { client } from '@/lib/sanity/client'
 import { chaptersQuery } from '@/lib/sanity/queries'
 import { Icon } from '@/components/custom/Icons'
+import { IconTextLink } from '@/components/custom/Link'
 
 interface Chapter {
 	_id: string
@@ -26,8 +27,8 @@ export default async function Home() {
 					/>
 				</div>
 			</div>
-			<div className='h-screen w-full items-center justify-start wrapper-cols-12 bg-[var(--color-granite)]'>
-				<div className='col-span-7 flex flex-col text-[var(--color-softLinen)] gap-10 justify-center'>
+			<div className='h-screen w-full items-end  wrapper-cols-12 bg-[var(--color-granite)]'>
+				<div className='col-span-full lg:col-span-6 flex flex-col text-[var(--color-softLinen)] gap-10 justify-center lg:pb-30'>
 					<h2>KI ist längst Teil unseres Alltags</h2>
 					<p>
 						Künstliche Intelligenz begegnet uns heute überall – oft, ohne dass
@@ -40,8 +41,41 @@ export default async function Home() {
 						Vorwissen und Schritt für Schritt.
 					</p>
 				</div>
-				<div className='col-start-9 col-span-full flex justify-center '>
-					<p className=''>Wie funktioniert KI?</p>
+				<div className='flex justify-end items-start col-span-full pb-10 lg:justify-end lg:col-start-9 lg:pb-30 xl:col-span-5'>
+					<div className='flex flex-col items-start'>
+						<IconTextLink
+							text='Grundlagen'
+							href='/grundlagen'
+							ariaLabel='Zu den Grundlagen der KI'
+							icon='arrow-diagonal'
+							colorVar='--color-softLinen'
+							hoverColorVar='--color-skyBlue'
+						/>
+						<IconTextLink
+							text='Geschichte & Entwicklung'
+							href='/geschichte'
+							ariaLabel='Zur Geschichte und Entwicklung der KI'
+							icon='arrow-diagonal'
+							colorVar='--color-softLinen'
+							hoverColorVar='--color-skyBlue'
+						/>
+						<IconTextLink
+							text='Kommunikation mit KI'
+							href='/kommunikation'
+							ariaLabel='Zur Kommunikation mit KI'
+							icon='arrow-diagonal'
+							colorVar='--color-softLinen'
+							hoverColorVar='--color-skyBlue'
+						/>
+						<IconTextLink
+							text='KI im Alltag'
+							href='/alltag'
+							ariaLabel='Zum Thema KI im Alltag'
+							icon='arrow-diagonal'
+							colorVar='--color-softLinen'
+							hoverColorVar='--color-skyBlue'
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

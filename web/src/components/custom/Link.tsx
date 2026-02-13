@@ -1,7 +1,8 @@
 'use client'
 import Link from 'next/link'
-import { JSX } from 'react'
 import { usePathname } from 'next/navigation'
+import { Icon } from './Icons'
+import { getIconColor } from '@/lib/utils'
 
 function TextLink({
 	href,
@@ -32,21 +33,33 @@ function IconTextLink({
 	className,
 	text,
 	icon,
+	colorVar,
+	hoverColorVar,
 }: {
 	href: string
 	ariaLabel: string
 	className?: string
 	text: string
-	icon: JSX.Element
+	icon: string
+	colorVar: string
+	hoverColorVar: string
 }) {
 	return (
 		<Link
 			href={href}
-			className={className}
+			className={`${className} group flex justify-end text-[var(${colorVar})] transition-colors`}
 			aria-label={ariaLabel}
 		>
-			{text}
-			{icon}
+			<Icon
+				name={icon}
+				color='currentColor'
+				className={`transition-colors group-hover:text-[var(${hoverColorVar})]`}
+			/>
+			<span
+				className={`transition-colors group-hover:text-[var(${hoverColorVar})]`}
+			>
+				{text}
+			</span>
 		</Link>
 	)
 }

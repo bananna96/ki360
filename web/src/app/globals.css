@@ -1,17 +1,18 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+@import 'tailwind-animations';
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-	--color-softLinen: #f3efe3; /* Primary */
-	--color-deepWalnut: #492e19; /* Primary */
-	--color-granite: #5b6c5d; /* Secondary */
-	--color-skyBlue: #95cfff; /* Secondary */
-	--color-ochre: #db761c; /* Secondary */
-	--color-glossyBlack: #252324; /* Tertiary */
-	--color-frost: #fcfbfc; /* Tertiary */
+	--color-softLinen: #f3efe3; /* Primary 1 */
+	--color-deepWalnut: #492e19; /* Primary 2 */
+	--color-granite: #5b6c5d; /* Secondary 1 */
+	--color-skyBlue: #95cfff; /* Secondary 2 */
+	--color-ochre: #db761c; /* Secondary 3 */
+	--color-glossyBlack: #252324; /* Tertiary 1 */
+	--color-frost: #fcfbfc; /* Tertiary 2 */
 	--radius: 0.625rem;
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
@@ -71,6 +72,10 @@ body {
 		box-sizing: border-box;
 		margin: 0;
 		padding: 0;
+	}
+
+	html {
+		scroll-behavior: smooth;
 	}
 
 	html,
@@ -234,7 +239,7 @@ body {
 	}
 
 	h2 {
-		font-size: 3em;
+		font-size: 2em;
 	}
 
 	h3 {
@@ -257,7 +262,7 @@ body {
 	}
 
 	h2 {
-		font-size: 3em;
+		font-size: 2em;
 	}
 
 	h3 {

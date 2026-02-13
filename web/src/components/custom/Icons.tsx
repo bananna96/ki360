@@ -21,15 +21,18 @@ type IconProps = {
 	name: string
 	color: string
 	size?: number
+	className?: string
 }
 
-const Icon = ({ name, color, size }: IconProps) => {
+const Icon = ({ name, color, size, className }: IconProps) => {
 	switch (name) {
 		case 'chevron-left-rounded':
 			return (
 				<Lineicons
 					icon={ChevronLeftCircleOutlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'arrow-left':
@@ -37,6 +40,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={ArrowLeftOutlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'arrow-right':
@@ -44,6 +49,7 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={ArrowRightOutlined}
 					color={color}
+					className={className}
 				/>
 			)
 		case 'arrow-down':
@@ -52,14 +58,16 @@ const Icon = ({ name, color, size }: IconProps) => {
 					icon={ArrowDownwardOutlined}
 					color={color}
 					size={size}
+					className={className}
 				/>
 			)
 		case 'arrow-diagonal':
 			return (
 				<Lineicons
 					icon={ArrowAngularTopRightOutlined}
-					size={24}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'question-mark':
@@ -67,6 +75,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={QuestionMarkCircleOutlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'bulb':
@@ -74,6 +84,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={Bulb4Outlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'refresh':
@@ -81,6 +93,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={RefreshCircle1ClockwiseOutlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'check':
@@ -88,6 +102,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={CheckCircle1Outlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'cancel':
@@ -95,6 +111,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={XmarkCircleOutlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'volume-high':
@@ -102,6 +120,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={VolumeHighOutlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'volume-low':
@@ -109,6 +129,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={VolumeLowOutlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'play':
@@ -116,6 +138,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={PlayOutlined}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		case 'pause':
@@ -123,6 +147,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={PauseSolid}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 		default:
@@ -130,6 +156,8 @@ const Icon = ({ name, color, size }: IconProps) => {
 				<Lineicons
 					icon={favicon}
 					color={color}
+					size={size}
+					className={className}
 				/>
 			)
 	}

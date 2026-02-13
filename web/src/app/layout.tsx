@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { outward, satoshi } from '@/lib/fonts'
-import Nav from '@/components/custom/Nav'
+import Nav from '@/components/custom/nav/Nav'
 
 export const metadata: Metadata = {
 	title: 'ki360 - KI verständlich erklärt',
@@ -30,7 +30,14 @@ export default function RootLayout({
 		>
 			<body className='antialiased'>
 				<header className='border-b'>
-					<Nav links={[{ name: 'Grundlagen', href: '/grundlagen' }]} />
+					<Nav
+						links={[
+							{ name: 'Grundlagen', href: '/grundlagen' },
+							{ name: 'Geschichte & Entwicklung', href: '/geschichte' },
+							{ name: 'Kommunikation mit KI', href: '/kommunikation' },
+							{ name: 'KI im Alltag', href: '/alltag' },
+						]}
+					/>
 				</header>
 				<main>{children}</main>
 			</body>
