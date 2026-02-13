@@ -14,9 +14,10 @@ export default async function Home() {
 	}
 
 	return (
-		<div className='h-screen w-full flex items-end justify-start'>
-			<h1>Was ist KI?</h1>
-			{/* {chapters.map((c: Chapter) => (
+		<div className='flex flex-col'>
+			<div className='h-screen w-full items-end justify-start wrapper-cols-12'>
+				<h1 className='col-span-12'>Was ist KI?</h1>
+				{/* {chapters.map((c: Chapter) => (
 						<div
 							key={c._id}
 							style={{ marginBottom: 16 }}
@@ -26,6 +27,10 @@ export default async function Home() {
 							{c.intro ? <p>{c.intro}</p> : null}
 						</div>
 					))} */}
+			</div>
+			<div className='h-screen w-full items-end justify-start wrapper-cols-12'>
+				<h1 className='col-span-12'>Was ist KI?</h1>
+			</div>
 		</div>
 	)
 }

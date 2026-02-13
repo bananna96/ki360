@@ -76,7 +76,6 @@ body {
 	html,
 	body {
 		height: 100%;
-		overflow: hidden;
 	}
 
 	h1 {
@@ -201,4 +200,13 @@ body {
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer utilities {
+	.wrapper-cols-12 {
+		padding: 0 5rem;
+		display: grid;
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		gap: 1.25rem;
+	}
 }
