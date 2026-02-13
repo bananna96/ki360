@@ -1,7 +1,6 @@
-'use client' // TODO: in Link component?
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { TextLink } from './Link'
 
 export interface NavLink {
 	name: string
@@ -13,10 +12,9 @@ interface NavProps {
 }
 
 export default function Nav({ links }: NavProps) {
-	const pathname = usePathname()
 	return (
 		<nav
-			className='bg-[var(--color-frost)] w-full flex h-[3em] items-center justify-between rounded-md p-3 fixed top-0 left-0 z-50'
+			className='bg-[var(--color-frost)] w-full flex h-[4em] items-center justify-between p-3 fixed top-0 left-0 z-50'
 			aria-label='Hauptnavigation'
 		>
 			<Link
@@ -38,16 +36,13 @@ export default function Nav({ links }: NavProps) {
 				role='list'
 			>
 				{links.map((link) => {
-					const isActive = pathname === link.href
 					return (
 						<li key={link.name}>
-							<Link
+							<TextLink
+								className={`hover:underline focus:underline-2 focus:underline-offset-2`}
 								href={link.href}
-								className={`hover:underline focus:underline-2 focus:underline-offset-2 ${isActive ? 'font-bold' : ''}`}
-								aria-current={isActive ? 'page' : undefined}
-							>
-								<span>{link.name}</span>
-							</Link>
+								text={link.name}
+							/>
 						</li>
 					)
 				})}

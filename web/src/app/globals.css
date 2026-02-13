@@ -209,4 +209,89 @@ body {
 		grid-template-columns: repeat(12, minmax(0, 1fr));
 		gap: 1.25rem;
 	}
+
+	@media (max-width: 768px) {
+		.wrapper-cols-12 {
+			padding: 0 1.5rem;
+		}
+	}
+	@media (min-width: 768px) {
+		.wrapper-cols-12 {
+			padding: 0 2rem;
+		}
+	}
+	@media (min-width: 1024px) {
+		.wrapper-cols-12 {
+			padding: 0 5rem;
+		}
+	}
+}
+
+/* Phone */
+@media (max-width: 767px) {
+	h1 {
+		font-size: 10em;
+	}
+
+	h2 {
+		font-size: 3em;
+	}
+
+	h3 {
+		font-size: 2em;
+	}
+
+	h4 {
+		font-size: 1.5em;
+	}
+
+	h5 {
+		font-size: 1.25em;
+	}
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+	h1 {
+		font-size: 21em;
+	}
+
+	h2 {
+		font-size: 3em;
+	}
+
+	h3 {
+		font-size: 2em;
+	}
+
+	h4 {
+		font-size: 1.5em;
+	}
+
+	h5 {
+		font-size: 1.25em;
+	}
+}
+
+/* Large Desktop */
+@media (min-width: 1240px) {
+	h1 {
+		font-size: 21em;
+	}
+
+	h2 {
+		font-size: 3em;
+	}
+
+	h3 {
+		font-size: 2em;
+	}
+
+	h4 {
+		font-size: 1.5em;
+	}
+
+	h5 {
+		font-size: 1.25em;
+	}
 }
