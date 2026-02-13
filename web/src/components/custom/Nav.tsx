@@ -1,5 +1,7 @@
+'use client';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export interface NavLink {
   name: string;
@@ -11,6 +13,7 @@ interface NavProps {
 }
 
 export default function Nav({ links }: NavProps) {
+const pathname = usePathname();
   return (
     <nav className="bg-[var(--color-frost)] w-full flex h-[3em] items-center justify-between rounded-md p-3 fixed">
         <Image
@@ -26,7 +29,7 @@ export default function Nav({ links }: NavProps) {
           <Link
             key={link.name}
             href={link.href}
-            className="flex justify-end"
+            className={`flex justify-end ${pathname === link.href ? " font-bold" : ""}`}
           >
             <span className="">{link.name}</span>
           </Link>
