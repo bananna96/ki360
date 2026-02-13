@@ -11,13 +11,14 @@ export default async function Home() {
 	return (
 		<div className='flex flex-col'>
 			<div className='h-screen w-full items-end justify-start wrapper-cols-12'>
+				{/* TODO: mb und pb checken bei text und icon */}
 				<div className='col-span-12 flex justify-between items-end pb-20 sm:pb-0'>
 					<h1 className=''>Was ist KI?</h1>
 					<Icon
 						name='arrow-down'
 						color='#492e19'
 						size={64}
-						className='xs:mb-8 animate-bounce'
+						className='xs:mb-8 sm:mb-0 animate-bounce'
 					/>
 				</div>
 			</div>
