@@ -41,6 +41,7 @@ export default function MobileNav({ links, className }: MobileNavProps) {
 						role='list'
 					>
 						{links.map((link) => (
+							// TODO: Styling anpassen
 							<li key={link.name}>
 								<Link
 									href={link.href}

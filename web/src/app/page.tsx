@@ -10,11 +10,12 @@ export default async function Home() {
 
 	return (
 		<div className='flex flex-col'>
-			<div className='h-screen w-full items-end justify-start wrapper-cols-12'>
+			<div className='min-h-screen w-full items-end justify-start wrapper-cols-12'>
 				{/* TODO: mb und pb checken bei text und icon */}
 				<div className='col-span-12 flex justify-between items-end pb-20 sm:pb-0'>
 					<h1 className=''>Was ist KI?</h1>
 					<Icon
+						// TODO: besser lösung für color? sodass man sie an einer stelle hat)
 						name='arrow-down'
 						color='#492e19'
 						size={64}
@@ -22,7 +23,7 @@ export default async function Home() {
 					/>
 				</div>
 			</div>
-			<div className='h-screen w-full items-end  wrapper-cols-12 bg-[var(--color-granite)]'>
+			<div className='min-h-screen w-full items-end  wrapper-cols-12 bg-[var(--color-granite)]'>
 				<div className='col-span-full lg:col-span-6 flex flex-col text-[var(--color-softLinen)] gap-10 justify-center lg:pb-30'>
 					<h2>KI ist längst Teil unseres Alltags</h2>
 					<p>
