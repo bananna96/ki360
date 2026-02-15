@@ -95,8 +95,8 @@ body {
 	}
 
 	h2 {
-		font-family: var(--font-satoshi);
-		font-size: 3em;
+		font-family: var(--font-outward);
+		font-size: 10em;
 		font-weight: bold;
 		text-box-trim: trim-both; /* TODO: doesn't work in firwfox -> alternative */
 	}
@@ -249,6 +249,7 @@ body {
 	}
 
 	/* Components */
+
 	/* .carousel-mask {
 		mask-image: url('/imgs/2_oval_mask.png');
 		-webkit-mask-image: url('/imgs/2_oval_mask.png');
@@ -269,73 +270,14 @@ body {
 		mask-position: center;
 		-webkit-mask-position: center;
 	}
-}
 
-/* Phone */
-@media (max-width: 767px) {
-	h1 {
-		font-size: 10em;
-	}
-
-	h2 {
-		font-size: 2em;
-	}
-
-	h3 {
-		font-size: 2em;
-	}
-
-	h4 {
-		font-size: 1.5em;
-	}
-
-	h5 {
-		font-size: 1.25em;
-	}
-}
-
-/* Tablet */
-@media (min-width: 768px) {
-	h1 {
-		font-size: 21em;
-	}
-
-	h2 {
-		font-size: 2em;
-	}
-
-	h3 {
-		font-size: 2em;
-	}
-
-	h4 {
-		font-size: 1.5em;
-	}
-
-	h5 {
-		font-size: 1.25em;
-	}
-}
-
-/* Large Desktop */
-@media (min-width: 1240px) {
-	h1 {
-		font-size: 21em;
-	}
-
-	h2 {
-		font-size: 3em;
-	}
-
-	h3 {
-		font-size: 2em;
-	}
-
-	h4 {
-		font-size: 1.5em;
-	}
-
-	h5 {
-		font-size: 1.25em;
+	/* Background */
+	.bg-silk {
+		width: 100vw !important;
+		height: 100vh !important;
+		position: fixed !important;
+		top: 0 !important;
+		left: 0 !important;
+		z-index: -1;
 	}
 }
