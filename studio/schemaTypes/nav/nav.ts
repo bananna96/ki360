@@ -1,5 +1,4 @@
-// navigation.js
-import navItem from './navItem'
+import link from '../components/link'
 
 export default {
   name: 'navigation',
@@ -11,6 +10,18 @@ export default {
       title: 'Navigation Logo',
       type: 'image',
       validation: (Rule: any) => Rule.required(),
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alt-Text',
+          description: 'Alternativtext für Barrierefreiheit und SEO',
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
     },
     {
       name: 'navlogolink',
@@ -25,7 +36,7 @@ export default {
       name: 'items',
       title: 'Navigation Items',
       type: 'array',
-      of: [navItem],
+      of: [link],
       validation: (Rule: any) => Rule.required(),
     },
   ],
