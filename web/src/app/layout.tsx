@@ -30,14 +30,7 @@ export default function RootLayout({
 		>
 			<body className='antialiased'>
 				<header className='border-b'>
-					<Nav
-						links={[
-							{ name: 'Grundlagen', href: '/grundlagen' },
-							{ name: 'Geschichte & Entwicklung', href: '/geschichte' },
-							{ name: 'Kommunikation mit KI', href: '/kommunikation' },
-							{ name: 'KI im Alltag', href: '/alltag' },
-						]}
-					/>
+					<Nav />
 				</header>
 				<main>{children}</main>
 			</body>

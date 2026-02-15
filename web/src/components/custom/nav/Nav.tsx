@@ -1,10 +1,17 @@
+import { client } from '@/lib/sanity/client'
+import { navQuery } from '@/lib/sanity/queries'
 import Link from 'next/link'
-import Image from 'next/image'
 import { TextLink } from '../Link'
-import type { NavProps } from './types'
+import type { NavLink } from './types'
 import MobileNav from './MobileNav'
+import { urlForImage } from '@/lib/sanity/utils'
+import { SanityImage } from '@/components/SanityImage'
 
-export default function Nav({ links }: NavProps) {
+export default async function Nav() {
+	const nav = await client.fetch(navQuery)
+	console.log('Fetched navigation items:', nav) // Debugging: Log the fetched navigation items
+	const imgAssets = urlForImage(nav.navlogo.asset)
+
 	return (
 		<>
 			<nav
@@ -12,16 +19,17 @@ export default function Nav({ links }: NavProps) {
 				aria-label='Hauptnavigation'
 			>
 				<Link
-					href='/'
+					href={nav.navlogolink} // TODO: besser lösung für link? damit
 					aria-label='Zur Startseite'
 					className='relative h-full w-fit aspect-square'
 				>
-					<Image
-						src='/Logo.png'
-						alt='ki360 Logo'
+					<SanityImage
+						src={imgAssets}
 						className='object-contain'
+						// The crucial part for performance:
+						sizes='(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 30vw'
 						fill
-						priority
+						alt='ki360 Logo'
 					/>
 				</Link>
 
@@ -29,20 +37,20 @@ export default function Nav({ links }: NavProps) {
 					className='hidden md:flex gap-15'
 					role='list'
 				>
-					{links.map((link) => {
+					{nav.items.map((link: NavLink) => {
 						return (
-							<li key={link.name}>
+							<li key={link.text}>
 								<TextLink
 									className={`hover:underline focus:underline-2 focus:underline-offset-2`}
-									href={link.href}
-									text={link.name}
+									href={link.url}
+									text={link.text}
 								/>
 							</li>
 						)
 					})}
 				</ul>
 				<MobileNav
-					links={links}
+					links={nav.items}
 					className='flex md:hidden'
 				/>
 			</nav>

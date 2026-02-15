@@ -42,13 +42,13 @@ export default function MobileNav({ links, className }: MobileNavProps) {
 					>
 						{links.map((link) => (
 							// TODO: Styling anpassen
-							<li key={link.name}>
+							<li key={link.text}>
 								<Link
-									href={link.href}
+									href={link.url}
 									className='text-2xl'
 									onClick={() => setIsOpen(false)}
 								>
-									{link.name}
+									{link.text}
 								</Link>
 							</li>
 						))}

@@ -1,14 +1,10 @@
 interface NavLink {
-	name: string
-	href: string
-}
-
-interface NavProps {
-	links: NavLink[]
+	text: string
+	url: string
 }
 
 interface MobileNavProps {
 	links: NavLink[]
 	className?: string
 }
-export type { NavProps, MobileNavProps }
+export type { NavLink, MobileNavProps }
