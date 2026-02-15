@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
 	reactCompiler: true,
 	images: {
 		domains: ['picsum.photos'],
+		qualities: [25, 50, 75, 100],
 	},
 }
 
