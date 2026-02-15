@@ -12,7 +12,7 @@ export default async function Home() {
 					height={500}
 					sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
 				/>
-				<h5 className='text-sm sm:text-base md:text-lg font-medium tracking-wide'>
+				<h5 className='text-sm sm:text-base md:text-lg font-medium tracking-wide animate-pulse'>
 					COMING SOON
 				</h5>
 			</div>
