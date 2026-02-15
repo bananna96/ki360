@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { outward, satoshi } from '@/lib/fonts'
 import Nav from '@/components/custom/nav/Nav'
+import Footer from '@/components/custom/nav/Footer'
 
 export const metadata: Metadata = {
 	title: 'ki360 - KI verständlich erklärt',
@@ -33,6 +34,7 @@ export default function RootLayout({
 					<Nav />
 				</header>
 				<main>{children}</main>
+				<Footer />
 			</body>
 		</html>
 	)
