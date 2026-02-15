@@ -25,7 +25,7 @@ export default async function Home() {
 			</div>
 			<div className='min-h-screen w-full items-end  wrapper-cols-12 bg-[var(--color-granite)]'>
 				<div className='col-span-full lg:col-span-6 flex flex-col text-[var(--color-softLinen)] gap-10 justify-center lg:pb-30'>
-					<h2>KI ist längst Teil unseres Alltags</h2>
+					<h3>KI ist längst Teil unseres Alltags</h3>
 					<p>
 						Künstliche Intelligenz begegnet uns heute überall – oft, ohne dass
 						wir sie bewusst wahrnehmen. Sie empfiehlt uns Inhalte, unterstützt

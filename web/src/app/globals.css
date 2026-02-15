@@ -96,7 +96,7 @@ body {
 
 	h2 {
 		font-family: var(--font-outward);
-		font-size: 10em;
+		font-size: 14em;
 		font-weight: bold;
 		text-box-trim: trim-both; /* TODO: doesn't work in firwfox -> alternative */
 	}
@@ -118,6 +118,58 @@ body {
 		font-size: 1.25em;
 		font-weight: bold;
 	}
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 10em;
+		}
+		h2 {
+			font-size: 5em;
+		}
+		/*	h3 {
+			font-size: 2em;
+		}
+		h4 {
+			font-size: 1.5em;
+		}
+		h5 {
+			font-size: 1.25em;
+		} */
+	}
+	@media (min-width: 768px) {
+		/* h1 {
+			font-size: 21em;
+		}
+		h2 {
+			font-size: 10em;
+		}
+		h3 {
+			font-size: 2em;
+		}
+		h4 {
+			font-size: 1.5em;
+		}
+		h5 {
+			font-size: 1.25em;
+		} */
+	}
+	@media (min-width: 1024px) {
+		/* h1 {
+			font-size: 21em;
+		}
+		h2 {
+			font-size: 10em;
+		}
+		h3 {
+			font-size: 2em;
+		}
+		h4 {
+			font-size: 1.5em;
+		}
+		h5 {
+			font-size: 1.25em;
+		} */
+	}
+
 	* {
 		@apply border-border outline-ring/50;
 	}
