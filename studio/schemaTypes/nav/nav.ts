@@ -1,4 +1,5 @@
-import link from '../components/link'
+// navigation.js
+import navItem from './navItem'
 
 export default {
   name: 'navigation',
@@ -24,7 +25,7 @@ export default {
       name: 'items',
       title: 'Navigation Items',
       type: 'array',
-      of: [link],
+      of: [navItem],
       validation: (Rule: any) => Rule.required(),
     },
   ],

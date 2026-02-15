@@ -6,9 +6,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "eslint .",
-		"build:web": "npm --prefix web run build",
-		"start:web": "npm --prefix web run start"
+		"lint": "eslint ."
 	},
 	"dependencies": {
 		"@lineiconshq/free-icons": "^1.0.4",

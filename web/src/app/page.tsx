@@ -1,6 +1,13 @@
-import Image from 'next/image'
+export const revalidate = 3600 // 3600 seconds = 1 hour, 86400 seconds = 1 day, 604800 seconds = 1 week
+
+import { client } from '@/lib/sanity/client'
+import { chaptersQuery } from '@/lib/sanity/queries'
+import { Icon } from '@/components/custom/Icons'
+import { IconTextLink } from '@/components/custom/Link'
 
 export default async function Home() {
+	const chapters = await client.fetch(chaptersQuery)
+
 	return (
 		<div className='flex flex-col'>
 			<div className='min-h-screen w-full items-end justify-start wrapper-cols-12'>
