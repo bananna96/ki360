@@ -1,10 +1,3 @@
-const chaptersQuery = `*[_type == "chapter"] | order(_createdAt desc){
-  _id,
-  title,
-  "slug": slug.current,
-  intro
-}`
-
 const imageFields = `
   asset->{
     _id,
@@ -33,7 +26,36 @@ const navQuery = `
     }
   }
 `
-export { chaptersQuery, navQuery }
+
+const landingpageQuery = `
+  *[_type == "landingpage"][0]{
+    title,
+    intro,
+    subtitle,
+    content,
+    links[]{
+      text,
+      url
+    }
+  }
+`
+const basicsOverviewQuery = `
+  *[_type == "basicsOverview"][0]{
+    title,
+    imgList[]{
+      asset->{
+        url
+      },
+      alt,
+      link{
+        text,
+        url
+      }
+    }
+  }
+`
+
+export { navQuery, landingpageQuery, basicsOverviewQuery }
 
 /* TODO
 Ein großer Sanity Fetch pro Seite

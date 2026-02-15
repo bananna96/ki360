@@ -9,7 +9,6 @@ import { SanityImage } from '@/components/SanityImage'
 
 export default async function Nav() {
 	const nav = await client.fetch(navQuery)
-	console.log('Fetched navigation items:', nav) // Debugging: Log the fetched navigation items
 	const imgAssets = urlForImage(nav.navlogo.asset)
 
 	return (

@@ -1,7 +1,6 @@
 'use client'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './InfiniteImgLoop.css'
-import Image from 'next/image'
 
 export type LogoItem =
 	| {
@@ -342,15 +341,18 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 						{(item as any).node}
 					</span>
 				) : (
-					<Image
+					// TODO: Replace with Sanity Image && fixed errors in brwoser console
+					<img
 						src={(item as any).src}
+						srcSet={(item as any).srcSet}
+						sizes={(item as any).sizes}
+						width={(item as any).width}
+						height={(item as any).height}
 						alt={(item as any).alt ?? ''}
 						title={(item as any).title}
 						loading='lazy'
 						decoding='async'
 						draggable={false}
-						width={500}
-						height={500}
 					/>
 				)
 				const itemAriaLabel = isNodeItem

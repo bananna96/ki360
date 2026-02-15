@@ -1,3 +1,4 @@
+import link from '../components/link'
 export default {
   name: 'basicsOverview',
   title: 'Basics Overview',
@@ -13,7 +14,24 @@ export default {
       name: 'imgList',
       title: 'Image List',
       type: 'array',
-      of: [{type: 'image'}],
+      of: [
+        {
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alt-Text',
+              description: 'Alternativtext für Barrierefreiheit und SEO',
+              validation: (Rule: any) => Rule.required(),
+            },
+            link,
+          ],
+        },
+      ],
       validation: (Rule: any) =>
         Rule.custom((items: any) => {
           if (!items || items.length === 0) {
