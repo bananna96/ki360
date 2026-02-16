@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html
-			lang='en'
+			lang='de'
 			className={`${satoshi.variable} ${outward.variable}`}
 		>
 			<body className='antialiased'>

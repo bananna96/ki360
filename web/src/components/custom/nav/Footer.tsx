@@ -14,7 +14,7 @@ export default async function Footer() {
 	return (
 		<>
 			<footer
-				className='bg-[var(--color-glossyBlack)] flex flex-col md:flex-row justify-between p-3'
+				className='bg-(--color-glossyBlack) flex flex-col md:flex-row justify-between p-3'
 				aria-label='Fußzeile'
 			>
 				<Link

@@ -10,8 +10,6 @@ import { SanityImage } from '@/components/SanityImage'
 import { urlForImage } from '@/lib/sanity/utils'
 
 import InfiniteImgLoop from '../../InfiniteImgLoop'
-import { client } from '@/lib/sanity/client'
-import { basicsOverviewQuery } from '@/lib/sanity/queries'
 import { CarouselData } from './types'
 import Link from 'next/link'
 // Alternative with image sources
