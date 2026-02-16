@@ -14,17 +14,17 @@ export default async function Footer() {
 	return (
 		<>
 			<footer
-				className='bg-[var(--color-glossyBlack)]  flex items-center justify-between p-3'
+				className='bg-[var(--color-glossyBlack)] flex flex-col md:flex-row justify-between p-3'
 				aria-label='Fußzeile'
 			>
 				<Link
 					href={nav.navlogolink} // TODO: besser lösung für link? damit
 					aria-label='Zur Startseite'
-					className=' h-full w-fit aspect-square'
+					className='h-full max-w-[30vw] w-full lg:w-fit aspect-square p-5'
 				>
 					<SanityImage
 						src={imgAssets}
-						className='object-contain relative'
+						className='object-contain relative!'
 						// The crucial part for performance:
 						sizes='(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 30vw'
 						fill
@@ -33,32 +33,35 @@ export default async function Footer() {
 				</Link>
 
 				<ul
-					className='hidden md:flex gap-15 '
+					className='max-w-screen-xl w-full px-4 sm:px-6  text-gray-800 flex flex-wrap  justify-center lg:justify-between'
 					role='list'
 				>
 					{nav.items.map((link: NavLink) => {
 						return (
 							<li
 								key={link.text}
-								className='flex flex-col'
+								className='p-5'
 							>
+								<span className='text-[var(--color-frost)] font-bold'>
+									{link.text}
+								</span>
 								<TextLink
-									className={`hover:text-[var(--color-granite)] focus:underline-2 focus:underline-offset-2 text-[var(--color-frost)]`}
+									className={`my-3 block hover:text-[var(--color-granite)] focus:underline-2 focus:underline-offset-2 text-[var(--color-frost)]`}
 									href={link.url}
 									text={link.text}
 								/>
 								<TextLink
-									className={`hover:text-[var(--color-granite)] focus:underline-2 focus:underline-offset-2 text-[var(--color-frost)]`}
+									className={`my-3 block hover:text-[var(--color-granite)] focus:underline-2 focus:underline-offset-2 text-[var(--color-frost)]`}
 									href={link.url}
 									text={link.text}
 								/>
 								<TextLink
-									className={`hover:text-[var(--color-granite)] focus:underline-2 focus:underline-offset-2 text-[var(--color-frost)]`}
+									className={`my-3 block hover:text-[var(--color-granite)] focus:underline-2 focus:underline-offset-2 text-[var(--color-frost)]`}
 									href={link.url}
 									text={link.text}
 								/>
 								<TextLink
-									className={`hover:text-[var(--color-granite)] focus:underline-2 focus:underline-offset-2 text-[var(--color-frost)]`}
+									className={`my-3 block hover:text-[var(--color-granite)] focus:underline-2 focus:underline-offset-2 text-[var(--color-frost)]`}
 									href={link.url}
 									text={link.text}
 								/>
