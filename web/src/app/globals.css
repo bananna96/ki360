@@ -265,7 +265,7 @@ body {
 
 @layer utilities {
 	.wrapper-cols-12 {
-		height: 100vh;
+		/* height: 100vh; */
 		padding: 0 5rem;
 		display: grid;
 		grid-template-columns: repeat(12, minmax(0, 1fr));
