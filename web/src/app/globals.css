@@ -13,6 +13,10 @@
 	--color-ochre: #db761c; /* Secondary 3 */
 	--color-glossyBlack: #252324; /* Tertiary 1 */
 	--color-frost: #fcfbfc; /* Tertiary 2 */
+	--height-nav: 4em; /* height of navbar */
+	--hero-heading-mt: calc(
+		var(--height-nav) + 1em
+	); /* margin-top for hero heading */
 	--radius: 0.625rem;
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);

@@ -30,7 +30,7 @@ export default function RootLayout({
 			className={`${satoshi.variable} ${outward.variable}`}
 		>
 			<body className='antialiased'>
-				<header className='border-b'>
+				<header>
 					<Nav />
 				</header>
 				<main>{children}</main>

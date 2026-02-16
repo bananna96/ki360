@@ -341,7 +341,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 						{(item as any).node}
 					</span>
 				) : (
-					// TODO: Replace with Sanity Image && fixed errors in brwoser console
+					// TODO: Replace with Sanity Image && fix errors in brwoser console
 					<img
 						src={(item as any).src}
 						srcSet={(item as any).srcSet}

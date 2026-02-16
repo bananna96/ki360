@@ -43,10 +43,7 @@ const basicsOverviewQuery = `
   *[_type == "basicsOverview"][0]{
     title,
     imgList[]{
-      asset->{
-        url
-      },
-      alt,
+      ${imageFields},
       link{
         text,
         url
