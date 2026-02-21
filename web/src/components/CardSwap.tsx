@@ -26,12 +26,13 @@ export interface CardSwapProps {
 	skewAmount?: number
 	easing?: 'linear' | 'elastic'
 	children: ReactNode
-	autoSwap?: boolean // NEU: Auto-Swap-Option
+	autoSwap?: boolean
 }
 
 export interface CardSwapRef {
-	swapNext: () => void // NEU
-	swapPrev: () => void // NEU
+	swapNext: () => void
+	swapPrev: () => void
+	isAnimating: () => boolean
 }
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -140,6 +141,7 @@ const CardSwap = forwardRef<CardSwapRef, CardSwapProps>(
 		useImperativeHandle(ref, () => ({
 			swapNext: () => swapFunctionRef.current(false),
 			swapPrev: () => swapFunctionRef.current(true),
+			isAnimating: () => isAnimatingRef.current, // NEU
 		}))
 
 		useEffect(() => {
@@ -171,7 +173,6 @@ const CardSwap = forwardRef<CardSwapRef, CardSwapProps>(
 				const tl = gsap.timeline()
 				tlRef.current = tl
 
-				// Animation: Karte geht IMMER nach unten
 				tl.to(elFront, {
 					y: '+=500',
 					duration: config.durDrop,
@@ -180,12 +181,11 @@ const CardSwap = forwardRef<CardSwapRef, CardSwapProps>(
 
 				tl.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`)
 
-				// NEU: Berechne neue Order um Slots richtig zu berechnen
+				// Berechne neue Order um Slots richtig zu berechnen
 				const newOrder = backward ? [front, ...rest] : [...rest, front]
 
 				rest.forEach((idx, i) => {
 					const el = refs[idx].current!
-					// NEU: Verwende den Index der neuen Order, nicht i
 					const newIndex = newOrder.indexOf(idx)
 					const slot = makeSlot(
 						newIndex,

@@ -48,47 +48,69 @@ export function PromptSlider({
 	slidesContent: PromptingSliderType[]
 }) {
 	const [index, setIndex] = useState(0)
-	const [direction, setDirection] = useState<'left' | 'right'>('right')
 	const [animating, setAnimating] = useState(false)
+	const [buttonsDisabled, setButtonsDisabled] = useState(false) // NEU
+	const [direction, setDirection] = useState<'left' | 'right'>('right')
+	const cardSwapRef = useRef<CardSwapRef>(null)
 
-	// TODO: Ref beste lösung?
 	const handlePrev = () => {
-		cardSwapRef.current?.swapPrev()
-		if (animating) return
-		setDirection('left')
+		if (buttonsDisabled || cardSwapRef.current?.isAnimating()) return
+		if (!cardSwapRef.current) return
+
+		setButtonsDisabled(true)
 		setAnimating(true)
+		setDirection('left')
+
+		cardSwapRef.current.swapPrev()
+
+		// Text-Animation
 		setTimeout(() => {
 			setIndex((i) => (i - 1 + slidesContent.length) % slidesContent.length)
 			setAnimating(false)
 		}, 500)
+
+		// Button-Sperre
+		setTimeout(() => {
+			setButtonsDisabled(false)
+		}, 1500)
 	}
 	const handleNext = () => {
-		cardSwapRef.current?.swapNext()
-		if (animating) return
-		setDirection('right')
+		if (buttonsDisabled || cardSwapRef.current?.isAnimating()) return
+		if (!cardSwapRef.current) return
+
+		setButtonsDisabled(true)
 		setAnimating(true)
+		setDirection('right')
+
+		cardSwapRef.current.swapNext()
+
+		// Text-Animation
 		setTimeout(() => {
 			setIndex((i) => (i + 1) % slidesContent.length)
 			setAnimating(false)
 		}, 500)
+
+		// Button-Sperre
+		setTimeout(() => {
+			setButtonsDisabled(false)
+		}, 1500)
 	}
 
-	const cardSwapRef = useRef<CardSwapRef>(null)
 	return (
 		<>
 			<div className='w-screen h-[70vh] pl-40 flex justify-between'>
-				{/* Text mit Slide-Animation */}
-				<div className='w-[50%] relative overflow-hidden flex flex-col items-center mt-10'>
-					{/* TODO: replace buttons, und button group hinzufügen? */}
+				<div className='w-[50%] relative overflow-hidden flex flex-col items-center mt-3'>
 					<span className='bg-(--color-granite) rounded-2xl w-10 h-10 flex items-center justify-center text-(--color-softLinen) font-bold'>
 						{index + 1}
 					</span>
 					<div className='flex justify-evenly w-full'>
+						{/* TODO: replace buttons, und button group hinzufügen? */}
 						<Button
 							onClick={handlePrev}
 							aria-label='Zurück'
 							variant='ghost'
 							className='w-fit h-fit hover:bg-transparent'
+							disabled={buttonsDisabled}
 						>
 							<Icon
 								name='chevron-left-rounded'
@@ -101,6 +123,7 @@ export function PromptSlider({
 							aria-label='Weiter'
 							variant='ghost'
 							className='w-fit h-fit hover:bg-transparent'
+							disabled={buttonsDisabled}
 						>
 							<Icon
 								name='chevron-left-rounded'
@@ -110,18 +133,19 @@ export function PromptSlider({
 						</Button>
 					</div>
 					<div
-						className={`px-10 flex flex-col gap-3
-            transition-all duration-500 max-h-[50vh]
-            ${
-							animating
-								? direction === 'right'
-									? 'translate-x-32 opacity-0'
-									: '-translate-x-32 opacity-0'
-								: 'translate-x-0 opacity-100'
-						}
-        `}
+						className={`
+							px-10 flex flex-col gap-2 max-h-[50vh]
+							transition-all duration-500
+							${
+								animating
+									? direction === 'right'
+										? 'translate-x-32 opacity-0'
+										: '-translate-x-32 opacity-0'
+									: 'translate-x-0 opacity-100'
+							}
+						`}
 					>
-						<h3 className='mb-2 text-center'>
+						<h3 className='mb-1 text-center'>
 							{slidesContent[index].tip.title}
 						</h3>
 						<p className='text-justify'>
