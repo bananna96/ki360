@@ -2,6 +2,8 @@
 import { useRef, useState } from 'react'
 import styles from './PromptSlider.module.css' // siehe unten
 import CardSwap, { Card, CardSwapRef } from '@/components/CardSwap'
+import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/custom/Icons'
 
 const slides = [
 	{
@@ -80,26 +82,37 @@ export default function PromptSlider() {
 			</div>
 			<div className='w-screen h-[70vh] pl-40 flex justify-between'>
 				{/* Text mit Slide-Animation */}
-				<div className='w-[50%] relative overflow-hidden flex flex-col items-center'>
+				<div className='w-[50%] relative overflow-hidden flex flex-col items-center mt-20'>
 					{/* TODO: replace buttons, und button group hinzufügen? */}
-					<span className='bg-(--color-granite) rounded-xl w-10 h-10 text-center text-(--color-softLinen) font-bold '>
+					<span className='bg-(--color-granite) rounded-2xl w-10 h-10 flex items-center justify-center text-(--color-softLinen) font-bold'>
 						{index + 1}
 					</span>
 					<div className='flex justify-evenly w-full'>
-						<button
+						<Button
 							onClick={handlePrev}
 							aria-label='Zurück'
-							className='rounded-full bg-brown-200 w-10 text-2xl'
+							variant='ghost'
+							className='w-fit h-fit'
 						>
-							←
-						</button>
-						<button
+							<Icon
+								name='arrow-left'
+								color='#492e19'
+								className='w-8! h-8!'
+							/>
+						</Button>
+						<Button
 							onClick={handleNext}
 							aria-label='Weiter'
-							className='rounded-full bg-brown-200 w-10 text-2xl'
+							variant='ghost'
+							className='w-fit h-fit'
 						>
-							→
-						</button>
+							<Icon
+								name='arrow-right'
+								color='#492e19'
+								// TODO: bessere lösung für größe anpassen
+								className='w-8! h-8!'
+							/>
+						</Button>
 					</div>
 					<div
 						key={index}

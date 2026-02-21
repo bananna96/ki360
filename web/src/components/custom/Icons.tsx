@@ -49,6 +49,7 @@ const Icon = ({ name, color, size, className }: IconProps) => {
 				<Lineicons
 					icon={ArrowRightOutlined}
 					color={color}
+					size={size}
 					className={className}
 				/>
 			)

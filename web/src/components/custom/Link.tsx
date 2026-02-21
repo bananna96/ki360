@@ -56,9 +56,9 @@ function IconTextLink({
 			<Icon
 				name={icon}
 				color='currentColor'
-				className='text-[color:var(--link-color)] group-hover:text-[color:var(--link-hover)] transition-colors'
+				className='text-(--link-color) group-hover:text-(--link-hover) transition-colors'
 			/>
-			<span className='text-[color:var(--link-color)] group-hover:text-[color:var(--link-hover)] transition-colors'>
+			<span className='text-(--link-color) group-hover:text-(--link-hover) transition-colors'>
 				{text}
 			</span>
 		</Link>
