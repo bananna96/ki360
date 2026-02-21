@@ -17,9 +17,20 @@ export default {
     },
     {
       name: 'image',
-      title: 'Image',
+      title: 'Slide Image',
       type: 'image',
-      validation: (Rule: any) => Rule.required(),
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alt-Text',
+          description: 'Alternativtext für Barrierefreiheit und SEO',
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
     },
   ],
 }
