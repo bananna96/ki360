@@ -1,0 +1,163 @@
+'use client'
+import { useRef, useState } from 'react'
+import CardSwap, { Card, CardSwapRef } from '@/components/CardSwap'
+import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/custom/Icons'
+import { SanityImage } from '../SanityImage'
+import { urlForImage } from '@/lib/sanity/utils'
+
+export interface PromptingSliderType {
+	tip: {
+		title: string
+		description: string
+	}
+	bullets: string[]
+	example: string
+	image: {
+		asset: {
+			_id: string
+			url: string
+			metadata: {
+				lqip: string
+				dimensions: {
+					width: number
+					height: number
+					aspectRatio: number
+				}
+			}
+		}
+		alt: string
+		hotspot?: {
+			x: number
+			y: number
+			height: number
+			width: number
+		}
+		crop?: {
+			top: number
+			bottom: number
+			left: number
+			right: number
+		}
+	}
+}
+
+export function PromptSlider({
+	slidesContent,
+}: {
+	slidesContent: PromptingSliderType[]
+}) {
+	const [index, setIndex] = useState(0)
+	const [direction, setDirection] = useState<'left' | 'right'>('right')
+	const [animating, setAnimating] = useState(false)
+
+	// TODO: Ref beste lösung?
+	const handlePrev = () => {
+		cardSwapRef.current?.swapPrev()
+		if (animating) return
+		setDirection('left')
+		setAnimating(true)
+		setTimeout(() => {
+			setIndex((i) => (i - 1 + slidesContent.length) % slidesContent.length)
+			setAnimating(false)
+		}, 500)
+	}
+	const handleNext = () => {
+		cardSwapRef.current?.swapNext()
+		if (animating) return
+		setDirection('right')
+		setAnimating(true)
+		setTimeout(() => {
+			setIndex((i) => (i + 1) % slidesContent.length)
+			setAnimating(false)
+		}, 500)
+	}
+
+	const cardSwapRef = useRef<CardSwapRef>(null)
+	return (
+		<>
+			<div className='w-screen h-[70vh] pl-40 flex justify-between'>
+				{/* Text mit Slide-Animation */}
+				<div className='w-[50%] relative overflow-hidden flex flex-col items-center mt-10'>
+					{/* TODO: replace buttons, und button group hinzufügen? */}
+					<span className='bg-(--color-granite) rounded-2xl w-10 h-10 flex items-center justify-center text-(--color-softLinen) font-bold'>
+						{index + 1}
+					</span>
+					<div className='flex justify-evenly w-full'>
+						<Button
+							onClick={handlePrev}
+							aria-label='Zurück'
+							variant='ghost'
+							className='w-fit h-fit hover:bg-transparent'
+						>
+							<Icon
+								name='chevron-left-rounded'
+								color='#492e19'
+								className='w-8! h-8!'
+							/>
+						</Button>
+						<Button
+							onClick={handleNext}
+							aria-label='Weiter'
+							variant='ghost'
+							className='w-fit h-fit hover:bg-transparent'
+						>
+							<Icon
+								name='chevron-left-rounded'
+								color='#492e19'
+								className='w-8! h-8! rotate-180'
+							/>
+						</Button>
+					</div>
+					<div
+						className={`px-10 flex flex-col gap-3
+            transition-all duration-500 max-h-[50vh]
+            ${
+							animating
+								? direction === 'right'
+									? 'translate-x-32 opacity-0'
+									: '-translate-x-32 opacity-0'
+								: 'translate-x-0 opacity-100'
+						}
+        `}
+					>
+						<h3 className='mb-2 text-center'>
+							{slidesContent[index].tip.title}
+						</h3>
+						<p className='text-justify'>
+							{slidesContent[index].tip.description}
+						</p>
+						<ul className='list-disc ml-6 mb-2'>
+							{slidesContent[index].bullets.map((b, i) => (
+								<li key={i}>{b}</li>
+							))}
+						</ul>
+						<p className='font-bold text-justify'>
+							{slidesContent[index].example}
+						</p>
+					</div>
+				</div>
+				<div className='h-[70vh] relative'>
+					<CardSwap
+						ref={cardSwapRef}
+						cardDistance={80}
+						verticalDistance={60}
+						delay={0}
+						pauseOnHover={false}
+					>
+						{slidesContent.map((slide, i) => (
+							<Card key={i}>
+								<SanityImage
+									src={urlForImage(slide.image.asset)}
+									className='object-cover rounded-lg'
+									fill
+									alt={slide.image.alt}
+								/>
+							</Card>
+						))}
+					</CardSwap>
+				</div>
+			</div>
+		</>
+	)
+}

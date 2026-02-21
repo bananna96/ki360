@@ -25,8 +25,6 @@ export default async function Footer() {
 					<SanityImage
 						src={imgAssets}
 						className='object-contain relative! hidden'
-						// The crucial part for performance:
-						sizes='(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 30vw'
 						fill
 						alt='ki360 Logo'
 					/>

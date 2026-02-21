@@ -52,7 +52,23 @@ const basicsOverviewQuery = `
   }
 `
 
-export { navQuery, landingpageQuery, basicsOverviewQuery }
+const promptingQuery = `
+  *[_type == "prompting"][0]{
+    intro,
+    slides[]{
+      tip,
+      bullets[],
+      example,
+      image{${imageFields}}
+    },
+    btnLink{
+      text,
+      url
+    }
+  }
+`
+
+export { navQuery, landingpageQuery, basicsOverviewQuery, promptingQuery }
 
 /* TODO
 Ein großer Sanity Fetch pro Seite

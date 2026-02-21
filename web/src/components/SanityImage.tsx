@@ -9,6 +9,7 @@ export const SanityImage: FC<SanityImageProps> = (props) => {
 	return (
 		<Image
 			quality={100}
+			sizes='(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px'
 			{...props}
 		/>
 	)

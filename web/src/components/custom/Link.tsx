@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Icon } from './Icons'
+import { Button } from '../ui/button'
 
 function TextLink({
 	href,
@@ -21,6 +22,30 @@ function TextLink({
 			aria-current={isActive ? 'page' : undefined}
 		>
 			{text}
+		</Link>
+	)
+}
+
+function ButtonLink({
+	href,
+	className,
+	text,
+}: {
+	href: string
+	className?: string
+	text: string
+}) {
+	const pathname = usePathname()
+	const isActive = pathname === href
+	return (
+		<Link
+			href={href}
+			className={`${className} ${isActive ? 'font-bold' : ''}`}
+			aria-current={isActive ? 'page' : undefined}
+		>
+			<Button className='bg-(--color-ochre) hover:bg-(--color-skyBlue) text-(--color-glossyBlack)'>
+				{text}
+			</Button>
 		</Link>
 	)
 }
@@ -65,4 +90,4 @@ function IconTextLink({
 	)
 }
 
-export { TextLink, IconTextLink }
+export { TextLink, IconTextLink, ButtonLink }
