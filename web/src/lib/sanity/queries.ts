@@ -68,7 +68,62 @@ const promptingQuery = `
   }
 `
 
-export { navQuery, landingpageQuery, basicsOverviewQuery, promptingQuery }
+const whatIsAiQuery = `
+  *[_type == "whatIsAi"][0]{
+    section1{
+      title,
+      description,
+      image{${imageFields}}
+    },
+    section2{
+      text,
+      url
+    },
+    section3{
+      title,
+      items[]{
+        itemTitle,
+        subtitle,
+        link,
+        image{${imageFields}}
+      }
+    },
+    section4{
+      title,
+      items[]{
+        title,
+        description,
+        image{${imageFields}}
+      }
+    },
+    section5{
+      title,
+      items[]{
+        itemTitle,
+        subtitle,
+        link,
+        image{${imageFields}}
+      },
+      overlayText[]{
+        title,
+        items[]{
+          itemTitle,
+          subtitle,
+          link,
+          image{${imageFields}}
+        }
+      }
+    }
+  }
+`
+
+export {
+	navQuery,
+	landingpageQuery,
+	basicsOverviewQuery,
+	promptingQuery,
+	whatIsAiQuery,
+}
 
 /* TODO
 Ein großer Sanity Fetch pro Seite

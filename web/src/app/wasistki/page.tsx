@@ -2,7 +2,7 @@ export const revalidate = 3600 // 3600 seconds = 1 hour, 86400 seconds = 1 day, 
 import { client } from '@/lib/sanity/client'
 import { Icon } from '@/components/custom/Icons'
 import { IconTextLink } from '@/components/custom/Link'
-import { landingpageQuery } from '@/lib/sanity/queries'
+import { whatIsAiQuery } from '@/lib/sanity/queries'
 
 interface Content {
 	title: string
@@ -16,7 +16,8 @@ interface Content {
 }
 
 export default async function Page() {
-	const content = await client.fetch<Content>(landingpageQuery)
+	const content = await client.fetch<Content>(whatIsAiQuery)
+	console.log(content) // Debug-Ausgabe, um den Inhalt zu überprüfen
 
 	return (
 		<div className='flex flex-col'>
@@ -40,7 +41,7 @@ export default async function Page() {
 				</div>
 				<div className='flex justify-end items-start col-span-full pb-10 lg:justify-end lg:col-start-9 lg:pb-30 xl:col-span-5'>
 					<div className='flex flex-col items-start'>
-						{content.links.map((link: { text: string; url: string }) => (
+						{/* {content.links.map((link: { text: string; url: string }) => (
 							<IconTextLink
 								key={link.url}
 								text={link.text}
@@ -50,7 +51,7 @@ export default async function Page() {
 								colorVar='--color-softLinen'
 								hoverColorVar='--color-skyBlue'
 							/>
-						))}
+						))} */}
 					</div>
 				</div>
 			</div>
