@@ -5,6 +5,18 @@ import { SanityImage } from '@/components/SanityImage'
 import { urlForImage } from '@/lib/sanity/utils'
 import { Suspense } from 'react'
 import Link from 'next/link'
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+} from '@/components/ui/drawer'
+import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/custom/Icons'
 
 interface SanityImageAsset {
 	_id: string
@@ -149,7 +161,7 @@ export default async function Page() {
 				</div>
 			</div>
 			{/* SECTION 4 */}
-			<div className='min-h-screen w-full items-end  wrapper-cols-12  bg-(--color-granite)'>
+			<div className='min-h-screen w-full items-end bg-(--color-granite)'>
 				<div className='col-span-full flex flex-col text-(--color-softLinen) gap-10 justify-center'>
 					<h3 className='w-full text-center'>{content.section4.title}</h3>
 				</div>
@@ -157,7 +169,7 @@ export default async function Page() {
 					return (
 						<div
 							key={index}
-							className='col-span-6'
+							className=''
 						>
 							<h5 className='w-full!'>{item.title}</h5>
 							<p>{item.description}</p>
@@ -171,23 +183,66 @@ export default async function Page() {
 					<h3>{content.section5.title}</h3>
 				</div>
 				<div className='flex justify-between items-start col-span-full pb-10 gap-4'>
-					{content.section5.items.map((item, index) => (
-						<div
-							key={index}
-							className='flex flex-col items-center'
-						>
-							<h5>{item.itemTitle}</h5>
-							<p>{item.subtitle}</p>
-							<div className='relative w-80 h-80 mt-4'>
-								<SanityImage
-									src={getImageUrl(item.image.asset)}
-									alt={item.image.alt ?? 'Image' + index}
-									fill
-									className='object-cover'
-								/>
+					{content.section5.items.map((item, index) => {
+						const card = (
+							<div className='flex flex-col items-center cursor-pointer'>
+								<h5>{item.itemTitle}</h5>
+								<p>{item.subtitle}</p>
+								<div className='relative w-80 h-80 mt-4'>
+									<SanityImage
+										src={getImageUrl(item.image.asset)}
+										alt={item.image.alt ?? 'Image' + index}
+										fill
+										className='object-cover'
+									/>
+								</div>
 							</div>
-						</div>
-					))}
+						)
+						if (index === 0) {
+							return (
+								<Link
+									key={index}
+									href={item.link?.url || '/'}
+									aria-label={item.itemTitle}
+								>
+									{card}
+								</Link>
+							)
+						}
+						const overlay = content.section5.overlayText[index - 1]
+						return (
+							<Drawer key={index}>
+								<DrawerTrigger asChild>{card}</DrawerTrigger>
+								<DrawerContent className='px-8'>
+									<DrawerClose asChild>
+										<Icon
+											name='cancel'
+											color='#db761c'
+											className='w-12! h-12! self-end'
+										/>
+									</DrawerClose>
+
+									<DrawerHeader className='px-20 pt-0'>
+										<DrawerTitle className='text-[8em]'>
+											{overlay?.title ?? item.itemTitle}
+										</DrawerTitle>
+										<DrawerDescription>{item.subtitle}</DrawerDescription>
+									</DrawerHeader>
+
+									<div className='px-20 pb-6 grid gap-4 overflow-y-auto'>
+										{overlay?.items?.map((ovItem, ovIndex) => (
+											<div key={ovIndex}>
+												<h5>{ovItem.itemTitle}</h5>
+												<p>{ovItem.subtitle}</p>
+											</div>
+										))}
+									</div>
+
+									<DrawerFooter></DrawerFooter>
+								</DrawerContent>
+							</Drawer>
+						)
+					})}
 				</div>
 			</div>
 		</div>
