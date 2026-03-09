@@ -1,58 +1,193 @@
 export const revalidate = 3600 // 3600 seconds = 1 hour, 86400 seconds = 1 day, 604800 seconds = 1 week
 import { client } from '@/lib/sanity/client'
-import { Icon } from '@/components/custom/Icons'
-import { IconTextLink } from '@/components/custom/Link'
 import { whatIsAiQuery } from '@/lib/sanity/queries'
+import { SanityImage } from '@/components/SanityImage'
+import { urlForImage } from '@/lib/sanity/utils'
+import { Suspense } from 'react'
+import Link from 'next/link'
 
-interface Content {
-	title: string
-	intro?: string
-	subtitle: string
-	content: string
-	links: {
-		text: string
-		url: string
-	}[]
+interface SanityImageAsset {
+	_id: string
+	url: string
+	metadata: {
+		lqip: string
+		dimensions: {
+			width: number
+			height: number
+			aspectRatio: number
+		}
+	}
+	[key: string]: any
+}
+
+interface SanityImage {
+	asset: SanityImageAsset
+	alt: string
+	hotspot?: {
+		x: number
+		y: number
+		height: number
+		width: number
+	}
+	crop?: {
+		top: number
+		bottom: number
+		left: number
+		right: number
+	}
+}
+
+interface Link {
+	text: string
+	url: string
+}
+
+interface WhatIsAiContent {
+	section1: {
+		title: string
+		description: string
+		image: SanityImage
+	}
+	section2: Link
+	section3: {
+		title: string
+		items: {
+			itemTitle: string
+			subtitle: string
+			link: Link
+			image: SanityImage
+		}[]
+	}
+	section4: {
+		title: string
+		items: {
+			title: string
+			description: string
+			image: SanityImage
+		}[]
+	}
+	section5: {
+		title: string
+		items: {
+			itemTitle: string
+			subtitle: string
+			link: Link
+			image: SanityImage
+		}[]
+		overlayText: {
+			title: string
+			items: {
+				itemTitle: string
+				subtitle: string
+				link: Link
+				image: SanityImage
+			}[]
+		}[]
+	}
 }
 
 export default async function Page() {
-	const content = await client.fetch<Content>(whatIsAiQuery)
-	console.log(content) // Debug-Ausgabe, um den Inhalt zu überprüfen
+	const content = await client.fetch<WhatIsAiContent>(whatIsAiQuery)
+	console.log(content.section5)
+	const sec1Img = urlForImage(content.section1.image.asset)
 
+	const getImageUrl = (asset: SanityImageAsset): string => urlForImage(asset)
 	return (
 		<div className='flex flex-col'>
-			<div className='min-h-screen w-full items-end justify-start wrapper-cols-12'>
-				{/* TODO: mb und pb checken bei text und icon */}
-				<div className='col-span-12 flex justify-between items-end pb-20 sm:pb-0'>
-					<h1>{content.title}</h1>
-					<Icon
-						// TODO: besser lösung für color? sodass man sie an einer stelle hat)
-						name='arrow-down'
-						color='#492e19'
-						size={64}
-						className='xs:mb-8 sm:mb-0 animate-bounce'
+			{/* SECTION 1 */}
+			<div className='min-h-screen w-full  wrapper-cols-12'>
+				<div className='col-span-7 flex flex-col justify-end gap-4 pb-10'>
+					<h4>{content.section1.title}</h4>
+					<span>{content.section1.description}</span>
+				</div>
+				<div className='col-start-9 col-end-13 relative -mr-20 h-screen'>
+					<SanityImage
+						src={sec1Img}
+						className='object-cover'
+						fill
+						alt={content.section1.image.alt}
 					/>
 				</div>
 			</div>
-			<div className='min-h-screen w-full items-end  wrapper-cols-12 bg-[var(--color-granite)]'>
-				<div className='col-span-full lg:col-span-6 flex flex-col text-[var(--color-softLinen)] gap-10 justify-center lg:pb-30'>
-					<h3>{content.subtitle}</h3>
-					<p>{content.content}</p>
-				</div>
-				<div className='flex justify-end items-start col-span-full pb-10 lg:justify-end lg:col-start-9 lg:pb-30 xl:col-span-5'>
-					<div className='flex flex-col items-start'>
-						{/* {content.links.map((link: { text: string; url: string }) => (
-							<IconTextLink
-								key={link.url}
-								text={link.text}
-								href={link.url}
-								ariaLabel={`Zu ${link.text}`}
-								icon='arrow-diagonal'
-								colorVar='--color-softLinen'
-								hoverColorVar='--color-skyBlue'
-							/>
-						))} */}
+			{/* SECTION 2 */}
+			<div className='min-h-screen w-full items-end  wrapper-cols-12 bg-(--color-granite)'>
+				<Suspense fallback={<p>Loading video...</p>}>
+					<iframe
+						src={content.section2.url}
+						title={content.section2.text}
+						allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+						referrerPolicy='strict-origin-when-cross-origin'
+						allowFullScreen
+						className='w-screen h-screen -ml-20 object-contain'
+					/>
+				</Suspense>
+			</div>
+			{/* SECTION 3 */}
+			<div className='min-h-screen w-full  wrapper-cols-12 bg-(--color-frost)'>
+				<div className='col-span-full flex flex-col justify-center text-(--color-glossyBlack)'>
+					<h3>{content.section3.title}</h3>
+					<div className='flex justify-between'>
+						{content.section3.items.map((item, index) => (
+							<div
+								key={index}
+								className='relative w-[30%] h-100 flex flex-col justify-start items-center mt-20'
+							>
+								<h5>{item.itemTitle}</h5>
+								<span>{item.subtitle}</span>
+								<div className='relative mt-10'>
+									<SanityImage
+										src={getImageUrl(item.image.asset)}
+										alt={item.image.alt ?? 'Image' + index}
+										className='object-contain'
+										width={150}
+										height={150}
+									/>
+								</div>
+							</div>
+						))}
 					</div>
+				</div>
+			</div>
+			{/* SECTION 4 */}
+			<div className='min-h-screen w-full items-end  wrapper-cols-12  bg-(--color-granite)'>
+				<div className='col-span-full flex flex-col text-(--color-softLinen) gap-10 justify-center'>
+					<h3 className='w-full text-center'>{content.section4.title}</h3>
+				</div>
+				{content.section4.items.map((item, index) => {
+					return (
+						<div
+							key={index}
+							className='col-span-6'
+						>
+							<h5 className='w-full!'>{item.title}</h5>
+							<p>{item.description}</p>
+						</div>
+					)
+				})}
+			</div>
+			{/* SECTION 5 */}
+			<div className='min-h-screen w-full wrapper-cols-12 bg-(--color-frost)'>
+				<div className='h-fit! col-span-full gap-10 mt-40 '>
+					<h3>{content.section5.title}</h3>
+				</div>
+				<div className='flex justify-between items-start col-span-full pb-10 gap-4'>
+					{content.section5.items.map((item, index) => (
+						<div
+							key={index}
+							className='flex flex-col items-center'
+						>
+							<h5>{item.itemTitle}</h5>
+							<p>{item.subtitle}</p>
+							<div className='relative w-80 h-80 mt-4'>
+								<SanityImage
+									src={getImageUrl(item.image.asset)}
+									alt={item.image.alt ?? 'Image' + index}
+									fill
+									className='object-cover'
+								/>
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>
