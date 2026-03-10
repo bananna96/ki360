@@ -117,12 +117,25 @@ const whatIsAiQuery = `
   }
 `
 
+const techMethodsQuery = `
+  *[_type == "whatIsAi"][0].section5.overlayText[-1]{
+    title,
+    items[]{
+      itemTitle,
+      subtitle,
+      link,
+      image{${imageFields}}
+    }
+  }
+`
+
 export {
 	navQuery,
 	landingpageQuery,
 	basicsOverviewQuery,
 	promptingQuery,
 	whatIsAiQuery,
+	techMethodsQuery,
 }
 
 /* TODO

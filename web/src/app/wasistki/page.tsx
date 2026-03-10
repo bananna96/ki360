@@ -83,7 +83,7 @@ interface WhatIsAiContent {
 		items: {
 			itemTitle: string
 			subtitle: string
-			link: Link
+			link: string
 			image: SanityImage
 		}[]
 		overlayText: {
@@ -202,7 +202,7 @@ export default async function Page() {
 							return (
 								<Link
 									key={index}
-									href={item.link?.url || '/'}
+									href={item.link || '/'}
 									aria-label={item.itemTitle}
 								>
 									{card}
@@ -237,8 +237,6 @@ export default async function Page() {
 											</div>
 										))}
 									</div>
-
-									<DrawerFooter></DrawerFooter>
 								</DrawerContent>
 							</Drawer>
 						)
