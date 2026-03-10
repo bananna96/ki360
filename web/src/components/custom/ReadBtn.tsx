@@ -1,19 +1,33 @@
 'use client'
 
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Icon } from './Icons'
+import { useEffect, useState } from 'react'
+import { IconButton } from '@/components/ui/button'
 
 type Props = {
 	text: string
 	lang?: string
 	className?: string
+	disabled?: boolean
 }
 
-export function ReadButton({ text, lang = 'de-DE', className }: Props) {
+export function ReadButton({
+	text,
+	lang = 'de-DE',
+	className,
+	disabled = false,
+}: Props) {
 	const [isSpeaking, setIsSpeaking] = useState(false)
 
+	useEffect(() => {
+		return () => {
+			if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+				window.speechSynthesis.cancel()
+			}
+		}
+	}, [])
+
 	const handleToggle = () => {
+		if (disabled || !text?.trim()) return
 		if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
 
 		if (isSpeaking) {
@@ -26,7 +40,6 @@ export function ReadButton({ text, lang = 'de-DE', className }: Props) {
 		utterance.lang = lang
 		utterance.rate = 1
 		utterance.pitch = 1
-
 		utterance.onend = () => setIsSpeaking(false)
 		utterance.onerror = () => setIsSpeaking(false)
 
@@ -36,18 +49,16 @@ export function ReadButton({ text, lang = 'de-DE', className }: Props) {
 	}
 
 	return (
-		<Button
+		<IconButton
 			type='button'
 			variant='ghost'
 			onClick={handleToggle}
-			className='w-fit p-0!'
-		>
-			<Icon
-				name={isSpeaking ? 'volume-low' : 'volume-high'}
-				color='#5b6c5d'
-				size={48}
-				className={className}
-			/>
-		</Button>
+			disabled={disabled}
+			icon={isSpeaking ? 'volume-low' : 'volume-high'}
+			ariaLabel={isSpeaking ? 'Vorlesen stoppen' : 'Text vorlesen'}
+			iconColor='#5b6c5d'
+			iconSize={48}
+			className={`w-fit !p-0 ${className ?? ''}`}
+		/>
 	)
 }

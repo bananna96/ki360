@@ -17,8 +17,27 @@ import {
 	PauseSolid,
 } from '@lineiconshq/free-icons'
 
+const iconNames = [
+	'chevron-left-rounded',
+	'arrow-left',
+	'arrow-right',
+	'arrow-down',
+	'arrow-diagonal',
+	'question-mark',
+	'bulb',
+	'refresh',
+	'check',
+	'cancel',
+	'volume-high',
+	'volume-low',
+	'play',
+	'pause',
+] as const
+
+export type IconName = (typeof iconNames)[number]
+
 type IconProps = {
-	name: string
+	name: IconName
 	color: string
 	size?: number
 	className?: string

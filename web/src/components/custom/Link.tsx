@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Icon } from './Icons'
+import { Icon, type IconName } from './Icons'
 import { Button } from '../ui/button'
 
 function TextLink({
@@ -43,18 +43,21 @@ function ButtonLink({
 }) {
 	const pathname = usePathname()
 	const isActive = pathname === href
+
 	return (
-		<Link
-			href={href}
-			className={`${className} ${isActive ? 'font-bold' : ''}`}
-			aria-current={isActive ? 'page' : undefined}
-			target={openInNewTab ? '_blank' : undefined}
-			rel={openInNewTab ? 'noopener noreferrer' : undefined}
+		<Button
+			asChild
+			className={`bg-(--color-ochre) hover:bg-(--color-skyBlue) text-(--color-glossyBlack) ${className ?? ''} ${isActive ? 'font-bold' : ''}`}
 		>
-			<Button className='bg-(--color-ochre) hover:bg-(--color-skyBlue) text-(--color-glossyBlack)'>
+			<Link
+				href={href}
+				aria-current={isActive ? 'page' : undefined}
+				target={openInNewTab ? '_blank' : undefined}
+				rel={openInNewTab ? 'noopener noreferrer' : undefined}
+			>
 				{text}
-			</Button>
-		</Link>
+			</Link>
+		</Button>
 	)
 }
 
@@ -72,7 +75,7 @@ function IconTextLink({
 	ariaLabel: string
 	className?: string
 	text: string
-	icon: string
+	icon: IconName
 	colorVar: string
 	hoverColorVar: string
 	openInNewTab?: boolean

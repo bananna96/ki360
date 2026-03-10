@@ -4,7 +4,6 @@ import CardSwap, { Card, CardSwapRef } from '@/components/CardSwap'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/custom/Icons'
 import { SanityImage } from '../SanityImage'
-import { urlForImage } from '@/lib/sanity/utils'
 
 export interface PromptingSliderType {
 	tip: {
@@ -27,18 +26,6 @@ export interface PromptingSliderType {
 			}
 		}
 		alt: string
-		hotspot?: {
-			x: number
-			y: number
-			height: number
-			width: number
-		}
-		crop?: {
-			top: number
-			bottom: number
-			left: number
-			right: number
-		}
 	}
 }
 
@@ -49,9 +36,11 @@ export function PromptSlider({
 }) {
 	const [index, setIndex] = useState(0)
 	const [animating, setAnimating] = useState(false)
-	const [buttonsDisabled, setButtonsDisabled] = useState(false) // NEU
+	const [buttonsDisabled, setButtonsDisabled] = useState(false)
 	const [direction, setDirection] = useState<'left' | 'right'>('right')
 	const cardSwapRef = useRef<CardSwapRef>(null)
+
+	if (!slidesContent?.length) return null
 
 	const handlePrev = () => {
 		if (buttonsDisabled || cardSwapRef.current?.isAnimating()) return
@@ -172,10 +161,15 @@ export function PromptSlider({
 						{slidesContent.map((slide, i) => (
 							<Card key={i}>
 								<SanityImage
-									src={urlForImage(slide.image.asset)}
+									src={slide.image.asset.url}
 									className='object-cover rounded-lg'
 									fill
 									alt={slide.image.alt}
+									sizes='(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 700px'
+									placeholder={
+										slide.image.asset.metadata?.lqip ? 'blur' : 'empty'
+									}
+									blurDataURL={slide.image.asset.metadata?.lqip}
 								/>
 							</Card>
 						))}

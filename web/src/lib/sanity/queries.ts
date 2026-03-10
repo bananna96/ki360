@@ -54,12 +54,32 @@ const basicsOverviewQuery = `
 
 const promptingQuery = `
   *[_type == "prompting"][0]{
-    intro,
+    intro{
+      title,
+      description
+    },
     slides[]{
-      tip,
+      tip{
+        title,
+        description
+      },
       bullets[],
       example,
-      image{${imageFields}}
+      image{
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions{
+              width,
+              height,
+              aspectRatio
+            }
+          }
+        },
+        alt
+      }
     },
     btnLink{
       text,
@@ -124,7 +144,21 @@ const techMethodsQuery = `
       itemTitle,
       subtitle,
       link,
-      image{${imageFields}}
+      image{
+        alt,
+        asset->{
+          _id,
+          url,
+          metadata{
+            lqip,
+            dimensions{
+              width,
+              height,
+              aspectRatio
+            }
+          }
+        }
+      }
     }
   }
 `

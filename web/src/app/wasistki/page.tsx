@@ -2,7 +2,6 @@ export const revalidate = 3600 // 3600 seconds = 1 hour, 86400 seconds = 1 day, 
 import { client } from '@/lib/sanity/client'
 import { whatIsAiQuery } from '@/lib/sanity/queries'
 import { SanityImage } from '@/components/SanityImage'
-import { urlForImage } from '@/lib/sanity/utils'
 import { Suspense } from 'react'
 import Link from 'next/link'
 import {
@@ -15,8 +14,7 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from '@/components/ui/drawer'
-import { Button } from '@/components/ui/button'
-import { Icon } from '@/components/custom/Icons'
+import { IconButton } from '@/components/ui/button'
 
 interface SanityImageAsset {
 	_id: string
@@ -100,10 +98,7 @@ interface WhatIsAiContent {
 
 export default async function Page() {
 	const content = await client.fetch<WhatIsAiContent>(whatIsAiQuery)
-	console.log(content.section5)
-	const sec1Img = urlForImage(content.section1.image.asset)
-
-	const getImageUrl = (asset: SanityImageAsset): string => urlForImage(asset)
+	const sec1Img = content.section1.image.asset.url
 	return (
 		<div className='flex flex-col'>
 			{/* SECTION 1 */}
@@ -118,21 +113,26 @@ export default async function Page() {
 						className='object-cover'
 						fill
 						alt={content.section1.image.alt}
+						sizes='(max-width: 1024px) 100vw, 33vw'
+						placeholder={
+							content.section1.image.asset.metadata?.lqip ? 'blur' : 'empty'
+						}
+						blurDataURL={content.section1.image.asset.metadata?.lqip}
 					/>
 				</div>
 			</div>
 			{/* SECTION 2 */}
-			<div className='min-h-screen w-full items-end  wrapper-cols-12 bg-(--color-granite)'>
-				<Suspense fallback={<p>Loading video...</p>}>
-					<iframe
-						src={content.section2.url}
-						title={content.section2.text}
-						allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-						referrerPolicy='strict-origin-when-cross-origin'
-						allowFullScreen
-						className='w-screen h-screen -ml-20 object-contain'
-					/>
-				</Suspense>
+			<div className='min-h-screen w-full items-end wrapper-cols-12 bg-(--color-granite)'>
+				<iframe
+					src={content.section2.url}
+					title={content.section2.text}
+					loading='lazy'
+					sandbox='allow-scripts allow-same-origin allow-presentation allow-popups'
+					allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+					referrerPolicy='strict-origin-when-cross-origin'
+					allowFullScreen
+					className='w-screen h-screen -ml-20 object-contain'
+				/>
 			</div>
 			{/* SECTION 3 */}
 			<div className='min-h-screen w-full  wrapper-cols-12 bg-(--color-frost)'>
@@ -148,11 +148,16 @@ export default async function Page() {
 								<span>{item.subtitle}</span>
 								<div className='relative mt-10'>
 									<SanityImage
-										src={getImageUrl(item.image.asset)}
-										alt={item.image.alt ?? 'Image' + index}
+										src={item.image.asset.url}
+										alt={item.image.alt ?? `Image ${index}`}
 										className='object-contain'
 										width={150}
 										height={150}
+										sizes='150px'
+										placeholder={
+											item.image.asset.metadata?.lqip ? 'blur' : 'empty'
+										}
+										blurDataURL={item.image.asset.metadata?.lqip}
 									/>
 								</div>
 							</div>
@@ -190,10 +195,15 @@ export default async function Page() {
 								<p>{item.subtitle}</p>
 								<div className='relative w-80 h-80 mt-4'>
 									<SanityImage
-										src={getImageUrl(item.image.asset)}
-										alt={item.image.alt ?? 'Image' + index}
+										src={item.image.asset.url}
+										alt={item.image.alt ?? `Image ${index}`}
 										fill
 										className='object-cover'
+										sizes='320px'
+										placeholder={
+											item.image.asset.metadata?.lqip ? 'blur' : 'empty'
+										}
+										blurDataURL={item.image.asset.metadata?.lqip}
 									/>
 								</div>
 							</div>
@@ -215,10 +225,14 @@ export default async function Page() {
 								<DrawerTrigger asChild>{card}</DrawerTrigger>
 								<DrawerContent className='px-8'>
 									<DrawerClose asChild>
-										<Icon
-											name='cancel'
-											color='#db761c'
-											className='w-12! h-12! self-end'
+										<IconButton
+											icon='cancel'
+											ariaLabel='Drawer schließen'
+											iconColor='#db761c'
+											iconSize={48}
+											variant='ghost'
+											size='icon-lg'
+											className='self-end'
 										/>
 									</DrawerClose>
 

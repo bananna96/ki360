@@ -1,4 +1,4 @@
-import TiltedCard from '@/components/TiltedCard'
+import type { Metadata } from 'next'
 import { client } from '@/lib/sanity/client'
 import { techMethodsQuery } from '@/lib/sanity/queries'
 import { urlForImage } from '@/lib/sanity/utils'
@@ -11,10 +11,19 @@ import {
 	DrawerDescription,
 	DrawerTrigger,
 } from '@/components/ui/drawer'
-import { Icon } from '@/components/custom/Icons'
+import { IconButton } from '@/components/ui/button'
 import { Suspense } from 'react'
 import { ReadButton } from '@/components/custom/ReadBtn'
 import { TextLink } from '@/components/custom/Link'
+import { TechMethodDrawerCard } from '@/components/custom/TechMethodDrawerCard'
+
+export const revalidate = 3600
+
+export const metadata: Metadata = {
+	title: 'Technische Methodiken | KI360',
+	description:
+		'Technische Methodiken der Künstlichen Intelligenz verständlich erklärt – mit interaktiven Karten und eingebetteten Beispielen.',
+}
 
 interface SanityImageAsset {
 	_id: string
@@ -66,83 +75,41 @@ const getColSpan = (span: number) => {
 	return spans[span] || 'col-span-4'
 }
 
+const getOptimizedImageUrl = (asset: SanityImageAsset, span: number) => {
+	const widthBySpan: Record<number, number> = {
+		4: 900,
+		5: 1200,
+		7: 1600,
+	}
+
+	const url = new URL(asset.url)
+	url.searchParams.set('auto', 'format')
+	url.searchParams.set('q', '72')
+	url.searchParams.set('w', String(widthBySpan[span] ?? 1200))
+	url.searchParams.set('fit', 'crop')
+
+	return url.toString()
+}
+
 export default async function Page() {
 	const content = await client.fetch<TechMethodsContent>(techMethodsQuery)
-	const getImageUrl = (asset: SanityImageAsset): string => urlForImage(asset)
 
 	return (
-		<div className='h-full overflow-hidden! w-full flex items-center justify-center'>
-			<div className='py-[6em]! w-full bg-(--color-frost) wrapper-cols-12'>
+		<div className='h-full w-full flex items-center justify-center'>
+			<div className='py-[6em] w-full bg-(--color-frost) wrapper-cols-12'>
 				{content.items.map((item, index) => {
 					const span = index === 0 ? 5 : index === 1 ? 7 : 4
 
-					const card = (
-						<div className={`h-[40vh] ${getColSpan(span)} cursor-pointer`}>
-							<TiltedCard
-								imageSrc={getImageUrl(item.image.asset)}
-								altText={item.image.alt}
-								captionText={item.itemTitle}
-								containerHeight='100%'
-								containerWidth='100%'
-								imageHeight='100%'
-								imageWidth='100%'
-								rotateAmplitude={30}
-								scaleOnHover={1.05}
-								showMobileWarning={false}
-								displayOverlayContent
-								showTooltip={false}
-								overlayContent={
-									<p className='tilted-card-demo-text uppercase'>
-										{item.itemTitle}
-									</p>
-								}
-							/>
-						</div>
-					)
-
 					return (
-						<Drawer key={index}>
-							<DrawerTrigger asChild>{card}</DrawerTrigger>
-							<DrawerContent className='px-8 pb-8 border-0 min-h-fit max-h-screen flex flex-col'>
-								<DrawerHeader className='px-20 pt-0 flex flex-row justify-between items-start'>
-									<ReadButton
-										text={item.subtitle}
-										className={`w-10! h-10! ${!item.subtitle ? 'invisible pointer-events-none' : ''}`}
-									/>
-									<DrawerTitle className='text-[8em]'>
-										{item.itemTitle}
-									</DrawerTitle>
-									<DrawerClose aria-label='Schließen'>
-										<Icon
-											name='cancel'
-											color='#db761c'
-											size={48}
-											className='w-12 h-12 cursor-pointer'
-										/>
-									</DrawerClose>
-								</DrawerHeader>
-
-								{item.link ? (
-									<div className='px-40 overflow-hidden flex flex-col justify-center items-center'>
-										<iframe
-											src={item.link}
-											className='w-full  max-h-[70vh]  rounded-xl aspect-video'
-											title={item.itemTitle}
-											referrerPolicy='strict-origin-when-cross-origin'
-											allowFullScreen
-										/>
-										<TextLink
-											className='my-3 block hover:text-(--color-ochre) text-(--color-granite)'
-											href={item.subtitle}
-											text={item.subtitle}
-											openInNewTab
-										/>
-									</div>
-								) : (
-									<div className='px-20 shrink-0'>{item.subtitle}</div>
-								)}
-							</DrawerContent>
-						</Drawer>
+						<TechMethodDrawerCard
+							key={index}
+							itemTitle={item.itemTitle}
+							subtitle={item.subtitle}
+							link={item.link}
+							imageSrc={getOptimizedImageUrl(item.image.asset, span)}
+							imageAlt={item.image.alt}
+							colSpanClass={getColSpan(span)}
+						/>
 					)
 				})}
 			</div>

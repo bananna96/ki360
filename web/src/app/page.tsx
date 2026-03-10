@@ -46,12 +46,13 @@ export default async function Home() {
 						name='arrow-down'
 						color='#492e19'
 						size={64}
-						className='xs:mb-8 sm:mb-0 animate-bounce'
+						aria-hidden='true'
+						className='xs:mb-8 sm:mb-0 animate-bounce motion-reduce:animate-none'
 					/>
 				</div>
 			</div>
-			<div className='min-h-screen w-full items-end  wrapper-cols-12 bg-[var(--color-granite)]'>
-				<div className='col-span-full lg:col-span-6 flex flex-col text-[var(--color-softLinen)] gap-10 justify-center lg:pb-30'>
+			<div className='min-h-screen w-full items-end  wrapper-cols-12 bg-(--color-granite)'>
+				<div className='col-span-full lg:col-span-6 flex flex-col text-(--color-softLinen) gap-10 justify-center lg:pb-30'>
 					<h3>{content.subtitle}</h3>
 					<p>{content.content}</p>
 				</div>

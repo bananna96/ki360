@@ -3,6 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { Slot } from 'radix-ui'
 
 import { cn } from '@/lib/utils'
+import { Icon, type IconName } from '@/components/custom/Icons'
 
 const buttonVariants = cva(
 	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:cursor-pointer",
@@ -61,4 +62,47 @@ function Button({
 	)
 }
 
-export { Button, buttonVariants }
+type IconButtonProps = Omit<
+	React.ComponentProps<'button'>,
+	'children' | 'aria-label'
+> &
+	VariantProps<typeof buttonVariants> & {
+		icon: IconName
+		ariaLabel: string
+		iconColor?: string
+		iconSize?: number
+	}
+
+function IconButton({
+	icon,
+	ariaLabel,
+	iconColor = 'currentColor',
+	iconSize = 20,
+	variant = 'ghost',
+	size = 'icon',
+	type = 'button',
+	className,
+	...props
+}: IconButtonProps) {
+	return (
+		<Button
+			type={type}
+			variant={variant}
+			size={size}
+			className={className}
+			aria-label={ariaLabel}
+			{...props}
+		>
+			<span aria-hidden='true'>
+				<Icon
+					name={icon}
+					color={iconColor}
+					size={iconSize}
+					className='w-12! h-12!'
+				/>
+			</span>
+		</Button>
+	)
+}
+
+export { Button, buttonVariants, IconButton }
