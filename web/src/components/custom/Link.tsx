@@ -8,10 +8,12 @@ function TextLink({
 	href,
 	className,
 	text,
+	openInNewTab,
 }: {
 	href: string
 	className?: string
 	text: string
+	openInNewTab?: boolean
 }) {
 	const pathname = usePathname()
 	const isActive = pathname === href
@@ -20,6 +22,8 @@ function TextLink({
 			href={href}
 			className={`${className} ${isActive ? 'font-bold' : ''}`}
 			aria-current={isActive ? 'page' : undefined}
+			target={openInNewTab ? '_blank' : undefined}
+			rel={openInNewTab ? 'noopener noreferrer' : undefined}
 		>
 			{text}
 		</Link>
@@ -30,10 +34,12 @@ function ButtonLink({
 	href,
 	className,
 	text,
+	openInNewTab,
 }: {
 	href: string
 	className?: string
 	text: string
+	openInNewTab?: boolean
 }) {
 	const pathname = usePathname()
 	const isActive = pathname === href
@@ -42,6 +48,8 @@ function ButtonLink({
 			href={href}
 			className={`${className} ${isActive ? 'font-bold' : ''}`}
 			aria-current={isActive ? 'page' : undefined}
+			target={openInNewTab ? '_blank' : undefined}
+			rel={openInNewTab ? 'noopener noreferrer' : undefined}
 		>
 			<Button className='bg-(--color-ochre) hover:bg-(--color-skyBlue) text-(--color-glossyBlack)'>
 				{text}
@@ -58,6 +66,7 @@ function IconTextLink({
 	icon,
 	colorVar,
 	hoverColorVar,
+	openInNewTab,
 }: {
 	href: string
 	ariaLabel: string
@@ -66,6 +75,7 @@ function IconTextLink({
 	icon: string
 	colorVar: string
 	hoverColorVar: string
+	openInNewTab?: boolean
 }) {
 	return (
 		<Link
@@ -73,10 +83,11 @@ function IconTextLink({
 			aria-label={ariaLabel}
 			className={`${className ?? ''} group flex items-center gap-2 justify-end transition-colors`}
 			style={{
-				// TODO: Umbauen oder schöner machen
 				['--link-color' as any]: `var(${colorVar})`,
 				['--link-hover' as any]: `var(${hoverColorVar})`,
 			}}
+			target={openInNewTab ? '_blank' : undefined}
+			rel={openInNewTab ? 'noopener noreferrer' : undefined}
 		>
 			<Icon
 				name={icon}

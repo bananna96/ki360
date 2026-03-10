@@ -39,7 +39,7 @@ export default {
           name: 'overlayText',
           title: 'Overlay Text',
           type: 'array',
-          of: [titleList],
+          of: [titleListImgTitleSubtitle],
         },
       ],
     },
