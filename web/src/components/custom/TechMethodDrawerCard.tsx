@@ -44,7 +44,12 @@ export function TechMethodDrawerCard({
 				<button
 					type='button'
 					aria-label={`${itemTitle} öffnen`}
-					className={`h-[40vh] ${colSpanClass} cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2`}
+					className={`
+                        h-[30vh] sm:h-[35vh] lg:h-[40vh]
+                        ${colSpanClass}
+                        w-full cursor-pointer text-left rounded-lg
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+                    `}
 				>
 					<TiltedCard
 						imageSrc={imageSrc}
@@ -66,16 +71,18 @@ export function TechMethodDrawerCard({
 				</button>
 			</DrawerTrigger>
 
-			<DrawerContent className='px-8 pb-8 border-0 min-h-fit max-h-screen flex flex-col'>
-				<DrawerHeader className='px-20 pt-0 flex flex-row justify-between items-start gap-4'>
+			<DrawerContent className='px-2 sm:px-4 md:px-8 pb-8 border-0 h-[90vh] max-h-[90vh] flex flex-col'>
+				<DrawerHeader className='shrink-0 px-4 sm:px-10 md:px-20 pt-0 flex flex-row justify-between items-start gap-2 sm:gap-4'>
 					<ReadButton
 						text={subtitle}
 						disabled={hasIframe}
-						className={`w-10 h-10 ${hasIframe ? 'invisible pointer-events-none' : ''}`}
+						className={`w-8 h-8 sm:w-10 sm:h-10 shrink-0 ${hasIframe ? 'invisible pointer-events-none' : ''}`}
 					/>
 
 					<div className='min-w-0 flex-1'>
-						<DrawerTitle className='text-[8em]'>{itemTitle}</DrawerTitle>
+						<DrawerTitle className='text-2xl sm:text-4xl md:text-6xl lg:text-[5em] leading-none break-words'>
+							{itemTitle}
+						</DrawerTitle>
 						<DrawerDescription className='sr-only'>
 							{hasIframe ? `${itemTitle} mit eingebettetem Inhalt` : subtitle}
 						</DrawerDescription>
@@ -86,44 +93,48 @@ export function TechMethodDrawerCard({
 							icon='cancel'
 							ariaLabel='Schließen'
 							iconColor='#db761c'
-							iconSize={48}
+							iconSize={32}
 							variant='ghost'
 							size='icon-lg'
-							className='self-start'
+							className='self-start shrink-0'
 						/>
 					</DrawerClose>
 				</DrawerHeader>
 
-				{hasIframe ? (
-					<div className='px-40 overflow-hidden flex flex-col justify-center items-center'>
-						{open ? (
-							<iframe
-								src={link}
-								className='w-full max-h-[70vh] rounded-xl aspect-video'
-								title={itemTitle}
-								loading='lazy'
-								sandbox='allow-scripts allow-same-origin allow-presentation allow-popups'
-								referrerPolicy='strict-origin-when-cross-origin'
-								allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen'
-								allowFullScreen
-							/>
-						) : (
-							<div
-								aria-hidden='true'
-								className='w-full max-h-[70vh] rounded-xl aspect-video bg-black/5'
-							/>
-						)}
+				<div className='flex-1 min-h-0 overflow-y-auto'>
+					{hasIframe ? (
+						<div className='px-4 sm:px-10 md:px-20 lg:px-40 flex flex-col justify-center items-center gap-4 pb-4'>
+							{open ? (
+								<iframe
+									src={link}
+									className='w-full rounded-xl aspect-video max-h-[55vh]'
+									title={itemTitle}
+									loading='lazy'
+									sandbox='allow-scripts allow-same-origin allow-presentation allow-popups'
+									referrerPolicy='strict-origin-when-cross-origin'
+									allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen'
+									allowFullScreen
+								/>
+							) : (
+								<div
+									aria-hidden='true'
+									className='w-full rounded-xl aspect-video max-h-[55vh] bg-black/5'
+								/>
+							)}
 
-						<TextLink
-							className='my-3 block hover:text-(--color-ochre) text-(--color-granite)'
-							href={subtitle}
-							text={subtitle}
-							openInNewTab
-						/>
-					</div>
-				) : (
-					<div className='px-20 shrink-0'>{subtitle}</div>
-				)}
+							<TextLink
+								className='text-xs sm:text-sm md:text-base my-3 block hover:text-(--color-ochre) text-(--color-granite) break-all'
+								href={subtitle}
+								text={subtitle}
+								openInNewTab
+							/>
+						</div>
+					) : (
+						<div className='px-4 sm:px-10 md:px-20 text-sm sm:text-base md:text-lg pb-4 whitespace-pre-wrap'>
+							{subtitle}
+						</div>
+					)}
+				</div>
 			</DrawerContent>
 		</Drawer>
 	)

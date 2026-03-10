@@ -1,20 +1,6 @@
 import type { Metadata } from 'next'
 import { client } from '@/lib/sanity/client'
 import { techMethodsQuery } from '@/lib/sanity/queries'
-import { urlForImage } from '@/lib/sanity/utils'
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerDescription,
-	DrawerTrigger,
-} from '@/components/ui/drawer'
-import { IconButton } from '@/components/ui/button'
-import { Suspense } from 'react'
-import { ReadButton } from '@/components/custom/ReadBtn'
-import { TextLink } from '@/components/custom/Link'
 import { TechMethodDrawerCard } from '@/components/custom/TechMethodDrawerCard'
 
 export const revalidate = 3600
@@ -30,29 +16,7 @@ interface SanityImageAsset {
 	url: string
 	metadata: {
 		lqip: string
-		dimensions: {
-			width: number
-			height: number
-			aspectRatio: number
-		}
-	}
-	[key: string]: any
-}
-
-interface SanityImage {
-	asset: SanityImageAsset
-	alt: string
-	hotspot?: {
-		x: number
-		y: number
-		height: number
-		width: number
-	}
-	crop?: {
-		top: number
-		bottom: number
-		left: number
-		right: number
+		dimensions: { width: number; height: number; aspectRatio: number }
 	}
 }
 
@@ -62,56 +26,57 @@ interface TechMethodsContent {
 		itemTitle: string
 		subtitle: string
 		link: string
-		image: SanityImage
+		image: { asset: SanityImageAsset; alt: string }
 	}[]
 }
 
-const getColSpan = (span: number) => {
-	const spans: Record<number, string> = {
-		4: 'col-span-4',
-		5: 'col-span-5',
-		7: 'col-span-7',
-	}
-	return spans[span] || 'col-span-4'
-}
-
-const getOptimizedImageUrl = (asset: SanityImageAsset, span: number) => {
-	const widthBySpan: Record<number, number> = {
-		4: 900,
-		5: 1200,
-		7: 1600,
-	}
-
+const getOptimizedImageUrl = (asset: SanityImageAsset, width: number) => {
 	const url = new URL(asset.url)
 	url.searchParams.set('auto', 'format')
 	url.searchParams.set('q', '72')
-	url.searchParams.set('w', String(widthBySpan[span] ?? 1200))
+	url.searchParams.set('w', String(width))
 	url.searchParams.set('fit', 'crop')
-
 	return url.toString()
+}
+
+// Mobile/Tablet: volle Breite
+// Desktop: asymmetrisches 12-Spalten-Grid
+const getColSpanClass = (index: number) => {
+	if (index === 0) return 'col-span-1 lg:col-span-5'
+	if (index === 1) return 'col-span-1 lg:col-span-7'
+	return 'col-span-1 sm:col-span-1 lg:col-span-4'
+}
+
+const getImageWidth = (index: number) => {
+	if (index === 1) return 1600
+	if (index === 0) return 1200
+	return 900
 }
 
 export default async function Page() {
 	const content = await client.fetch<TechMethodsContent>(techMethodsQuery)
 
 	return (
-		<div className='h-full w-full flex items-center justify-center'>
-			<div className='py-[6em] w-full bg-(--color-frost) wrapper-cols-12'>
-				{content.items.map((item, index) => {
-					const span = index === 0 ? 5 : index === 1 ? 7 : 4
+		<div className='min-h-screen w-full bg-(--color-frost) px-4 md:px-10 lg:px-20 py-16 md:py-24'>
+			<h1 className='text-2xl md:text-4xl lg:text-5xl mb-8 md:mb-12'>
+				{content.title}
+			</h1>
 
-					return (
-						<TechMethodDrawerCard
-							key={index}
-							itemTitle={item.itemTitle}
-							subtitle={item.subtitle}
-							link={item.link}
-							imageSrc={getOptimizedImageUrl(item.image.asset, span)}
-							imageAlt={item.image.alt}
-							colSpanClass={getColSpan(span)}
-						/>
-					)
-				})}
+			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4'>
+				{content.items.map((item, index) => (
+					<TechMethodDrawerCard
+						key={index}
+						itemTitle={item.itemTitle}
+						subtitle={item.subtitle}
+						link={item.link}
+						imageSrc={getOptimizedImageUrl(
+							item.image.asset,
+							getImageWidth(index),
+						)}
+						imageAlt={item.image.alt}
+						colSpanClass={getColSpanClass(index)}
+					/>
+				))}
 			</div>
 		</div>
 	)
