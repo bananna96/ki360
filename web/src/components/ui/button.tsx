@@ -104,6 +104,7 @@ function IconButton({
 		>
 			<Icon
 				name={icon}
+				color='currentColor'
 				size={iconSize}
 				className='transition-colors duration-200 text-current group-hover:text-[var(--icon-hover-color)]'
 			/>
