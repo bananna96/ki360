@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { client } from '@/lib/sanity/client'
 import { techMethodsQuery } from '@/lib/sanity/queries'
 import { TechMethodDrawerCard } from '@/components/custom/TechMethodDrawerCard'
+import { Breadcrumbs } from '@/components/custom/Breadcrumbs'
 
 export const revalidate = 3600
 
@@ -39,8 +40,8 @@ const getOptimizedImageUrl = (asset: SanityImageAsset, width: number) => {
 	return url.toString()
 }
 
-// Mobile/Tablet: volle Breite
-// Desktop: asymmetrisches 12-Spalten-Grid
+// Mobile/Tablet: full width
+// Desktop: asymmetrisches 12er-Grid
 const getColSpanClass = (index: number) => {
 	if (index === 0) return 'col-span-1 lg:col-span-5'
 	if (index === 1) return 'col-span-1 lg:col-span-7'
@@ -57,8 +58,9 @@ export default async function Page() {
 	const content = await client.fetch<TechMethodsContent>(techMethodsQuery)
 
 	return (
-		<div className='min-h-screen w-full bg-(--color-frost) px-4 md:px-10 lg:px-20 py-16 md:py-24'>
-			<h1 className='text-2xl md:text-4xl lg:text-5xl mb-8 md:mb-12'>
+		<div className='min-h-screen w-full bg-(--color-frost) px-4 md:px-10 lg:px-20 pb-16 md:pb-24'>
+			<Breadcrumbs className='mb-4 md:mb-6 -ml-4! lg:-ml-16! ' />
+			<h1 className='text-2xl md:text-4xl lg:text-9xl mb-8 md:mb-12 w-full text-center'>
 				{content.title}
 			</h1>
 

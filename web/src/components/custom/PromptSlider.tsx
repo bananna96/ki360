@@ -2,8 +2,7 @@
 
 import { useRef, useState } from 'react'
 import CardSwap, { Card, CardSwapRef } from '@/components/CardSwap'
-import { Button } from '@/components/ui/button'
-import { Icon } from '@/components/custom/Icons'
+import { IconButton } from '@/components/ui/button'
 import { SanityImage } from '../SanityImage'
 
 export interface PromptingSliderType {
@@ -78,45 +77,39 @@ export function PromptSlider({
 	const currentSlide = slidesContent[index]
 
 	return (
-		<div className='w-full max-w-[1400px] mx-auto overflow-hidden'>
-			<div className='flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-12'>
-				<div className='w-full lg:w-1/2 relative overflow-hidden flex flex-col items-center mt-2'>
-					<span className='bg-(--color-granite) rounded-2xl w-10 h-10 flex items-center justify-center text-(--color-softLinen) font-bold'>
-						{index + 1}
-					</span>
-
-					<div className='flex justify-center gap-8 w-full mt-2'>
-						<Button
+		<div className='w-full max-w-350 mx-auto overflow-hidden'>
+			<div className='flex flex-col lg:flex-row items-start gap-8 lg:gap-12'>
+				<div className='w-full lg:w-1/2 relative overflow-hidden flex flex-col items-center mt-10'>
+					<div className='flex justify-evenly gap-8 w-full'>
+						<IconButton
 							onClick={handlePrev}
-							aria-label='Zurück'
+							iconSize={40}
+							ariaLabel='Zurück'
+							icon='chevron-left-rounded'
+							iconColor='#492e19'
+							hoverIconColor='#db761c'
 							variant='ghost'
-							className='w-fit h-fit hover:bg-transparent'
 							disabled={buttonsDisabled}
-						>
-							<Icon
-								name='chevron-left-rounded'
-								color='#492e19'
-								className='w-8 h-8'
-							/>
-						</Button>
-						<Button
+						/>
+						<span className='bg-(--color-granite) rounded-2xl w-10 h-10 flex items-center justify-center text-(--color-softLinen) font-bold'>
+							{index + 1}
+						</span>
+						<IconButton
 							onClick={handleNext}
-							aria-label='Weiter'
+							iconSize={40}
+							ariaLabel='Weiter'
+							icon='chevron-left-rounded'
+							iconColor='#492e19'
+							hoverIconColor='#db761c'
 							variant='ghost'
-							className='w-fit h-fit hover:bg-transparent'
+							className='rotate-180'
 							disabled={buttonsDisabled}
-						>
-							<Icon
-								name='chevron-left-rounded'
-								color='#492e19'
-								className='w-8 h-8 rotate-180'
-							/>
-						</Button>
+						/>
 					</div>
 
 					<div
 						className={`
-                            px-2 sm:px-6 lg:px-10 mt-2 flex flex-col gap-2
+                            px-2 sm:px-6 lg:px-10 mt-10 flex flex-col gap-2
                             transition-all duration-500
                             ${
 															animating

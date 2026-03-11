@@ -27,13 +27,13 @@ export default function RootLayout({
 	return (
 		<html
 			lang='de'
-			className={`${satoshi.variable} ${outward.variable}`}
+			className={`${satoshi.variable} ${outward.variable} `}
 		>
-			<body className='antialiased'>
+			<body className='antialiased min-h-screen'>
 				<header>
 					<Nav />
 				</header>
-				<main>{children}</main>
+				<main className='pt-(--height-nav)'>{children}</main>
 				<footer>
 					<Footer />
 				</footer>

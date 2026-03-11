@@ -13,6 +13,7 @@ import {
 	DrawerTrigger,
 } from '@/components/ui/drawer'
 import { IconButton } from '@/components/ui/button'
+import { ReadButton } from '@/components/custom/ReadBtn'
 
 interface SanityImageAsset {
 	_id: string
@@ -100,7 +101,7 @@ export default async function Page() {
 	return (
 		<div className='flex flex-col'>
 			{/* SECTION 1 */}
-			<div className='min-h-screen w-full flex flex-col md:grid md:grid-cols-12 px-4 md:px-10 lg:px-20'>
+			<div className='min-h-screen-minus-nav w-full flex flex-col md:grid md:grid-cols-12 px-4 md:px-10 lg:px-20'>
 				<div className='md:col-span-7 flex flex-col justify-end gap-4 pb-10 pt-24 md:pt-0'>
 					<h4 className='text-2xl md:text-4xl lg:text-5xl'>
 						{content.section1.title}
@@ -109,7 +110,7 @@ export default async function Page() {
 						{content.section1.description}
 					</span>
 				</div>
-				<div className='md:col-start-9 md:col-end-13 relative h-64 md:h-screen md:-mr-20'>
+				<div className='md:col-start-9 md:col-end-13 relative h-screen-minus-nav md:h-screen md:-mr-20'>
 					<SanityImage
 						src={content.section1.image.asset.url}
 						className='object-cover'
@@ -139,39 +140,37 @@ export default async function Page() {
 			</div>
 
 			{/* SECTION 3 */}
-			<div className='min-h-screen w-full px-4 md:px-10 lg:px-20 py-16 bg-(--color-frost)'>
-				<div className='flex flex-col justify-center text-(--color-glossyBlack)'>
-					<h3 className='text-2xl md:text-4xl lg:text-5xl'>
-						{content.section3.title}
-					</h3>
-					<div className='flex flex-col md:flex-row justify-between gap-8 md:gap-4 mt-10 md:mt-20'>
-						{content.section3.items.map((item, index) => (
-							<div
-								key={index}
-								className='w-full md:w-[30%] flex flex-col justify-start items-center'
-							>
-								<h5 className='text-lg md:text-xl text-center'>
-									{item.itemTitle}
-								</h5>
-								<span className='text-sm md:text-base text-center'>
-									{item.subtitle}
-								</span>
-								<div className='relative mt-6 w-24 h-24 md:w-36 md:h-36'>
-									<SanityImage
-										src={item.image.asset.url}
-										alt={item.image.alt ?? `Image ${index}`}
-										className='object-contain'
-										fill
-										sizes='(max-width: 768px) 96px, 150px'
-										placeholder={
-											item.image.asset.metadata?.lqip ? 'blur' : 'empty'
-										}
-										blurDataURL={item.image.asset.metadata?.lqip}
-									/>
-								</div>
+			<div className='min-h-screen w-full px-4 md:px-10 lg:px-20 py-16 bg-(--color-frost) flex flex-col justify-center text-(--color-glossyBlack)'>
+				<h3 className='text-2xl md:text-4xl lg:text-5xl'>
+					{content.section3.title}
+				</h3>
+				<div className='flex flex-col md:flex-row justify-between gap-8 md:gap-4 mt-10 md:mt-20'>
+					{content.section3.items.map((item, index) => (
+						<div
+							key={index}
+							className='w-full md:w-[30%] flex flex-col justify-start items-center'
+						>
+							<h5 className='text-lg md:text-xl text-center'>
+								{item.itemTitle}
+							</h5>
+							<span className='text-sm md:text-base text-center'>
+								{item.subtitle}
+							</span>
+							<div className='relative mt-6 w-24 h-24 md:w-36 md:h-36'>
+								<SanityImage
+									src={item.image.asset.url}
+									alt={item.image.alt ?? `Image ${index}`}
+									className='object-contain'
+									fill
+									sizes='(max-width: 768px) 96px, 150px'
+									placeholder={
+										item.image.asset.metadata?.lqip ? 'blur' : 'empty'
+									}
+									blurDataURL={item.image.asset.metadata?.lqip}
+								/>
 							</div>
-						))}
-					</div>
+						</div>
+					))}
 				</div>
 			</div>
 
@@ -210,12 +209,12 @@ export default async function Page() {
 								<p className='text-sm md:text-base text-center'>
 									{item.subtitle}
 								</p>
-								<div className='relative w-full aspect-square max-w-[320px] mt-4'>
+								<div className='relative w-full aspect-square max-w-[320px] mt-4 overflow-hidden rounded-lg'>
 									<SanityImage
 										src={item.image.asset.url}
 										alt={item.image.alt ?? `Image ${index}`}
 										fill
-										className='object-cover rounded-lg'
+										className='object-cover transition-transform duration-600 group-hover:scale-120'
 										sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px'
 										placeholder={
 											item.image.asset.metadata?.lqip ? 'blur' : 'empty'
@@ -241,6 +240,10 @@ export default async function Page() {
 
 						const overlay = content.section5.overlayText[index - 1]
 
+						const fullOverlayText = overlay?.items
+							?.map((ovItem) => `${ovItem.itemTitle}. ${ovItem.subtitle}`)
+							.join('. ')
+
 						return (
 							<Drawer key={index}>
 								<DrawerTrigger asChild>
@@ -255,7 +258,11 @@ export default async function Page() {
 
 								<DrawerContent className='px-4 md:px-8 pb-8 max-h-[90vh] flex flex-col'>
 									<DrawerHeader className='px-4 md:px-20 pt-0 flex flex-row justify-between items-start gap-4'>
-										<DrawerTitle className='text-3xl md:text-6xl lg:text-[8em] leading-none'>
+										<ReadButton
+											text={fullOverlayText ?? item.subtitle}
+											className='w-8 h-8 sm:w-10 sm:h-10 shrink-0'
+										/>
+										<DrawerTitle className='text-5xl md:text-6xl lg:text-[8em] leading-none'>
 											{overlay?.title ?? item.itemTitle}
 										</DrawerTitle>
 										<DrawerClose asChild>
@@ -263,15 +270,14 @@ export default async function Page() {
 												icon='cancel'
 												ariaLabel='Drawer schließen'
 												iconColor='#db761c'
-												iconSize={32}
+												iconSize={36}
 												variant='ghost'
-												size='icon-lg'
-												className='shrink-0'
+												size='icon'
 											/>
 										</DrawerClose>
 									</DrawerHeader>
 
-									<DrawerDescription className='px-4 md:px-20 text-sm md:text-base'>
+									<DrawerDescription className='px-4 md:px-20 text-sm text-center'>
 										{item.subtitle}
 									</DrawerDescription>
 

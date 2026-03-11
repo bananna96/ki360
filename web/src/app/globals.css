@@ -49,6 +49,9 @@
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
+	--height-nav: 4em;
+	--vh: 100dvh;
+	--viewport-minus-nav: calc(var(--vh) - var(--height-nav));
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -338,5 +341,23 @@ body {
 		top: 0 !important;
 		left: 0 !important;
 		z-index: -1;
+	}
+}
+
+/* Fallback für ältere Browser */
+@supports not (height: 100dvh) {
+	:root {
+		--vh: 100vh;
+		--viewport-minus-nav: calc(var(--vh) - var(--height-nav));
+	}
+}
+
+@layer utilities {
+	/* ...existing code... */
+	.min-h-screen-minus-nav {
+		min-height: var(--viewport-minus-nav);
+	}
+	.h-screen-minus-nav {
+		height: var(--viewport-minus-nav);
 	}
 }

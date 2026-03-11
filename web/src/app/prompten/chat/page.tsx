@@ -9,6 +9,7 @@ import { ChatBot } from '@/components/custom/ChatBot'
 import { Icon } from '@/components/custom/Icons'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { Breadcrumbs } from '@/components/custom/Breadcrumbs'
 
 export default async function Page() {
 	const content = await client.fetch(promptingQuery)
@@ -22,21 +23,9 @@ export default async function Page() {
 		}),
 	)
 	return (
-		<>
-			<div className='my-20 w-screen flex justify-center items-start'>
-				<Link
-					href='/prompten'
-					aria-label='back'
-					className='px-5'
-				>
-					<Icon
-						name='arrow-left'
-						color='#492e19'
-						className='w-8! h-8!'
-					/>
-				</Link>
-				<ChatBot />
-			</div>
-		</>
+		<div className='w-screen px-4 pb-4'>
+			<Breadcrumbs className='mb-4 md:mb-6' />
+			<ChatBot />
+		</div>
 	)
 }

@@ -71,7 +71,7 @@ export function TechMethodDrawerCard({
 				</button>
 			</DrawerTrigger>
 
-			<DrawerContent className='px-2 sm:px-4 md:px-8 pb-8 border-0 h-[90vh] max-h-[90vh] flex flex-col'>
+			<DrawerContent className='px-2 sm:px-4 md:px-8 pb-8 border-0 h-fit max-h-[90vh] flex flex-col'>
 				<DrawerHeader className='shrink-0 px-4 sm:px-10 md:px-20 pt-0 flex flex-row justify-between items-start gap-2 sm:gap-4'>
 					<ReadButton
 						text={subtitle}
@@ -93,10 +93,9 @@ export function TechMethodDrawerCard({
 							icon='cancel'
 							ariaLabel='Schließen'
 							iconColor='#db761c'
-							iconSize={32}
+							iconSize={48}
 							variant='ghost'
-							size='icon-lg'
-							className='self-start shrink-0'
+							size='icon'
 						/>
 					</DrawerClose>
 				</DrawerHeader>

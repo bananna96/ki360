@@ -18,23 +18,19 @@ export default async function Page() {
 		}),
 	)
 	return (
-		<>
-			<div className='mt-20 w-screen flex flex-col justify-center items-center px-4'>
-				<div className='grid w-full grid-cols-3 items-center'>
-					<div />
-					<h3 className='text-center'>{content.intro.title}</h3>
-					<div className='justify-self-end'>
-						<ButtonLink
-							href={content.btnLink.url}
-							text={content.btnLink.text}
-							className='m-4'
-						/>
-					</div>
-				</div>
-
-				<span className='text-center'>{content.intro.description}</span>
-				<PromptSlider slidesContent={sliderContent} />
+		<div className='w-screen flex flex-col justify-center items-center pl-4'>
+			<div className='w-full flex flex-col justify-center items-center'>
+				<h3>{content.intro.title}</h3>
+				<span>{content.intro.description}</span>
 			</div>
-		</>
+			<PromptSlider slidesContent={sliderContent} />
+			<div className='justify-self-end'>
+				<ButtonLink
+					href={content.btnLink.url}
+					text={content.btnLink.text}
+					className='m-4'
+				/>
+			</div>
+		</div>
 	)
 }

@@ -37,7 +37,7 @@ export default async function Home() {
 
 	return (
 		<div className='flex flex-col'>
-			<div className='min-h-screen w-full items-end justify-start wrapper-cols-12'>
+			<div className='min-h-screen-minus-nav w-full items-end justify-start wrapper-cols-12'>
 				{/* TODO: mb und pb checken bei text und icon */}
 				<div className='col-span-12 flex justify-between items-end pb-20 sm:pb-0'>
 					<h1>{content.title}</h1>
