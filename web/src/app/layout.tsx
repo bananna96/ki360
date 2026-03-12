@@ -6,6 +6,9 @@ import { MatomoPageView } from '@/components/custom/MatomoPageView'
 
 export const metadata: Metadata = {
 	title: 'ki360',
+	metadataBase: new URL(
+		process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+	),
 }
 
 export default function RootLayout({

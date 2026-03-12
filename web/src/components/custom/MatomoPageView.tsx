@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 
-export function MatomoPageView() {
+function MatomoPageViewContent() {
 	const pathname = usePathname()
 	const searchParams = useSearchParams()
 
@@ -22,4 +22,12 @@ export function MatomoPageView() {
 	}, [pathname, searchParams])
 
 	return null
+}
+
+export function MatomoPageView() {
+	return (
+		<Suspense fallback={null}>
+			<MatomoPageViewContent />
+		</Suspense>
+	)
 }
