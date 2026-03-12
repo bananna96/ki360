@@ -19,6 +19,7 @@ const imageFields = `
 const navQuery = `
   *[_type == "navigation"][0]{
     navlogo{${imageFields}},
+    footerlogo{${imageFields}},
     navlogolink,
     items[]{
       text,

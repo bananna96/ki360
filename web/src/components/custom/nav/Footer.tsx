@@ -9,7 +9,9 @@ import { SanityImage } from '@/components/SanityImage'
 
 export default async function Footer() {
 	const nav = await client.fetch(navQuery)
-	const imgAssets = urlForImage(nav.navlogo.asset)
+	const footerImgAssets = nav.footerlogo
+		? urlForImage(nav.footerlogo.asset)
+		: urlForImage(nav.navlogo.asset) // Fallback auf Nav-Logo
 
 	return (
 		<>
@@ -23,10 +25,10 @@ export default async function Footer() {
 					className='h-full max-w-[30vw] w-full lg:w-fit aspect-square p-5'
 				>
 					<SanityImage
-						src={imgAssets}
-						className='object-contain relative! hidden'
+						src={footerImgAssets}
+						className='object-contain relative!'
 						fill
-						alt='ki360 Logo'
+						alt={nav.footerlogo?.alt ?? 'ki360 Logo'}
 					/>
 				</Link>
 

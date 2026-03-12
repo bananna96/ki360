@@ -10,9 +10,21 @@ export default {
       title: 'Navigation Logo',
       type: 'image',
       validation: (Rule: any) => Rule.required(),
-      options: {
-        hotspot: true,
-      },
+      options: {hotspot: true},
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alt-Text',
+          validation: (Rule: any) => Rule.required(),
+        },
+      ],
+    },
+    {
+      name: 'footerlogo',
+      title: 'Footer Logo',
+      type: 'image',
+      options: {hotspot: true},
       fields: [
         {
           name: 'alt',
