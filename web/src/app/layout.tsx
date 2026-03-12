@@ -1,22 +1,14 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { outward, satoshi } from '@/lib/fonts'
-import Nav from '@/components/custom/nav/Nav'
-import Footer from '@/components/custom/nav/Footer'
+import Script from 'next/script'
+import { MatomoPageView } from '@/components/custom/MatomoPageView'
 
 export const metadata: Metadata = {
-	title: 'ki360 - KI verständlich erklärt',
-	description:
-		'Künstliche Intelligenz verständlich erklärt: Formen, Anwendungsgebiete und gesellschaftliche Auswirkungen.',
-	keywords: ['KI', 'Künstliche Intelligenz', 'AI', 'Bildung'],
-	authors: [{ name: 'Anna Laves' }],
-	creator: 'Anna Laves',
-	publisher: 'ki360',
-	formatDetection: {
-		email: false,
-		address: false,
-		telephone: false,
-	},
+	title: 'ki360',
+	metadataBase: new URL(
+		process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+	),
 }
 
 export default function RootLayout({
@@ -24,19 +16,39 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+	const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL
+	const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID
+	const base = matomoUrl?.endsWith('/') ? matomoUrl : `${matomoUrl}/`
+
 	return (
 		<html
-			lang='de'
+			lang='en'
 			className={`${satoshi.variable} ${outward.variable}`}
 		>
 			<body className='antialiased'>
-				<header>
-					<Nav />
-				</header>
-				<main>{children}</main>
-				<footer>
-					<Footer />
-				</footer>
+				{children}
+
+				{matomoUrl && matomoSiteId && (
+					<>
+						<Script
+							id='matomo-init'
+							strategy='afterInteractive'
+						>
+							{`
+                var _paq = window._paq = window._paq || [];
+                _paq.push(['disableCookies']);
+                _paq.push(['setDoNotTrack', true]);
+                _paq.push(['setTrackerUrl', '${base}matomo.php']);
+                _paq.push(['setSiteId', '${matomoSiteId}']);
+                (function() {
+                  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                  g.async=true; g.src='${base}matomo.js'; s.parentNode.insertBefore(g,s);
+                })();
+              `}
+						</Script>
+						<MatomoPageView />
+					</>
+				)}
 			</body>
 		</html>
 	)
