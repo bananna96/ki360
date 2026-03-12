@@ -21,6 +21,7 @@ export default function RootLayout({
 	const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL
 	const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID
 	const base = matomoUrl?.endsWith('/') ? matomoUrl : `${matomoUrl}/`
+	const isProduction = process.env.NODE_ENV === 'production'
 
 	return (
 		<html
@@ -28,13 +29,21 @@ export default function RootLayout({
 			className={`${satoshi.variable} ${outward.variable}`}
 		>
 			<body className='antialiased min-h-screen'>
-				<header>
-					<Nav />
-				</header>
-				<main className='pt-(--height-nav)'>{children}</main>
-				<footer>
-					<Footer />
-				</footer>
+				{!isProduction && (
+					<header>
+						<Nav />
+					</header>
+				)}
+
+				<main className={isProduction ? '' : 'pt-[var(--height-nav)]'}>
+					{children}
+				</main>
+
+				{!isProduction && (
+					<footer>
+						<Footer />
+					</footer>
+				)}
 
 				{matomoUrl && matomoSiteId && (
 					<>
