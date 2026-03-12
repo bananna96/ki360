@@ -54,17 +54,17 @@ export default function RootLayout({
 		>
 			<body className='antialiased min-h-screen'>
 				<TrackingProvider matomoScript={matomoScript}>
-					{!isProduction && (
-						<header>
-							<Nav />
-						</header>
-					)}
+					{/* {!isProduction && ( */}
+					<header>
+						<Nav />
+					</header>
+					{/* )} */}
 
-					<main className={isProduction ? '' : 'pt-[var(--height-nav)]'}>
-						{children}
-					</main>
+					{/* <main className={isProduction ? '' : 'pt-[var(--height-nav)]'}> */}
+					<main className='pt-[var(--height-nav)]'>{children}</main>
 
-					{!isProduction && <Footer />}
+					{/* {!isProduction && <Footer />} */}
+					<Footer />
 				</TrackingProvider>
 			</body>
 		</html>
