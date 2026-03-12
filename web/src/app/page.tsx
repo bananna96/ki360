@@ -19,7 +19,7 @@ interface Content {
 
 export default async function Home() {
 	const content = await client.fetch<Content>(landingpageQuery)
-	const isProduction = process.env.NODE_ENV === 'production'
+	const isProduction = true //process.env.NODE_ENV === 'production'
 
 	return isProduction ? (
 		<div className='min-h-screen flex items-center justify-center px-6'>
