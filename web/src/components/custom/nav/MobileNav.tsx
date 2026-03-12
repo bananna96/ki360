@@ -41,15 +41,18 @@ export default function MobileNav({ links, className }: MobileNavProps) {
 						role='list'
 					>
 						{links.map((link) => (
-							// TODO: Styling anpassen
 							<li key={link.text}>
-								<Link
-									href={link.url}
-									className='text-2xl'
-									onClick={() => setIsOpen(false)}
-								>
-									{link.text}
-								</Link>
+								{link.url ? (
+									<Link
+										href={link.url}
+										className='text-2xl'
+										onClick={() => setIsOpen(false)}
+									>
+										{link.text}
+									</Link>
+								) : (
+									<span className='text-2xl'>{link.text}</span>
+								)}
 							</li>
 						))}
 					</ul>

@@ -17,7 +17,7 @@ export default async function Footer() {
 
 	return (
 		<footer
-			className='bg-(--color-glossyBlack) p-3 md:flex md:flex-row md:items-start md:justify-between md:gap-6'
+			className=' bg-(--color-glossyBlack) p-3 md:flex md:flex-row md:items-start md:justify-between md:gap-6'
 			aria-label='Fußzeile'
 		>
 			<div className='grid grid-cols-2 md:contents'>
@@ -42,7 +42,7 @@ export default async function Footer() {
 					{nav.items.map((link: NavLink) => (
 						<li
 							key={link.text}
-							className='pb-3 md:p-5 min-w-45'
+							className='pb-3 md:p-5 '
 						>
 							{link.url ? (
 								<TextLink

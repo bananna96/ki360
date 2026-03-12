@@ -64,11 +64,7 @@ export default function RootLayout({
 						{children}
 					</main>
 
-					{!isProduction && (
-						<footer>
-							<Footer />
-						</footer>
-					)}
+					{!isProduction && <Footer />}
 				</TrackingProvider>
 			</body>
 		</html>

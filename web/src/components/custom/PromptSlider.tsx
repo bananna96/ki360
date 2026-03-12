@@ -77,7 +77,7 @@ export function PromptSlider({
 	const currentSlide = slidesContent[index]
 
 	return (
-		<div className='w-full max-w-350 mx-auto overflow-hidden'>
+		<div className='w-full max-w-350 mx-auto'>
 			<div className='flex flex-col lg:flex-row items-start gap-8 lg:gap-12'>
 				<div className='w-full lg:w-1/2 relative overflow-hidden flex flex-col items-center mt-10'>
 					<div className='flex justify-evenly gap-8 w-full'>
@@ -145,8 +145,11 @@ export function PromptSlider({
 					</div>
 				</div>
 
-				<div className='hidden lg:block w-full lg:w-1/2 min-w-0 overflow-hidden'>
-					<div className='relative w-full h-[70vh]'>
+				<div className='hidden lg:block w-full lg:w-1/2 min-w-0'>
+					<div
+						className='relative w-full h-[70vh]'
+						style={{ perspective: '1200px' }}
+					>
 						<CardSwap
 							ref={cardSwapRef}
 							cardDistance={80}

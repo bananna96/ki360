@@ -18,13 +18,15 @@ export default async function Page() {
 		}),
 	)
 	return (
-		<div className='w-screen flex flex-col justify-center items-center pl-4'>
-			<div className='w-full flex flex-col justify-center items-center'>
+		<div className='w-full flex flex-col justify-center items-center px-4 md:px-10 lg:px-20 overflow-x-hidden'>
+			<div className='w-full flex flex-col justify-center items-center gap-4'>
 				<h3>{content.intro.title}</h3>
-				<span>{content.intro.description}</span>
+				<span className='text-center'>{content.intro.description}</span>
 			</div>
+
 			<PromptSlider slidesContent={sliderContent} />
-			<div className='justify-self-end'>
+
+			<div className='flex justify-center w-full'>
 				<ButtonLink
 					href={content.btnLink.url}
 					text={content.btnLink.text}
