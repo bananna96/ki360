@@ -2,10 +2,20 @@ import { client } from '@/lib/sanity/client'
 import { navQuery } from '@/lib/sanity/queries'
 import Link from 'next/link'
 import { TextLink } from '../Link'
-import type { NavLink } from './types'
 import MobileNav from './MobileNav'
 import { urlForImage } from '@/lib/sanity/utils'
 import { SanityImage } from '@/components/SanityImage'
+
+type NavSubItem = {
+	text: string
+	url: string
+}
+
+type NavItem = {
+	text: string
+	url: string
+	subitems?: NavSubItem[]
+}
 
 export default async function Nav() {
 	const nav = await client.fetch(navQuery)
@@ -34,7 +44,7 @@ export default async function Nav() {
 					className='hidden md:flex gap-15'
 					role='list'
 				>
-					{nav.items.map((link: NavLink) => {
+					{nav.items.map((link: NavItem) => {
 						return (
 							<li key={link.text}>
 								<TextLink

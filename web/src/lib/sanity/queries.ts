@@ -22,7 +22,11 @@ const navQuery = `
     navlogolink,
     items[]{
       text,
-      url
+      url,
+      subitems[]{
+        text,
+        url
+      }
     }
   }
 `
