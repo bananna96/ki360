@@ -3,7 +3,7 @@ const imageFields = `
     _id,
     url,
     metadata {
-      lqip, // The base64 placeholder string
+      lqip,
       dimensions {
         width,
         height,
@@ -44,6 +44,7 @@ const landingpageQuery = `
     }
   }
 `
+
 const basicsOverviewQuery = `
   *[_type == "basicsOverview"][0]{
     title,
@@ -171,6 +172,46 @@ const techMethodsQuery = `
   }
 `
 
+const aboutQuery = `
+  *[_type == "about"][0]{
+    title,
+    subtitle,
+    image{
+      ${imageFields}
+    },
+    content[]{
+      title,
+      paragraphs,
+      listTitle,
+      listItems
+    }
+  }
+`
+
+const privacyPolicyQuery = `
+  *[_type == "privacyPolicy"][0]{
+    title,
+    content[]{
+      title,
+      paragraphs,
+      listTitle,
+      listItems
+    }
+  }
+`
+
+const imprintQuery = `
+  *[_type == "imprint"][0]{
+    title,
+    content[]{
+      title,
+      paragraphs,
+      listTitle,
+      listItems
+    }
+  }
+`
+
 export {
 	navQuery,
 	landingpageQuery,
@@ -178,25 +219,7 @@ export {
 	promptingQuery,
 	whatIsAiQuery,
 	techMethodsQuery,
+	aboutQuery,
+	privacyPolicyQuery,
+	imprintQuery,
 }
-
-/* TODO
-Ein großer Sanity Fetch pro Seite
-
-e.g.
-const data = await sanityClient.fetch(`
-{
-  "page": *[_type == "topic" && slug.current == $slug][0]{
-    title,
-    content,
-    relatedTopics[]->{
-      title,
-      slug
-    }
-  },
-  "settings": *[_type == "siteSettings"][0]{
-    navigation
-  }
-}
-`, { slug });
- */

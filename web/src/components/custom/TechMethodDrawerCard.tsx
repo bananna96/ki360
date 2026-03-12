@@ -14,6 +14,7 @@ import {
 import { IconButton } from '@/components/ui/button'
 import { ReadButton } from '@/components/custom/ReadBtn'
 import { TextLink } from '@/components/custom/Link'
+import { ConsentVideo } from '@/components/custom/ConsentVideo'
 
 type Props = {
 	itemTitle: string
@@ -104,15 +105,10 @@ export function TechMethodDrawerCard({
 					{hasIframe ? (
 						<div className='px-4 sm:px-10 md:px-20 lg:px-40 flex flex-col justify-center items-center gap-4 pb-4'>
 							{open ? (
-								<iframe
+								<ConsentVideo
 									src={link}
-									className='w-full rounded-xl aspect-video max-h-[55vh]'
 									title={itemTitle}
-									loading='lazy'
-									sandbox='allow-scripts allow-same-origin allow-presentation allow-popups'
-									referrerPolicy='strict-origin-when-cross-origin'
-									allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen'
-									allowFullScreen
+									className='w-full rounded-xl aspect-video max-h-[55vh]'
 								/>
 							) : (
 								<div

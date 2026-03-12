@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/drawer'
 import { IconButton } from '@/components/ui/button'
 import { ReadButton } from '@/components/custom/ReadBtn'
+import { ConsentVideo } from '@/components/custom/ConsentVideo'
 
 interface SanityImageAsset {
 	_id: string
@@ -128,14 +129,9 @@ export default async function Page() {
 
 			{/* SECTION 2 */}
 			<div className='w-full flex items-end bg-(--color-granite) overflow-hidden'>
-				<iframe
+				<ConsentVideo
 					src={content.section2.url}
 					title={content.section2.text}
-					loading='lazy'
-					sandbox='allow-scripts allow-same-origin allow-presentation allow-popups'
-					allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-					referrerPolicy='strict-origin-when-cross-origin'
-					allowFullScreen
 					className='w-full h-[50vh] md:h-screen'
 				/>
 			</div>
