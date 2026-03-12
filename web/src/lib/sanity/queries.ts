@@ -115,10 +115,13 @@ const whatIsAiQuery = `
     },
     section4{
       title,
-      items[]{
+      backgroundImage{
+        ${imageFields}
+      },
+      blocks[]{
         title,
         description,
-        image{${imageFields}}
+        items[]
       }
     },
     section5{

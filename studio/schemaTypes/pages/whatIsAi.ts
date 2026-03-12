@@ -28,6 +28,59 @@ export default {
       ...titleListSublist,
       name: 'section4',
       title: 'Section 4',
+      type: 'object',
+      fields: [
+        {
+          name: 'title',
+          title: 'Titel',
+          type: 'string',
+          validation: (Rule: any) => Rule.required(),
+        },
+        {
+          name: 'backgroundImage',
+          title: 'Hintergrundbild',
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alt-Text',
+              validation: (Rule: any) => Rule.required(),
+            },
+          ],
+        },
+        {
+          name: 'blocks',
+          title: 'Blöcke',
+          type: 'array',
+          validation: (Rule: any) => Rule.max(2),
+          of: [
+            {
+              type: 'object',
+              fields: [
+                {
+                  name: 'title',
+                  title: 'Titel',
+                  type: 'string',
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: 'description',
+                  title: 'Beschreibung',
+                  type: 'text',
+                },
+                {
+                  name: 'items',
+                  title: 'Liste',
+                  type: 'array',
+                  of: [{type: 'string'}],
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       ...titleListImgTitleSubtitle,

@@ -69,10 +69,11 @@ interface WhatIsAiContent {
 	}
 	section4: {
 		title: string
-		items: {
+		backgroundImage: SanityImage
+		blocks: {
 			title: string
 			description: string
-			image: SanityImage
+			items: string[]
 		}[]
 	}
 	section5: {
@@ -175,19 +176,54 @@ export default async function Page() {
 			</div>
 
 			{/* SECTION 4 */}
-			<div className='min-h-screen w-full px-4 md:px-10 lg:px-20 py-16 bg-(--color-granite)'>
-				<div className='flex flex-col text-(--color-softLinen) gap-10 justify-center'>
-					<h3 className='w-full text-center text-2xl md:text-4xl lg:text-5xl'>
+			<div className='relative min-h-screen w-full px-4 md:px-10 lg:px-20 py-16 overflow-hidden flex flex-col justify-between'>
+				{/* Hintergrundbild */}
+				{content.section4.backgroundImage && (
+					<SanityImage
+						src={content.section4.backgroundImage.asset.url}
+						alt={content.section4.backgroundImage.alt}
+						fill
+						className='object-cover -z-10'
+						sizes='100vw'
+						placeholder={
+							content.section4.backgroundImage.asset.metadata?.lqip
+								? 'blur'
+								: 'empty'
+						}
+						blurDataURL={content.section4.backgroundImage.asset.metadata?.lqip}
+					/>
+				)}
+				<div className='absolute inset-0 bg-(--color-glossyBlack)/60 -z-10' />
+
+				<div className='relative flex flex-col text-(--color-softLinen) gap-10 w-full'>
+					<h3 className='w-full text-2xl md:text-4xl lg:text-5xl'>
 						{content.section4.title}
 					</h3>
-					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-						{content.section4.items.map((item, index) => (
+				</div>
+
+				<div className='relative flex items-center justify-center flex-1'>
+					<div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 w-full'>
+						{content.section4.blocks.map((block, index) => (
 							<div
 								key={index}
-								className='flex flex-col gap-2'
+								className='flex flex-col gap-4 bg-(--color-granite) rounded-lg p-6 text-(--color-softLinen)'
 							>
-								<h5 className='text-lg md:text-xl'>{item.title}</h5>
-								<p className='text-sm md:text-base'>{item.description}</p>
+								<h4 className='text-xl md:text-2xl font-semibold'>
+									{block.title}
+								</h4>
+								<p className='text-sm md:text-base'>{block.description}</p>
+								{block.items?.length > 0 && (
+									<ul className='flex flex-col gap-2 mt-2'>
+										{block.items.map((item, i) => (
+											<li
+												key={i}
+												className='flex items-start gap-2 text-sm md:text-base'
+											>
+												{item}
+											</li>
+										))}
+									</ul>
+								)}
 							</div>
 						))}
 					</div>
