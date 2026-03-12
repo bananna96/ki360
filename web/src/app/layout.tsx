@@ -3,8 +3,8 @@ import './globals.css'
 import { outward, satoshi } from '@/lib/fonts'
 import Script from 'next/script'
 import { MatomoPageView } from '@/components/custom/MatomoPageView'
-import { Nav } from '@/components/custom/nav/Nav'
-import { Footer } from '@/components/custom/Footer'
+import Nav from '@/components/custom/nav/Nav'
+import Footer from '@/components/custom/nav/Footer'
 
 export const metadata: Metadata = {
 	title: 'ki360',
