@@ -22,6 +22,7 @@ export default function RootLayout({
 	const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID
 	const base = matomoUrl?.endsWith('/') ? matomoUrl : `${matomoUrl}/`
 	const isProduction = process.env.NODE_ENV === 'production'
+	const trackMatomo = isProduction && !!matomoUrl && !!matomoSiteId
 
 	return (
 		<html
@@ -45,7 +46,7 @@ export default function RootLayout({
 					</footer>
 				)}
 
-				{matomoUrl && matomoSiteId && (
+				{trackMatomo && (
 					<>
 						<Script
 							id='matomo-init'
