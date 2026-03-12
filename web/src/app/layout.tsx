@@ -1,22 +1,52 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { outward, satoshi } from "@/lib/fonts";
-
+import type { Metadata } from 'next'
+import './globals.css'
+import { outward, satoshi } from '@/lib/fonts'
+import Script from 'next/script'
+import { MatomoPageView } from '@/components/custom/MatomoPageView'
 
 export const metadata: Metadata = {
-  title: "ki360",
-};
+	title: 'ki360',
+}
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode
 }>) {
-  return (
-    <html lang="en" className={`${satoshi.variable} ${outward.variable}`}>
-      <body className="antialiased">
-        {children}
-      </body>
-    </html>
-  );
+	const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL
+	const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID
+	const base = matomoUrl?.endsWith('/') ? matomoUrl : `${matomoUrl}/`
+
+	return (
+		<html
+			lang='en'
+			className={`${satoshi.variable} ${outward.variable}`}
+		>
+			<body className='antialiased'>
+				{children}
+
+				{matomoUrl && matomoSiteId && (
+					<>
+						<Script
+							id='matomo-init'
+							strategy='afterInteractive'
+						>
+							{`
+                var _paq = window._paq = window._paq || [];
+                _paq.push(['disableCookies']);
+                _paq.push(['setDoNotTrack', true]);
+                _paq.push(['setTrackerUrl', '${base}matomo.php']);
+                _paq.push(['setSiteId', '${matomoSiteId}']);
+                (function() {
+                  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                  g.async=true; g.src='${base}matomo.js'; s.parentNode.insertBefore(g,s);
+                })();
+              `}
+						</Script>
+						<MatomoPageView />
+					</>
+				)}
+			</body>
+		</html>
+	)
 }
