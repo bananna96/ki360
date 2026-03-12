@@ -36,7 +36,32 @@ export default {
       name: 'items',
       title: 'Navigation Items',
       type: 'array',
-      of: [link],
+      of: [
+        {
+          type: 'object',
+          name: 'navItem',
+          title: 'Nav Item',
+          fields: [
+            {
+              name: 'text',
+              type: 'string',
+              title: 'Text',
+              validation: (Rule: any) => Rule.required(),
+            },
+            {
+              name: 'url',
+              type: 'string',
+              title: 'URL',
+            },
+            {
+              name: 'subitems',
+              title: 'Unterseiten',
+              type: 'array',
+              of: [link],
+            },
+          ],
+        },
+      ],
       validation: (Rule: any) => Rule.required(),
     },
   ],
