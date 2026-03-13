@@ -103,8 +103,12 @@ export default async function Page() {
 	return (
 		<div className='flex flex-col'>
 			{/* SECTION 1 */}
-			<div className='min-h-screen-minus-nav w-full flex flex-col md:grid md:grid-cols-12 px-4 md:px-10 lg:px-20'>
-				<div className='md:col-span-7 flex flex-col justify-end gap-4 pb-10 pt-24 md:pt-0'>
+			<div
+				className='w-full flex flex-col md:grid md:grid-cols-12 md:items-stretch px-4 md:px-10 lg:px-20'
+				// TODO: remove extra style attr
+				style={{ minHeight: 'calc(100dvh - var(--height-nav))' }}
+			>
+				<div className='md:col-span-7 flex flex-col justify-end gap-4 pb-10 mt-auto md:mt-0'>
 					<h4 className='text-2xl md:text-4xl lg:text-5xl'>
 						{content.section1.title}
 					</h4>
@@ -112,7 +116,7 @@ export default async function Page() {
 						{content.section1.description}
 					</span>
 				</div>
-				<div className='md:col-start-9 md:col-end-13 relative h-screen-minus-nav md:h-screen md:-mr-20'>
+				<div className='md:col-start-9 md:col-end-13 relative h-[30vh] -mx-4 w-[calc(100%+2rem)] md:h-auto md:mx-0 md:w-auto md:-mr-20 shrink-0'>
 					<SanityImage
 						src={content.section1.image.asset.url}
 						className='object-cover'
@@ -128,11 +132,11 @@ export default async function Page() {
 			</div>
 
 			{/* SECTION 2 */}
-			<div className='w-full flex items-end bg-(--color-granite) overflow-hidden'>
+			<div className='w-full bg-(--color-granite)'>
 				<ConsentVideo
 					src={content.section2.url}
 					title={content.section2.text}
-					className='w-full h-[50vh] md:h-screen'
+					className='w-full aspect-video'
 				/>
 			</div>
 
@@ -277,7 +281,12 @@ export default async function Page() {
 							.join('. ')
 
 						return (
-							<Drawer key={index}>
+							<Drawer
+								key={index}
+								shouldScaleBackground={false}
+								setBackgroundColorOnScale={false}
+								noBodyStyles
+							>
 								<DrawerTrigger asChild>
 									<button
 										type='button'
@@ -294,8 +303,11 @@ export default async function Page() {
 											text={fullOverlayText ?? item.subtitle}
 											className='w-8 h-8 sm:w-10 sm:h-10 shrink-0'
 										/>
-										<DrawerTitle className='text-5xl md:text-6xl lg:text-[8em] leading-none'>
-											{overlay?.title ?? item.itemTitle}
+										<DrawerTitle
+											asChild
+											className='text-2xl sm:text-4xl md:text-5xl leading-none text-center flex-1'
+										>
+											<h3>{overlay?.title ?? item.itemTitle}</h3>
 										</DrawerTitle>
 										<DrawerClose asChild>
 											<IconButton

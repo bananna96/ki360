@@ -361,3 +361,8 @@ body {
 		height: var(--viewport-minus-nav);
 	}
 }
+
+/* Safari Drawer scroll-jump fix */
+[data-vaul-drawer-wrapper] {
+	transform: none !important;
+}

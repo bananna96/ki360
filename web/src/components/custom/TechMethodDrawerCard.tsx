@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import TiltedCard from '@/components/TiltedCard'
 import {
 	Drawer,
@@ -34,12 +34,25 @@ export function TechMethodDrawerCard({
 	colSpanClass,
 }: Props) {
 	const [open, setOpen] = useState(false)
-	const hasIframe = Boolean(link)
+	const scrollYRef = useRef(0)
+
+	function handleOpen(isOpen: boolean) {
+		if (isOpen) {
+			scrollYRef.current = window.scrollY
+		} else {
+			requestAnimationFrame(() => {
+				window.scrollTo({ top: scrollYRef.current, behavior: 'instant' })
+			})
+		}
+		setOpen(isOpen)
+	}
 
 	return (
 		<Drawer
 			open={open}
-			onOpenChange={setOpen}
+			onOpenChange={handleOpen}
+			shouldScaleBackground={false}
+			setBackgroundColorOnScale={false}
 		>
 			<DrawerTrigger asChild>
 				<button
@@ -76,8 +89,8 @@ export function TechMethodDrawerCard({
 				<DrawerHeader className='shrink-0 px-4 sm:px-10 md:px-20 pt-0 flex flex-row justify-between items-start gap-2 sm:gap-4'>
 					<ReadButton
 						text={subtitle}
-						disabled={hasIframe}
-						className={`w-8 h-8 sm:w-10 sm:h-10 shrink-0 ${hasIframe ? 'invisible pointer-events-none' : ''}`}
+						disabled={Boolean(link)}
+						className={`w-8 h-8 sm:w-10 sm:h-10 shrink-0 ${Boolean(link) ? 'invisible pointer-events-none' : ''}`}
 					/>
 
 					<div className='min-w-0 flex-1'>
@@ -85,7 +98,9 @@ export function TechMethodDrawerCard({
 							{itemTitle}
 						</DrawerTitle>
 						<DrawerDescription className='sr-only'>
-							{hasIframe ? `${itemTitle} mit eingebettetem Inhalt` : subtitle}
+							{Boolean(link)
+								? `${itemTitle} mit eingebettetem Inhalt`
+								: subtitle}
 						</DrawerDescription>
 					</div>
 
@@ -102,7 +117,7 @@ export function TechMethodDrawerCard({
 				</DrawerHeader>
 
 				<div className='flex-1 min-h-0 overflow-y-auto [-webkit-overflow-scrolling:touch] [overscroll-behavior:contain]'>
-					{hasIframe ? (
+					{Boolean(link) ? (
 						<div className='px-4 sm:px-10 md:px-20 lg:px-40 flex flex-col justify-center items-center gap-4 pb-4'>
 							{open ? (
 								<ConsentVideo
