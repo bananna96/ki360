@@ -72,7 +72,7 @@ export function TechMethodDrawerCard({
 				</button>
 			</DrawerTrigger>
 
-			<DrawerContent className='px-2 sm:px-4 md:px-8 pb-8 border-0 h-fit max-h-[90vh] flex flex-col'>
+			<DrawerContent className='px-2 sm:px-4 md:px-8 pb-8 border-0 h-auto max-h-[90dvh] overflow-hidden flex flex-col z-[60]'>
 				<DrawerHeader className='shrink-0 px-4 sm:px-10 md:px-20 pt-0 flex flex-row justify-between items-start gap-2 sm:gap-4'>
 					<ReadButton
 						text={subtitle}
@@ -101,7 +101,7 @@ export function TechMethodDrawerCard({
 					</DrawerClose>
 				</DrawerHeader>
 
-				<div className='flex-1 min-h-0 overflow-y-auto'>
+				<div className='flex-1 min-h-0 overflow-y-auto [-webkit-overflow-scrolling:touch] [overscroll-behavior:contain]'>
 					{hasIframe ? (
 						<div className='px-4 sm:px-10 md:px-20 lg:px-40 flex flex-col justify-center items-center gap-4 pb-4'>
 							{open ? (
