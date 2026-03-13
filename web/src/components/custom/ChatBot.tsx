@@ -110,14 +110,6 @@ export function ChatBot() {
 							{remaining} Anfragen übrig
 						</span>
 					)}
-					<IconButton
-						icon='question-mark'
-						ariaLabel='Hilfe'
-						iconColor='#f3efe3'
-						iconSize={20}
-						variant='ghost'
-						size='icon'
-					/>
 				</div>
 			</div>
 
@@ -167,7 +159,7 @@ export function ChatBot() {
 				)}
 			</div>
 
-			<div className='border-t p-3 sm:p-4 bg-(--color-frost) flex gap-2 shrink-0'>
+			<div className='border-t p-3 sm:p-4 bg-(--color-frost) flex gap-2 shrink-0 items-center'>
 				<textarea
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
@@ -177,14 +169,17 @@ export function ChatBot() {
 					rows={2}
 					disabled={isLoading}
 				/>
-				<Button
+				<IconButton
 					onClick={handleSend}
 					disabled={!inputValue.trim() || isLoading}
-					className='self-end bg-(--color-granite) hover:bg-(--color-granite)/80 px-4 sm:px-5'
+					icon='arrow-right'
 					aria-label='Senden'
-				>
-					→
-				</Button>
+					iconColor='#492e19'
+					iconSize={36}
+					size='icon'
+					className='-rotate-90'
+					ariaLabel={'Senden'}
+				/>
 			</div>
 		</div>
 	)
