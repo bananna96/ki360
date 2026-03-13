@@ -30,9 +30,11 @@ export default async function Page() {
 						{content.content?.map((section, index) => (
 							<div
 								key={index}
-								className='flex flex-col gap-6'
+								className='flex flex-col'
 							>
-								{section.title && <h3 className='text-2xl'>{section.title}</h3>}
+								{section.title && (
+									<h3 className='text-2xl pb-4'>{section.title}</h3>
+								)}
 
 								{section.paragraphs?.map((paragraph, paragraphIndex) => (
 									<p
@@ -44,16 +46,18 @@ export default async function Page() {
 								))}
 
 								{section.listItems?.length ? (
-									<div className='flex flex-col gap-4'>
+									<div className='flex flex-col'>
 										{section.listTitle && (
-											<span className='font-bold'>{section.listTitle}</span>
+											<span className='font-bold pb-4'>
+												{section.listTitle}
+											</span>
 										)}
 
-										<ul className='flex flex-col gap-3'>
+										<ul className='flex flex-col'>
 											{section.listItems.map((item, itemIndex) => (
 												<li
 													key={itemIndex}
-													className='flex items-start gap-3'
+													className='flex items-start '
 												>
 													<span className='mt-2 h-2 w-2 shrink-0 rounded-full bg-(--color-skyBlue)' />
 													<span>{item}</span>

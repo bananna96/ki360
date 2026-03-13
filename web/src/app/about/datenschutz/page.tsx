@@ -30,9 +30,11 @@ export default async function Page() {
 						{content.content?.map((section, index) => (
 							<div
 								key={index}
-								className='flex flex-col gap-6'
+								className='flex flex-col'
 							>
-								{section.title && <h3 className='text-2xl'>{section.title}</h3>}
+								{section.title && (
+									<h3 className='text-2xl my-4'>{section.title}</h3>
+								)}
 
 								{section.paragraphs?.map((paragraph, paragraphIndex) => (
 									<p
@@ -46,7 +48,9 @@ export default async function Page() {
 								{section.listItems?.length ? (
 									<div className='flex flex-col gap-4'>
 										{section.listTitle && (
-											<span className='font-bold'>{section.listTitle}</span>
+											<span className='font-bold mt-6'>
+												{section.listTitle}
+											</span>
 										)}
 
 										<ul className='flex flex-col gap-3'>
