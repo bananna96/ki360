@@ -24,7 +24,7 @@ export default async function Nav() {
 	return (
 		<>
 			<nav
-				className='bg-(--color-frost) w-full flex h-(--height-nav) items-center justify-between p-3 fixed top-0 left-0 z-50'
+				className='bg-(--color-frost) w-full flex h-(--height-nav) items-center justify-between p-3 pr-6 fixed top-0 left-0 z-50'
 				aria-label='Hauptnavigation'
 			>
 				<Link
