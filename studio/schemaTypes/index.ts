@@ -1,4 +1,3 @@
-import chapter from './chapter'
 import navigation from './nav/nav'
 import about from './pages/about'
 import basicsOverview from './pages/basicsOverview'
@@ -9,7 +8,6 @@ import prompting from './pages/prompting'
 import whatIsAi from './pages/whatIsAi'
 
 export const schemaTypes = [
-  chapter,
   navigation,
   landingpage,
   basicsOverview,
