@@ -41,13 +41,13 @@ export default async function Home() {
 		<div className='flex flex-col'>
 			<div className='min-h-screen-minus-nav w-full items-end justify-start wrapper-cols-12'>
 				<div className='col-span-12 flex justify-between items-end pb-20 sm:pb-0'>
-					<h1>{content.title}</h1>
+					<h1 className='flex-1 min-w-0'>{content.title}</h1>
 					<Icon
 						name='arrow-down'
 						color='#492e19'
 						size={64}
 						aria-hidden='true'
-						className='xs:mb-8 sm:mb-0 animate-bounce motion-reduce:animate-none'
+						className='shrink-0 ml-4 animate-bounce motion-reduce:animate-none'
 					/>
 				</div>
 			</div>
