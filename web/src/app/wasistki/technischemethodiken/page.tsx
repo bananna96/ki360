@@ -59,12 +59,12 @@ export default async function Page() {
 
 	return (
 		<div className='min-h-screen w-full bg-(--color-frost) px-4 md:px-10 lg:px-20 pb-16 md:pb-24'>
-			<Breadcrumbs className='mb-4 md:mb-6 -ml-4! lg:-ml-16! ' />
-			<h1 className='text-2xl md:text-4xl lg:text-9xl mb-8 md:mb-12 w-full text-center'>
+			<Breadcrumbs className='mb-4 md:mb-6 md:-ml-4! lg:-ml-16! ' />
+			<h1 className='text-7xl md:text-9xl lg:text-9xl mb-8 md:mb-12 w-full text-center'>
 				{content.title}
 			</h1>
 
-			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4'>
+			<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-9 lg:gap-4'>
 				{content.items.map((item, index) => (
 					<TechMethodDrawerCard
 						key={index}

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import TiltedCard from '@/components/TiltedCard'
+import { SanityImage } from '@/components/SanityImage'
 import {
 	Drawer,
 	DrawerClose,
@@ -59,34 +60,59 @@ export function TechMethodDrawerCard({
 					type='button'
 					aria-label={`${itemTitle} öffnen`}
 					className={`
+                        relative
                         h-[30vh] sm:h-[35vh] lg:h-[40vh]
                         ${colSpanClass}
                         w-full cursor-pointer text-left rounded-lg
                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
                     `}
 				>
-					<TiltedCard
-						imageSrc={imageSrc}
-						altText={imageAlt}
-						captionText={itemTitle}
-						containerHeight='100%'
-						containerWidth='100%'
-						imageHeight='100%'
-						imageWidth='100%'
-						rotateAmplitude={30}
-						scaleOnHover={1.05}
-						showMobileWarning={false}
-						displayOverlayContent
-						showTooltip={false}
-						overlayContent={
-							<p className='tilted-card-demo-text uppercase'>{itemTitle}</p>
-						}
-					/>
+					<div className='hidden lg:block h-full w-full'>
+						<TiltedCard
+							imageSrc={imageSrc}
+							altText={imageAlt}
+							captionText={itemTitle}
+							containerHeight='100%'
+							containerWidth='100%'
+							imageHeight='100%'
+							imageWidth='100%'
+							rotateAmplitude={30}
+							scaleOnHover={1.05}
+							showMobileWarning={false}
+							displayOverlayContent
+							showTooltip={false}
+							overlayContent={
+								<p className='tilted-card-demo-text uppercase'>{itemTitle}</p>
+							}
+						/>
+					</div>
+
+					{/* Für kleine Devices */}
+					<div className='lg:hidden h-full w-full flex flex-col gap-2'>
+						<p className='text-md sm:text-base text-center'>{itemTitle}</p>
+						<div className='relative flex-1 min-h-0'>
+							<SanityImage
+								src={imageSrc}
+								alt={imageAlt}
+								fill
+								sizes='(max-width: 1024px) 100vw, 0px'
+								className='rounded-lg object-cover'
+							/>
+							<div
+								aria-hidden='true'
+								className='pointer-events-none absolute inset-0 flex items-center justify-center'
+							>
+								<span className='inline-flex items-center rounded-xs bg-(--color-softLinen)/90 px-4 py-2 text-md'>
+									Mehr
+								</span>
+							</div>
+						</div>
+					</div>
 				</button>
 			</DrawerTrigger>
 
-			<DrawerContent className='px-2 sm:px-4 md:px-8 pb-8 border-0 h-auto max-h-[90dvh] overflow-hidden flex flex-col z-[60]'>
-				<DrawerHeader className='shrink-0 px-4 sm:px-10 md:px-20 pt-0 flex flex-row justify-between items-start gap-2 sm:gap-4'>
+			<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80vh] flex flex-col'>
+				<DrawerHeader className='shrink-0 px-4 sm:px-6 md:px-10 flex flex-row justify-between items-center gap-2 sm:gap-4'>
 					<ReadButton
 						text={subtitle}
 						disabled={Boolean(link)}
@@ -94,10 +120,14 @@ export function TechMethodDrawerCard({
 					/>
 
 					<div className='min-w-0 flex-1'>
-						<DrawerTitle className='text-2xl sm:text-4xl md:text-6xl lg:text-[5em] leading-none break-words'>
-							{itemTitle}
+						<DrawerTitle
+							asChild
+							className='text-2xl sm:text-4xl md:text-4xl leading-none text-center flex-1'
+						>
+							<h3>{itemTitle}</h3>
 						</DrawerTitle>
-						<DrawerDescription className='sr-only'>
+
+						<DrawerDescription className='sr-only text-justify'>
 							{Boolean(link)
 								? `${itemTitle} mit eingebettetem Inhalt`
 								: subtitle}
@@ -109,38 +139,38 @@ export function TechMethodDrawerCard({
 							icon='cancel'
 							ariaLabel='Schließen'
 							iconColor='#db761c'
-							iconSize={48}
+							iconSize={36}
 							variant='ghost'
 							size='icon'
 						/>
 					</DrawerClose>
 				</DrawerHeader>
 
-				<div className='flex-1 min-h-0 overflow-y-auto [-webkit-overflow-scrolling:touch] [overscroll-behavior:contain]'>
+				<div className='flex-1 min-h-0 overflow-y-auto [-webkit-overflow-scrolling:touch] overscroll-contain'>
 					{Boolean(link) ? (
-						<div className='px-4 sm:px-10 md:px-20 lg:px-40 flex flex-col justify-center items-center gap-4 pb-4'>
+						<div className='w-full px-0 sm:px-6 md:px-10 flex flex-col gap-4 pb-4'>
 							{open ? (
 								<ConsentVideo
 									src={link}
 									title={itemTitle}
-									className='w-full rounded-xl aspect-video max-h-[55vh]'
+									className='block w-full aspect-video'
 								/>
 							) : (
 								<div
 									aria-hidden='true'
-									className='w-full rounded-xl aspect-video max-h-[55vh] bg-black/5'
+									className='block w-full aspect-video rounded-xl bg-black/5'
 								/>
 							)}
 
 							<TextLink
-								className='text-xs sm:text-sm md:text-base my-3 block hover:text-(--color-ochre) text-(--color-granite) break-all'
+								className='text-xs sm:text-sm md:text-base  block hover:text-(--color-ochre) text-(--color-granite) break-all text-center'
 								href={subtitle}
 								text={subtitle}
 								openInNewTab
 							/>
 						</div>
 					) : (
-						<div className='px-4 sm:px-10 md:px-20 text-sm sm:text-base md:text-lg pb-4 whitespace-pre-wrap'>
+						<div className='px-4 sm:px-6 md:px-10 text-sm sm:text-base md:text-lg pb-4 text-justify whitespace-pre-wrap'>
 							{subtitle}
 						</div>
 					)}

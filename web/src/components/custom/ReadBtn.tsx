@@ -57,8 +57,8 @@ export function ReadButton({
 			icon={isSpeaking ? 'volume-low' : 'volume-high'}
 			ariaLabel={isSpeaking ? 'Vorlesen stoppen' : 'Text vorlesen'}
 			iconColor='#5b6c5d'
-			iconSize={48}
-			className={`w-fit !p-0 ${className ?? ''}`}
+			iconSize={36}
+			className={`w-fit p-0! ${className ?? ''}`}
 		/>
 	)
 }

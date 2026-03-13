@@ -6,6 +6,7 @@ import { MatomoPageView } from '@/components/custom/MatomoPageView'
 import Nav from '@/components/custom/nav/Nav'
 import Footer from '@/components/custom/nav/Footer'
 import { TrackingProvider } from '@/components/custom/TrackingProvider'
+import { ScrollRestoration } from '@/components/custom/ScrollRestoration'
 
 export const metadata: Metadata = {
 	title: 'ki360',
@@ -53,6 +54,7 @@ export default function RootLayout({
 			className={`${satoshi.variable} ${outward.variable}`}
 		>
 			<body className='antialiased min-h-screen'>
+				<ScrollRestoration />
 				<TrackingProvider matomoScript={matomoScript}>
 					{/* {!isProduction && ( */}
 					<header>

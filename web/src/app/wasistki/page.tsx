@@ -235,7 +235,7 @@ export default async function Page() {
 				<h3 className='text-2xl md:text-4xl lg:text-5xl mt-10 md:mt-20 mb-10'>
 					{content.section5.title}
 				</h3>
-				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start pb-10'>
+				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-center pb-10'>
 					{content.section5.items.map((item, index) => {
 						const card = (
 							<div className='flex flex-col items-center cursor-pointer group'>
@@ -257,6 +257,14 @@ export default async function Page() {
 										}
 										blurDataURL={item.image.asset.metadata?.lqip}
 									/>
+									<div
+										aria-hidden='true'
+										className='pointer-events-none absolute inset-0 flex items-center justify-center lg:hidden'
+									>
+										<span className='inline-flex items-center rounded-xs bg-(--color-softLinen)/90 px-4 py-2 text-md'>
+											Mehr
+										</span>
+									</div>
 								</div>
 							</div>
 						)
@@ -297,22 +305,22 @@ export default async function Page() {
 									</button>
 								</DrawerTrigger>
 
-								<DrawerContent className='px-4 md:px-8 pb-8 max-h-[90vh] flex flex-col'>
-									<DrawerHeader className='px-4 md:px-20 pt-0 flex flex-row justify-between items-start gap-4'>
+								<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80vh] flex flex-col'>
+									<DrawerHeader className='px-4 md:px-20 flex flex-row justify-between items-center gap-4'>
 										<ReadButton
 											text={fullOverlayText ?? item.subtitle}
 											className='w-8 h-8 sm:w-10 sm:h-10 shrink-0'
 										/>
 										<DrawerTitle
 											asChild
-											className='text-2xl sm:text-4xl md:text-5xl leading-none text-center flex-1'
+											className='text-2xl sm:text-4xl md:text-4xl leading-none text-center flex-1'
 										>
 											<h3>{overlay?.title ?? item.itemTitle}</h3>
 										</DrawerTitle>
 										<DrawerClose asChild>
 											<IconButton
 												icon='cancel'
-												ariaLabel='Drawer schließen'
+												ariaLabel='Schließen'
 												iconColor='#db761c'
 												iconSize={36}
 												variant='ghost'
@@ -331,7 +339,7 @@ export default async function Page() {
 												<h5 className='text-base md:text-lg font-bold'>
 													{ovItem.itemTitle}
 												</h5>
-												<p className='text-sm md:text-base'>
+												<p className='text-sm text-justify'>
 													{ovItem.subtitle}
 												</p>
 											</div>
