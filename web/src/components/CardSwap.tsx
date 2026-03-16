@@ -14,7 +14,6 @@ import React, {
 import gsap from 'gsap'
 import './CardSwap.css'
 
-// TODO: Aufrüumen und KI markieren
 export type CardSwapProps = {
 	width?: number | string
 	height?: number | string
@@ -100,24 +99,27 @@ const CardSwap = forwardRef<CardSwapRef, CardSwapProps>(
 		},
 		ref,
 	) => {
-		const config =
-			easing === 'elastic'
-				? {
-						ease: 'elastic.out(0.6,0.9)',
-						durDrop: 1,
-						durMove: 1,
-						durReturn: 1,
-						promoteOverlap: 0.9,
-						returnDelay: 0.05,
-					}
-				: {
-						ease: 'power1.inOut',
-						durDrop: 0.8,
-						durMove: 0.8,
-						durReturn: 0.8,
-						promoteOverlap: 0.45,
-						returnDelay: 0.2,
-					}
+		const config = useMemo(
+			() =>
+				easing === 'elastic'
+					? {
+							ease: 'elastic.out(0.6,0.9)',
+							durDrop: 1,
+							durMove: 1,
+							durReturn: 1,
+							promoteOverlap: 0.9,
+							returnDelay: 0.05,
+						}
+					: {
+							ease: 'power1.inOut',
+							durDrop: 0.8,
+							durMove: 0.8,
+							durReturn: 0.8,
+							promoteOverlap: 0.45,
+							returnDelay: 0.2,
+						},
+			[easing],
+		)
 
 		const childArr = useMemo(
 			() => Children.toArray(children) as ReactElement<CardProps>[],
@@ -125,7 +127,7 @@ const CardSwap = forwardRef<CardSwapRef, CardSwapProps>(
 		)
 		const refs = useMemo<CardRef[]>(
 			() => childArr.map(() => React.createRef<HTMLDivElement>()),
-			[childArr.length],
+			[childArr],
 		)
 
 		const order = useRef<number[]>(
@@ -141,7 +143,7 @@ const CardSwap = forwardRef<CardSwapRef, CardSwapProps>(
 		useImperativeHandle(ref, () => ({
 			swapNext: () => swapFunctionRef.current(false),
 			swapPrev: () => swapFunctionRef.current(true),
-			isAnimating: () => isAnimatingRef.current, // NEU
+			isAnimating: () => isAnimatingRef.current,
 		}))
 
 		useEffect(() => {
@@ -272,8 +274,9 @@ const CardSwap = forwardRef<CardSwapRef, CardSwapProps>(
 			delay,
 			pauseOnHover,
 			skewAmount,
-			easing,
 			autoSwap,
+			config,
+			refs,
 		])
 
 		const rendered = childArr.map((child, i) =>

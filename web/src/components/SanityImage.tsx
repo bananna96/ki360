@@ -20,6 +20,7 @@ const addSanityParams = (src: ImageProps['src']) => {
 }
 
 export const SanityImage: FC<SanityImageProps> = ({
+	alt,
 	sizes,
 	quality,
 	loading,
@@ -33,6 +34,7 @@ export const SanityImage: FC<SanityImageProps> = ({
 	return (
 		<Image
 			src={finalSrc}
+			alt={alt}
 			quality={quality ?? 75}
 			sizes={
 				sizes ?? '(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 1200px'

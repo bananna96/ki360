@@ -1,3 +1,4 @@
+import React from 'react'
 import { render, screen } from '@testing-library/react'
 import {
 	Drawer,
@@ -13,8 +14,6 @@ import {
 } from '@/components/ui/drawer'
 
 jest.mock('vaul', () => {
-	const React = require('react')
-
 	const primitive = {
 		Root: ({
 			children,

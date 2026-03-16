@@ -40,8 +40,6 @@ const getOptimizedImageUrl = (asset: SanityImageAsset, width: number) => {
 	return url.toString()
 }
 
-// Mobile/Tablet: full width
-// Desktop: asymmetrisches 12er-Grid
 const getColSpanClass = (index: number) => {
 	if (index === 0) return 'col-span-1 lg:col-span-5'
 	if (index === 1) return 'col-span-1 lg:col-span-7'

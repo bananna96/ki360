@@ -8,9 +8,15 @@ import { ButtonLink } from '@/components/custom/Link'
 
 export default async function Page() {
 	const content = await client.fetch(promptingQuery)
+	type PromptSlide = {
+		tip: string
+		bullets: string[]
+		example: string
+		image: PromptingSliderType['image']
+	}
 
 	const sliderContent: PromptingSliderType[] = content.slides.map(
-		(slide: any) => ({
+		(slide: PromptSlide) => ({
 			tip: slide.tip,
 			bullets: slide.bullets,
 			example: slide.example,

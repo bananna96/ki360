@@ -28,9 +28,10 @@ jest.mock('next/link', () => {
 
 jest.mock('@/components/SanityImage', () => ({
 	SanityImage: (props: { src: string; alt: string }) => (
-		<img
-			alt={props.alt}
-			src={props.src}
+		<div
+			aria-label={props.alt}
+			data-src={props.src}
+			data-testid='sanity-image'
 		/>
 	),
 }))

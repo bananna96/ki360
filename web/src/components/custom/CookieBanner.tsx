@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -28,11 +27,13 @@ export function CookieBanner({
 	onAccept: () => void
 	onDecline: () => void
 }) {
-	const [visible, setVisible] = useState(false)
+	const [visible, setVisible] = useState(() => {
+		if (typeof window === 'undefined') return false
+		return !localStorage.getItem(COOKIE_KEY)
+	})
 
 	useEffect(() => {
 		const consent = localStorage.getItem(COOKIE_KEY)
-		if (!consent) setVisible(true)
 		if (consent === 'accepted') onAccept()
 
 		function handleOpen() {

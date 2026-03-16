@@ -27,7 +27,6 @@ type SanityImageAsset = {
 			aspectRatio: number
 		}
 	}
-	[key: string]: any
 }
 
 type SanityImage = {
@@ -103,11 +102,7 @@ export default async function Page() {
 	return (
 		<div className='flex flex-col'>
 			{/* SECTION 1 */}
-			<div
-				className='w-full flex flex-col md:grid md:grid-cols-12 md:items-stretch px-4 md:px-10 lg:px-20'
-				// TODO: remove extra style attr
-				style={{ minHeight: 'calc(100dvh - var(--height-nav))' }}
-			>
+			<div className='w-full min-h-[calc(100dvh-var(--height-nav))] flex flex-col md:grid md:grid-cols-12 md:items-stretch px-4 md:px-10 lg:px-20'>
 				<div className='md:col-span-7 flex flex-col justify-end gap-4 pb-10 mt-auto md:mt-0'>
 					<h4 className='text-2xl md:text-4xl lg:text-5xl'>
 						{content.section1.title}

@@ -1,7 +1,6 @@
 'use client'
-
 import { useState, useRef, useEffect } from 'react'
-import { Button, IconButton } from '@/components/ui/button'
+import { IconButton } from '@/components/ui/button'
 
 type Message = {
 	id: string

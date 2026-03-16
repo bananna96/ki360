@@ -28,7 +28,7 @@ export default async function Nav() {
 				aria-label='Hauptnavigation'
 			>
 				<Link
-					href={nav.navlogolink} // TODO: besser lösung für link? damit
+					href={nav.navlogolink}
 					aria-label='Zur Startseite'
 					className='relative h-full w-fit aspect-square'
 				>

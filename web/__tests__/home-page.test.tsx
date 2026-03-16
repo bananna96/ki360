@@ -11,7 +11,13 @@ jest.mock('@/lib/sanity/client', () => ({
 
 jest.mock('next/image', () => ({
 	__esModule: true,
-	default: (props: any) => <img {...props} />,
+	default: ({ src, alt }: { src?: string; alt?: string }) => (
+		<div
+			role='img'
+			aria-label={alt ?? ''}
+			data-src={src ?? ''}
+		/>
+	),
 }))
 
 jest.mock('@/components/custom/Icons', () => ({

@@ -10,10 +10,11 @@ jest.mock('@/lib/sanity/client', () => ({
 }))
 
 jest.mock('@/components/SanityImage', () => ({
-	SanityImage: (props: any) => (
-		<img
-			alt={props.alt}
-			src={props.src}
+	SanityImage: ({ src, alt }: { src?: string; alt?: string }) => (
+		<div
+			role='img'
+			aria-label={alt ?? ''}
+			data-src={src ?? ''}
 		/>
 	),
 }))

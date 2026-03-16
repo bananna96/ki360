@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { SanityImage } from '@/components/SanityImage'
 import { client } from '@/lib/sanity/client'
 import { aboutQuery } from '@/lib/sanity/queries'

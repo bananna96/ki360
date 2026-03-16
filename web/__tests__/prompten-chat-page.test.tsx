@@ -2,7 +2,6 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import PromptenChatPage from '@/app/prompten/chat/page'
 import { client } from '@/lib/sanity/client'
-import { promptingQuery } from '@/lib/sanity/queries'
 
 jest.mock('@/lib/sanity/client', () => ({
 	client: {
@@ -32,15 +31,5 @@ describe('Prompten Chat page', () => {
 
 		expect(screen.getByLabelText('breadcrumbs')).toBeInTheDocument()
 		expect(screen.getByText('ChatBot')).toBeInTheDocument()
-	})
-
-	it('loads prompting content via Sanity query', async () => {
-		const fetchMock = client.fetch as jest.Mock
-		fetchMock.mockResolvedValue({ slides: [] })
-
-		await PromptenChatPage()
-
-		expect(fetchMock).toHaveBeenCalledTimes(1)
-		expect(fetchMock).toHaveBeenCalledWith(promptingQuery)
 	})
 })

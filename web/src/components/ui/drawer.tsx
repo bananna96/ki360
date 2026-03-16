@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import { Drawer as DrawerPrimitive } from 'vaul'
-
 import { cn } from '@/lib/utils'
 
 function Drawer({
@@ -59,6 +58,7 @@ const DrawerOverlay = React.forwardRef<
 		{...props}
 	/>
 ))
+DrawerOverlay.displayName = 'DrawerOverlay'
 
 const DrawerContent = React.forwardRef<
 	React.ElementRef<typeof DrawerPrimitive.Content>,
@@ -74,11 +74,11 @@ const DrawerContent = React.forwardRef<
 			)}
 			{...props}
 		>
-			{/* Handle entfernt */}
 			{children}
 		</DrawerPrimitive.Content>
 	</DrawerPortal>
 ))
+DrawerContent.displayName = 'DrawerContent'
 
 function DrawerHeader({ className, ...props }: React.ComponentProps<'div'>) {
 	return (

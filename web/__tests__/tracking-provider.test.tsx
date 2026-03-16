@@ -2,7 +2,13 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { TrackingProvider } from '@/components/custom/TrackingProvider'
 
 jest.mock('@/components/custom/CookieBanner', () => ({
-	CookieBanner: ({ onAccept, onDecline }: any) => (
+	CookieBanner: ({
+		onAccept,
+		onDecline,
+	}: {
+		onAccept: () => void
+		onDecline: () => void
+	}) => (
 		<div>
 			<button onClick={onAccept}>accept</button>
 			<button onClick={onDecline}>decline</button>

@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Icon, type IconName } from './Icons'
+import { Icon } from './Icons'
 import { Button } from '../ui/button'
 
 function TextLink({
@@ -75,7 +75,7 @@ function IconTextLink({
 	ariaLabel: string
 	className?: string
 	text: string
-	icon: IconName
+	icon: string
 	colorVar: string
 	hoverColorVar: string
 	openInNewTab?: boolean
@@ -85,10 +85,12 @@ function IconTextLink({
 			href={href}
 			aria-label={ariaLabel}
 			className={`${className ?? ''} group flex items-center gap-2 justify-end transition-colors`}
-			style={{
-				['--link-color' as any]: `var(${colorVar})`,
-				['--link-hover' as any]: `var(${hoverColorVar})`,
-			}}
+			style={
+				{
+					['--link-color' as string]: `var(${colorVar})`,
+					['--link-hover' as string]: `var(${hoverColorVar})`,
+				} as React.CSSProperties
+			}
 			target={openInNewTab ? '_blank' : undefined}
 			rel={openInNewTab ? 'noopener noreferrer' : undefined}
 		>

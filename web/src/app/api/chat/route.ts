@@ -10,28 +10,30 @@ const WINDOW_SEC = 3600
 const COOKIE_NAME = 'chat_rl'
 const SECRET = process.env.RATE_LIMIT_SECRET || 'dev-secret-change-me'
 
-const SYSTEM = `Du bist ein Prompt-Coach. Du hilfst ausschliesslich beim Ueben und Verbessern von Prompts.
+const SYSTEM = `Du bist ein Prompt-Coach. Du hilfst ausschliesslich beim Üben und Verbessern von Prompts.
 Antworte immer auf Deutsch.
+Sprich den Nutzer immer in der Du-Form an.
+Verwende niemals die Sie-Form oder formelle Anrede.
 Nutze die Prompting-Tipps dieser Website aktiv als Bewertungsrahmen.
 Ordne jede Nutzereingabe dem passendsten Tipp zu oder benenne klar, wenn mehrere Tipps relevant sind.
 Begruende deine Verbesserungsvorschlaege mit Bezug auf diese Tipps statt nur allgemein zu antworten.
-Wenn ein Uebungsfall gesendet wird, gib die Antwort in dieser Struktur:
+Wenn ein Übungsfall gesendet wird, gib die Antwort in dieser Struktur:
 1) Passender Tipp
 2) Kurzes Feedback
 3) Verbesserungen
 4) Verbesserter Prompt
 5) Testidee
-Wenn die Nutzereingabe zu unklar ist, stelle maximal 2 gezielte Rueckfragen statt zu raten.
+Wenn die Nutzereingabe zu unklar ist, stelle maximal 2 gezielte Rückfragen statt zu raten.
 Keine themenfremden Antworten.`
 
 const TXT = {
 	blocked:
-		'Dieser Uebungschat ist nur fuer sichere Prompt-Uebungen gedacht. Themen wie Sex, Gewalt, Beleidigungen, Hass oder Selbstverletzung sind ausgeschlossen.',
+		'Dieser Übungschat ist nur für sichere Prompt-Übungen gedacht. Themen wie Sex, Gewalt, Beleidigungen, Hass oder Selbstverletzung sind ausgeschlossen.',
 	tipsDown:
-		'Die Prompting-Tipps der Website konnten gerade nicht geladen werden. Bitte versuche es spaeter erneut.',
-	badReq: 'Ungueltige Anfrage.',
-	badMsgs: 'Keine gueltigen Nachrichten.',
-	badSession: 'Session ungueltig. Bitte spaeter erneut versuchen.',
+		'Die Prompting-Tipps der Webseite konnten gerade nicht geladen werden. Bitte versuche es später erneut.',
+	badReq: 'Ungültige Anfrage.',
+	badMsgs: 'Keine gültigen Nachrichten.',
+	badSession: 'Session ungültig. Bitte später erneut versuchen.',
 	limit: `Limit erreicht (${MAX_REQUESTS} Anfragen pro Stunde).`,
 } as const
 
@@ -71,7 +73,7 @@ const toks = (s: string) =>
 	norm(s)
 		.split(' ')
 		.filter((x) => x.length >= 4)
-const blocked = words.map(norm).filter((x) => x.length >= 4)
+const blocked = words.map(norm).filter((x) => x.length > 0)
 const hash = (s: string) => createHash('sha256').update(s).digest('hex')
 const sign = (s: string) => createHmac('sha256', SECRET).update(s).digest('hex')
 const fail = (error: string, status: number) =>
@@ -137,46 +139,20 @@ const isMsg = (v: unknown): v is Msg => {
 	)
 }
 
-const lev = (a: string, b: string) => {
-	if (a === b) return 0
-	if (!a.length) return b.length
-	if (!b.length) return a.length
-	const row = Array.from({ length: b.length + 1 }, (_, i) => i)
-	for (let i = 0; i < a.length; i++) {
-		let d = row[0]
-		row[0] = i + 1
-		for (let j = 0; j < b.length; j++) {
-			const t = row[j + 1],
-				c = a[i] === b[j] ? 0 : 1
-			row[j + 1] = Math.min(row[j + 1] + 1, row[j] + 1, d + c)
-			d = t
-		}
-	}
-	return row[b.length]
-}
-
 const hasBlocked = (input: string) => {
 	const n = norm(input)
 	if (blocked.some((w) => n.includes(w))) return true
 	const ws = toks(n)
-	return blocked.some((b) =>
-		ws.some(
-			(w) =>
-				w === b ||
-				w.includes(b) ||
-				b.includes(w) ||
-				(Math.abs(w.length - b.length) <= 1 && lev(w, b) <= 1),
-		),
-	)
+	return blocked.some((b) => ws.some((w) => w === b))
 }
 
 const practiceCtx = (p?: Practice) => {
 	if (!p?.prompt?.trim()) return null
 	return [
-		'Aktueller Uebungsfall:',
+		'Aktueller Übungsfall:',
 		p.goal?.trim()
-			? `- Uebungsziel: ${p.goal.trim()}`
-			: '- Uebungsziel: (nicht angegeben)',
+			? `- Übungsziel: ${p.goal.trim()}`
+			: '- Übungsziel: (nicht angegeben)',
 		p.tipTitle?.trim() ? `- Ausgewaehlter Tipp: ${p.tipTitle.trim()}` : '',
 		p.context?.trim() ? `- Kontext: ${p.context.trim()}` : '',
 		`- Zu verbessernder Prompt: ${p.prompt.trim()}`,
@@ -232,8 +208,8 @@ const tipsCtx = async (p?: Practice) => {
 	)
 
 	return [
-		'Diese Prompting-Tipps stammen direkt von der Webseite und muessen als Uebungsrahmen verwendet werden.',
-		'Primaer relevante Tipps fuer diesen Uebungsfall:',
+		'Diese Prompting-Tipps stammen direkt von der Webseite und muessen als Übungsrahmen verwendet werden.',
+		'Primaer relevante Tipps fuer diesen Übungsfall:',
 		...main.map(
 			(s, i) =>
 				`${i + 1}. ${s.tip.title}: ${s.tip.description}${s.bullets?.length ? ` KERNAUSSAGEN: ${s.bullets.join(' | ')}` : ''}${s.example ? ` BEISPIEL: ${s.example}` : ''}`,

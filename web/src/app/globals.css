@@ -54,13 +54,6 @@
 	--viewport-minus-nav: calc(var(--vh) - var(--height-nav));
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
-
 body {
 	background: var(--color-frost);
 	color: var(--color-glossyBlack);
@@ -97,7 +90,6 @@ body {
 		font-weight: bold;
 		color: var(--color-deepWalnut);
 		display: block;
-		/* Kompensiert den Whitespace unter dem Font */
 		margin-bottom: -0.15em;
 	}
 
@@ -105,7 +97,7 @@ body {
 		font-family: var(--font-outward);
 		font-size: 14em;
 		font-weight: bold;
-		text-box-trim: trim-both; /* TODO: doesn't work in firwfox -> alternative */
+		text-box-trim: trim-both;
 	}
 
 	h3 {
@@ -132,49 +124,6 @@ body {
 		h2 {
 			font-size: 5em;
 		}
-		/*	h3 {
-			font-size: 2em;
-		}
-		h4 {
-			font-size: 1.5em;
-		}
-		h5 {
-			font-size: 1.25em;
-		} */
-	}
-	@media (min-width: 768px) {
-		/* h1 {
-			font-size: 21em;
-		}
-		h2 {
-			font-size: 10em;
-		}
-		h3 {
-			font-size: 2em;
-		}
-		h4 {
-			font-size: 1.5em;
-		}
-		h5 {
-			font-size: 1.25em;
-		} */
-	}
-	@media (min-width: 1024px) {
-		/* h1 {
-			font-size: 21em;
-		}
-		h2 {
-			font-size: 10em;
-		}
-		h3 {
-			font-size: 2em;
-		}
-		h4 {
-			font-size: 1.5em;
-		}
-		h5 {
-			font-size: 1.25em;
-		} */
 	}
 
 	* {
@@ -271,7 +220,6 @@ body {
 		perspective: 1000px;
 	}
 	.wrapper-cols-12 {
-		/* height: 100vh; */
 		padding: 0 5rem;
 		display: grid;
 		grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -309,39 +257,6 @@ body {
 			padding: 0 5rem;
 		}
 	}
-
-	/* Components */
-
-	/* .carousel-mask {
-		mask-image: url('/imgs/2_oval_mask.png');
-		-webkit-mask-image: url('/imgs/2_oval_mask.png');
-		mask-repeat: no-repeat;
-		-webkit-mask-repeat: no-repeat;
-		mask-position: center center;
-		-webkit-mask-position: center center;
-		mask-size: 100% 100%;
-		-webkit-mask-size: 100% 100%;
-	} */
-	.carousel-invert-mask {
-		mask-image: url('data:image/svg+xml;utf8,<svg width="1000" height="400" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg"><rect width="1000" height="400" fill="black"/><ellipse cx="500" cy="80" rx="480" ry="80" fill="white"/><ellipse cx="500" cy="320" rx="480" ry="80" fill="white"/></svg>');
-		-webkit-mask-image: url('data:image/svg+xml;utf8,<svg width="1000" height="400" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg"><rect width="1000" height="400" fill="black"/><ellipse cx="500" cy="80" rx="480" ry="80" fill="white"/><ellipse cx="500" cy="320" rx="480" ry="80" fill="white"/></svg>');
-		mask-size: 100% 100%;
-		-webkit-mask-size: 100% 100%;
-		mask-repeat: no-repeat;
-		-webkit-mask-repeat: no-repeat;
-		mask-position: center;
-		-webkit-mask-position: center;
-	}
-
-	/* Background */
-	.bg-silk {
-		width: 100vw !important;
-		height: 100vh !important;
-		position: fixed !important;
-		top: 0 !important;
-		left: 0 !important;
-		z-index: -1;
-	}
 }
 
 /* Fallback für ältere Browser */
@@ -353,7 +268,6 @@ body {
 }
 
 @layer utilities {
-	/* ...existing code... */
 	.min-h-screen-minus-nav {
 		min-height: var(--viewport-minus-nav);
 	}

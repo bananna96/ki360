@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useRef } from 'react'
 import TiltedCard from '@/components/TiltedCard'
 import { SanityImage } from '@/components/SanityImage'
@@ -157,12 +156,12 @@ export function TechMethodDrawerCard({
 								<ConsentVideo
 									src={link}
 									title={itemTitle}
-									className='block w-full aspect-video'
+									className='max-h-[55vh] aspect-video w-auto mx-auto'
 								/>
 							) : (
 								<div
 									aria-hidden='true'
-									className='block w-full aspect-video rounded-xl bg-black/5'
+									className='max-h-[55vh] aspect-video w-auto mx-auto rounded-xl bg-black/5'
 								/>
 							)}
 

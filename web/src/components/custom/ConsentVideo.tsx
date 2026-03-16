@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { useCookieConsent } from './CookieBanner'
 import { Button } from '@/components/ui/button'
@@ -16,12 +15,13 @@ export function ConsentVideo({
 	title: string
 	className?: string
 }) {
-	const [allowed, setAllowed] = useState(false)
+	const [allowed, setAllowed] = useState(() => {
+		if (typeof window === 'undefined') return false
+		return localStorage.getItem(COOKIE_KEY) === 'accepted'
+	})
 	const { openPreferences } = useCookieConsent()
 
 	useEffect(() => {
-		setAllowed(localStorage.getItem(COOKIE_KEY) === 'accepted')
-
 		function handleStorage(e: StorageEvent) {
 			if (e.key === COOKIE_KEY) setAllowed(e.newValue === 'accepted')
 		}
@@ -53,7 +53,7 @@ export function ConsentVideo({
 					type='button'
 					variant='ghost'
 					onClick={openPreferences}
-					className='h-auto rounded border border-(--color-frost) px-4 py-2 text-sm hover:bg-(--color-glossyBlack)'
+					className='h-auto rounded border border-(--color-frost) px-4 py-2 text-sm hover:bg-(--color-skyBlue)'
 				>
 					Cookie-Einstellungen öffnen
 				</Button>

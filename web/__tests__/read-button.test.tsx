@@ -2,7 +2,15 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { ReadButton } from '@/components/custom/ReadBtn'
 
 jest.mock('@/components/ui/button', () => ({
-	IconButton: ({ ariaLabel, onClick, disabled }: any) => (
+	IconButton: ({
+		ariaLabel,
+		onClick,
+		disabled,
+	}: {
+		ariaLabel: string
+		onClick?: () => void
+		disabled?: boolean
+	}) => (
 		<button
 			type='button'
 			aria-label={ariaLabel}

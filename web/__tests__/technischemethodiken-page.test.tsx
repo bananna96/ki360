@@ -33,9 +33,10 @@ jest.mock('@/components/custom/TechMethodDrawerCard', () => ({
 			<h2>{itemTitle}</h2>
 			<p>{subtitle}</p>
 			<a href={link}>Mehr</a>
-			<img
-				alt={imageAlt}
-				src={imageSrc}
+			<div
+				role='img'
+				aria-label={imageAlt}
+				data-src={imageSrc}
 			/>
 		</article>
 	),
@@ -90,12 +91,14 @@ describe('Technische Methodiken page', () => {
 			screen.getByRole('heading', { level: 1, name: 'Technische Methodiken' }),
 		).toBeInTheDocument()
 		expect(
-			screen.getByRole('img', { name: 'Netz Struktur' }).getAttribute('src'),
+			screen
+				.getByRole('img', { name: 'Netz Struktur' })
+				.getAttribute('data-src'),
 		).toContain('w=1200')
 		expect(
 			screen
 				.getByRole('img', { name: 'Transformer Grafik' })
-				.getAttribute('src'),
+				.getAttribute('data-src'),
 		).toContain('w=1600')
 	})
 })
