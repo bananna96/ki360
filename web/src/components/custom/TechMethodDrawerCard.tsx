@@ -60,7 +60,6 @@ export function TechMethodDrawerCard({
 					variant='ghost'
 					aria-label={`${itemTitle} öffnen`}
 					className={`
-						h-auto
 						p-0
 						hover:bg-transparent
                         relative

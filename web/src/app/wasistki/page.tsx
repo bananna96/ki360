@@ -302,7 +302,7 @@ export default async function Page() {
 								</DrawerTrigger>
 
 								<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80vh] flex flex-col'>
-									<DrawerHeader className='px-4 md:px-20 flex flex-row justify-between items-center gap-4'>
+									<DrawerHeader className='shrink-0 px-4 md:px-20 flex flex-row justify-between items-center gap-4'>
 										<ReadButton
 											text={fullOverlayText ?? item.subtitle}
 											className='w-8 h-8 sm:w-10 sm:h-10 shrink-0'
@@ -329,7 +329,7 @@ export default async function Page() {
 										{item.subtitle}
 									</DrawerDescription>
 
-									<div className='px-4 md:px-20 pb-6 grid gap-4 overflow-y-auto mt-4 flex-1 min-h-0 [-webkit-overflow-scrolling:touch] overscroll-contain'>
+									<div className='px-4 md:px-20 pb-6 grid gap-4 overflow-y-auto mt-4 flex-1 min-h-0 [-webkit-overflow-scrolling:touch] overscroll-contain [touch-action:pan-y]'>
 										{overlay?.items?.map((ovItem, ovIndex) => (
 											<div key={ovIndex}>
 												<h5 className='text-base md:text-lg font-bold'>
