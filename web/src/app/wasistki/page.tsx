@@ -288,6 +288,7 @@ export default async function Page() {
 								key={index}
 								shouldScaleBackground={false}
 								setBackgroundColorOnScale={false}
+								noBodyStyles
 							>
 								<DrawerTrigger asChild>
 									<Button
