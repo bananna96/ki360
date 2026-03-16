@@ -12,7 +12,7 @@ import {
 	DrawerDescription,
 	DrawerTrigger,
 } from '@/components/ui/drawer'
-import { IconButton } from '@/components/ui/button'
+import { Button, IconButton } from '@/components/ui/button'
 import { ReadButton } from '@/components/custom/ReadBtn'
 import { TextLink } from '@/components/custom/Link'
 import { ConsentVideo } from '@/components/custom/ConsentVideo'
@@ -56,10 +56,14 @@ export function TechMethodDrawerCard({
 			setBackgroundColorOnScale={false}
 		>
 			<DrawerTrigger asChild>
-				<button
+				<Button
 					type='button'
+					variant='ghost'
 					aria-label={`${itemTitle} öffnen`}
 					className={`
+						h-auto
+						p-0
+						hover:bg-transparent
                         relative
                         h-[30vh] sm:h-[35vh] lg:h-[40vh]
                         ${colSpanClass}
@@ -108,7 +112,7 @@ export function TechMethodDrawerCard({
 							</div>
 						</div>
 					</div>
-				</button>
+				</Button>
 			</DrawerTrigger>
 
 			<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80vh] flex flex-col'>

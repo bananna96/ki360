@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import type { MobileNavProps } from './types'
 
 export default function MobileNav({ links, className }: MobileNavProps) {
@@ -8,33 +9,33 @@ export default function MobileNav({ links, className }: MobileNavProps) {
 
 	return (
 		<div className={className}>
-			{/* TODO: Replace durch Btn-Component */}
-			<button
+			<Button
 				type='button'
-				className='px-3 py-2'
+				variant='ghost'
+				className='h-auto px-3 py-2'
 				aria-label='Menü öffnen'
 				aria-controls='mobile-menu'
 				aria-expanded={isOpen}
 				onClick={() => setIsOpen(true)}
 			>
 				Menü
-			</button>
+			</Button>
 
 			{isOpen && (
 				<div
 					id='mobile-menu'
-					className='animate-fade-in-left fixed inset-0 z-50 bg-[var(--color-frost)] flex flex-col p-6'
+					className='animate-fade-in-left fixed inset-0 z-50 bg-(--color-frost) flex flex-col p-6'
 				>
 					<div className='flex justify-end'>
-						{/* TODO: Replace durch Btn-Component */}
-						<button
+						<Button
 							type='button'
-							className='px-3 py-2'
+							variant='ghost'
+							className='h-auto px-3 py-2'
 							aria-label='Menü schließen'
 							onClick={() => setIsOpen(false)}
 						>
 							Schließen
-						</button>
+						</Button>
 					</div>
 					<ul
 						className='mt-6 flex flex-col gap-6'

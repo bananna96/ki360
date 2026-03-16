@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useCookieConsent } from './CookieBanner'
+import { Button } from '@/components/ui/button'
 
 const COOKIE_KEY = 'cookie_consent'
 const CONSENT_CHANGED_EVENT = 'cookie-consent-changed'
@@ -48,12 +49,14 @@ export function ConsentVideo({
 					Dieses Video wird von einem externen Anbieter bereitgestellt. Bitte
 					akzeptiere die Cookies, um das Video zu sehen.
 				</p>
-				<button
+				<Button
+					type='button'
+					variant='ghost'
 					onClick={openPreferences}
-					className='text-sm px-4 py-2 rounded border border-(--color-frost) hover:bg-(--color-glossyBlack) transition-colors'
+					className='h-auto rounded border border-(--color-frost) px-4 py-2 text-sm hover:bg-(--color-glossyBlack)'
 				>
 					Cookie-Einstellungen öffnen
-				</button>
+				</Button>
 			</div>
 		)
 	}

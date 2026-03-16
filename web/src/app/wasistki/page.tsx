@@ -12,11 +12,11 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from '@/components/ui/drawer'
-import { IconButton } from '@/components/ui/button'
+import { Button, IconButton } from '@/components/ui/button'
 import { ReadButton } from '@/components/custom/ReadBtn'
 import { ConsentVideo } from '@/components/custom/ConsentVideo'
 
-interface SanityImageAsset {
+type SanityImageAsset = {
 	_id: string
 	url: string
 	metadata: {
@@ -30,7 +30,7 @@ interface SanityImageAsset {
 	[key: string]: any
 }
 
-interface SanityImage {
+type SanityImage = {
 	asset: SanityImageAsset
 	alt: string
 	hotspot?: {
@@ -47,12 +47,12 @@ interface SanityImage {
 	}
 }
 
-interface Link {
+type Link = {
 	text: string
 	url: string
 }
 
-interface WhatIsAiContent {
+type WhatIsAiContent = {
 	section1: {
 		title: string
 		description: string
@@ -296,13 +296,14 @@ export default async function Page() {
 								noBodyStyles
 							>
 								<DrawerTrigger asChild>
-									<button
+									<Button
 										type='button'
+										variant='ghost'
 										aria-label={`${item.itemTitle} öffnen`}
-										className='text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-lg w-full'
+										className='h-auto w-full rounded-lg p-0 text-left hover:bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
 									>
 										{card}
-									</button>
+									</Button>
 								</DrawerTrigger>
 
 								<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80vh] flex flex-col'>

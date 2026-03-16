@@ -20,7 +20,7 @@ export type LogoItem =
 			height?: number
 	  }
 
-export interface LogoLoopProps {
+export type LogoLoopProps = {
 	logos: LogoItem[]
 	speed?: number
 	direction?: 'left' | 'right' | 'up' | 'down'

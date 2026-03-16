@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 		'Technische Methodiken der Künstlichen Intelligenz verständlich erklärt – mit interaktiven Karten und eingebetteten Beispielen.',
 }
 
-interface SanityImageAsset {
+type SanityImageAsset = {
 	_id: string
 	url: string
 	metadata: {
@@ -21,7 +21,7 @@ interface SanityImageAsset {
 	}
 }
 
-interface TechMethodsContent {
+type TechMethodsContent = {
 	title: string
 	items: {
 		itemTitle: string

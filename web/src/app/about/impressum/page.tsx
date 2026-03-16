@@ -3,14 +3,14 @@ import { imprintQuery } from '@/lib/sanity/queries'
 
 export const revalidate = 3600
 
-interface ImprintSection {
+type ImprintSection = {
 	title?: string
 	paragraphs?: string[]
 	listTitle?: string
 	listItems?: string[]
 }
 
-interface ImprintContent {
+type ImprintContent = {
 	title: string
 	content?: ImprintSection[]
 }

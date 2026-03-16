@@ -3,14 +3,14 @@ import { privacyPolicyQuery } from '@/lib/sanity/queries'
 
 export const revalidate = 3600
 
-interface PolicySection {
+type PolicySection = {
 	title?: string
 	paragraphs?: string[]
 	listTitle?: string
 	listItems?: string[]
 }
 
-interface PrivacyPolicyContent {
+type PrivacyPolicyContent = {
 	title: string
 	content?: PolicySection[]
 }

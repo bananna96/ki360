@@ -9,8 +9,7 @@ type NavLink = {
 	subitems?: NavSubItem[]
 }
 
-// TODO: interface / type?
-interface MobileNavProps {
+type MobileNavProps = {
 	links: NavLink[]
 	className?: string
 }

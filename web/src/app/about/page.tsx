@@ -6,7 +6,7 @@ import { IconTextLink } from '@/components/custom/Link'
 
 export const revalidate = 3600
 
-interface SanityImageAsset {
+type SanityImageAsset = {
 	url: string
 	metadata?: {
 		lqip?: string
@@ -18,19 +18,19 @@ interface SanityImageAsset {
 	}
 }
 
-interface SanityImageType {
+type SanityImageType = {
 	asset: SanityImageAsset
 	alt?: string
 }
 
-interface AboutSection {
+type AboutSection = {
 	title?: string
 	paragraphs?: string[]
 	listTitle?: string
 	listItems?: string[]
 }
 
-interface AboutContent {
+type AboutContent = {
 	title: string
 	subtitle?: string
 	image?: SanityImageType

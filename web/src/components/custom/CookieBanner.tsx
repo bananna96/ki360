@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 const COOKIE_KEY = 'cookie_consent'
 const OPEN_EVENT = 'open-cookie-banner'
@@ -86,18 +87,22 @@ export function CookieBanner({
 			</p>
 
 			<div className='flex gap-4 shrink-0'>
-				<button
+				<Button
+					type='button'
+					variant='ghost'
 					onClick={decline}
-					className='text-sm px-4 py-2 border border-(--color-frost) hover:bg-(--color-granite) transition-colors rounded'
+					className='h-auto rounded border border-(--color-frost) px-4 py-2 text-sm hover:bg-(--color-granite)'
 				>
 					Ablehnen
-				</button>
-				<button
+				</Button>
+				<Button
+					type='button'
+					variant='ghost'
 					onClick={accept}
-					className='text-sm px-4 py-2 bg-(--color-skyBlue) text-(--color-glossyBlack) hover:opacity-80 transition-opacity rounded font-semibold'
+					className='h-auto rounded bg-(--color-skyBlue) px-4 py-2 text-sm font-semibold text-(--color-glossyBlack) hover:bg-(--color-skyBlue) hover:opacity-80'
 				>
 					Akzeptieren
-				</button>
+				</Button>
 			</div>
 		</div>
 	)

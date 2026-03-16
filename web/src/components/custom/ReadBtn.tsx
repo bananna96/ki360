@@ -35,7 +35,6 @@ export function ReadButton({
 			setIsSpeaking(false)
 			return
 		}
-
 		const utterance = new SpeechSynthesisUtterance(text)
 		utterance.lang = lang
 		utterance.rate = 1

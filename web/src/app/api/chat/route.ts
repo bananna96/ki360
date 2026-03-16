@@ -1,203 +1,65 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
-import { createHmac, createHash, timingSafeEqual } from 'crypto'
+import { createHash, createHmac, timingSafeEqual } from 'crypto'
 import { client as sanityClient } from '@/lib/sanity/client'
 import { promptingQuery } from '@/lib/sanity/queries'
 
-const openAiClient = new OpenAI({
-	apiKey: process.env.OPENAI_API_KEY,
-})
-
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 const MAX_REQUESTS = 5
-const WINDOW_SEC = 60 * 60 // 1 Stunde
+const WINDOW_SEC = 3600
 const COOKIE_NAME = 'chat_rl'
-const RL_SECRET = process.env.RATE_LIMIT_SECRET || 'dev-secret-change-me'
+const SECRET = process.env.RATE_LIMIT_SECRET || 'dev-secret-change-me'
 
-const SYSTEM_PROMPT = `
-Du bist ein Prompt-Coach. Du hilfst ausschliesslich beim Ueben und Verbessern von Prompts.
+const SYSTEM = `Du bist ein Prompt-Coach. Du hilfst ausschliesslich beim Ueben und Verbessern von Prompts.
 Antworte immer auf Deutsch.
-
 Nutze die Prompting-Tipps dieser Website aktiv als Bewertungsrahmen.
 Ordne jede Nutzereingabe dem passendsten Tipp zu oder benenne klar, wenn mehrere Tipps relevant sind.
 Begruende deine Verbesserungsvorschlaege mit Bezug auf diese Tipps statt nur allgemein zu antworten.
-
 Wenn ein Uebungsfall gesendet wird, gib die Antwort in dieser Struktur:
-1) Passender Tipp: Nenne zuerst den wichtigsten Website-Tipp und begruende die Auswahl kurz
-2) Kurzes Feedback: Was am Prompt schon gut ist (1-2 Punkte)
-3) Verbesserungen: 3 konkrete, umsetzbare Aenderungen
-4) Verbesserter Prompt: direkt kopierbar als Block
-5) Testidee: 1 kurzer Test-Input, mit dem der Nutzer pruefen kann, ob der Prompt besser ist
-
+1) Passender Tipp
+2) Kurzes Feedback
+3) Verbesserungen
+4) Verbesserter Prompt
+5) Testidee
 Wenn die Nutzereingabe zu unklar ist, stelle maximal 2 gezielte Rueckfragen statt zu raten.
-Keine themenfremden Antworten.
-`
+Keine themenfremden Antworten.`
 
-type ApiMessage = {
-	role: 'user' | 'assistant'
-	content: string
-}
+const TXT = {
+	blocked:
+		'Dieser Uebungschat ist nur fuer sichere Prompt-Uebungen gedacht. Themen wie Sex, Gewalt, Beleidigungen, Hass oder Selbstverletzung sind ausgeschlossen.',
+	tipsDown:
+		'Die Prompting-Tipps der Website konnten gerade nicht geladen werden. Bitte versuche es spaeter erneut.',
+	badReq: 'Ungueltige Anfrage.',
+	badMsgs: 'Keine gueltigen Nachrichten.',
+	badSession: 'Session ungueltig. Bitte spaeter erneut versuchen.',
+	limit: `Limit erreicht (${MAX_REQUESTS} Anfragen pro Stunde).`,
+} as const
 
-type PracticePayload = {
+type Msg = { role: 'user' | 'assistant'; content: string }
+type Practice = {
 	tipTitle?: string | null
 	goal?: string
 	context?: string
 	prompt?: string
 }
-
-type PromptingTip = {
-	tip: {
-		title: string
-		description: string
-	}
+type Tip = {
+	tip: { title: string; description: string }
 	bullets: string[]
 	example: string
 }
+type Rate = { used: number; resetAt: number; fingerprint: string }
 
-type PromptingContent = {
-	slides?: PromptingTip[]
-}
+let cache: Tip[] | null = null
+const words = [
+	...`sex sexual sexuell porno pornografie pornograph erotik erotisch nackt nacktheit nude gewalt gewalttat gewaltfantasie gewaltverherrlichung toten toeten toete umbringen erstechen erschiessen mord kill murder krieg kriege terror terrorismus terroranschlag bombe bomben bombenanschlag waffe waffen waffengewalt angriff attentat folter hinrichtung massaker weapon weapons bomb war warfare massacre torture execution beleidig beschimpf hass hassrede rassist diskriminier nazi selbstmord suizid selbstverletz ritzen`.split(
+		' ',
+	),
+	'hate speech',
+	'self harm',
+]
 
-type RLState = {
-	used: number
-	resetAt: number
-	fingerprint: string
-}
-
-const BLOCKED_TOPIC_TERMS = {
-	sexual: [
-		'sex',
-		'sexual',
-		'sexuell',
-		'porno',
-		'pornografie',
-		'pornograph',
-		'erotik',
-		'erotisch',
-		'nackt',
-		'nacktheit',
-		'nude',
-	],
-	violence: [
-		'gewalt',
-		'gewalttat',
-		'gewaltfantasie',
-		'gewaltverherrlichung',
-		'toten',
-		'toeten',
-		'toete',
-		'umbringen',
-		'erstechen',
-		'erschiessen',
-		'mord',
-		'kill',
-		'murder',
-		'krieg',
-		'kriege',
-		'terror',
-		'terrorismus',
-		'terroranschlag',
-		'bombe',
-		'bomben',
-		'bombenanschlag',
-		'waffe',
-		'waffen',
-		'waffengewalt',
-		'angriff',
-		'attentat',
-		'folter',
-		'hinrichtung',
-		'massaker',
-		'weapon',
-		'weapons',
-		'bomb',
-		'war',
-		'warfare',
-		'massacre',
-		'torture',
-		'execution',
-	],
-	harassment: [
-		'beleidig',
-		'beschimpf',
-		'hass',
-		'hassrede',
-		'hate speech',
-		'rassist',
-		'diskriminier',
-		'nazi',
-	],
-	selfHarm: ['selbstmord', 'suizid', 'selbstverletz', 'ritzen', 'self harm'],
-} as const
-
-const BLOCKED_TOPICS_MESSAGE =
-	'Dieser Uebungschat ist nur fuer sichere Prompt-Uebungen gedacht. Themen wie Sex, Gewalt, Beleidigungen, Hass oder Selbstverletzung sind ausgeschlossen.'
-
-const TIPS_UNAVAILABLE_MESSAGE =
-	'Die Prompting-Tipps der Website konnten gerade nicht geladen werden. Bitte versuche es spaeter erneut.'
-
-let cachedPromptingTips: PromptingTip[] | null = null
-
-function sign(payload: string) {
-	return createHmac('sha256', RL_SECRET).update(payload).digest('hex')
-}
-
-function hash(input: string) {
-	return createHash('sha256').update(input).digest('hex')
-}
-
-function getFingerprint(req: NextRequest) {
-	const ip =
-		req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
-	const ua = req.headers.get('user-agent') || 'unknown'
-	return hash(`${ip}|${ua}`)
-}
-
-function encodeState(state: RLState) {
-	const payload = Buffer.from(JSON.stringify(state)).toString('base64url')
-	return `${payload}.${sign(payload)}`
-}
-
-function decodeState(raw?: string): RLState | null {
-	if (!raw) return null
-	const [payload, sig] = raw.split('.')
-	if (!payload || !sig) return null
-
-	const expected = sign(payload)
-	const a = Buffer.from(sig)
-	const b = Buffer.from(expected)
-	if (a.length !== b.length || !timingSafeEqual(a, b)) return null
-
-	try {
-		const parsed = JSON.parse(
-			Buffer.from(payload, 'base64url').toString(),
-		) as RLState
-		if (
-			typeof parsed.used !== 'number' ||
-			typeof parsed.resetAt !== 'number' ||
-			typeof parsed.fingerprint !== 'string'
-		) {
-			return null
-		}
-		return parsed
-	} catch {
-		return null
-	}
-}
-
-function isValidApiMessage(value: unknown): value is ApiMessage {
-	if (!value || typeof value !== 'object') return false
-	const candidate = value as Record<string, unknown>
-	const role = candidate.role
-	const content = candidate.content
-	return (
-		(role === 'user' || role === 'assistant') &&
-		typeof content === 'string' &&
-		content.trim().length > 0
-	)
-}
-
-function normalizeText(input: string) {
-	return input
+const norm = (s: string) =>
+	s
 		.normalize('NFKD')
 		.replace(/[\u0300-\u036f]/g, '')
 		.replace(/ß/g, 'ss')
@@ -205,206 +67,179 @@ function normalizeText(input: string) {
 		.replace(/[^a-z0-9\s]/g, ' ')
 		.replace(/\s+/g, ' ')
 		.trim()
-}
-
-function tokenize(input: string) {
-	return normalizeText(input)
+const toks = (s: string) =>
+	norm(s)
 		.split(' ')
-		.filter((token) => token.length >= 4)
+		.filter((x) => x.length >= 4)
+const blocked = words.map(norm).filter((x) => x.length >= 4)
+const hash = (s: string) => createHash('sha256').update(s).digest('hex')
+const sign = (s: string) => createHmac('sha256', SECRET).update(s).digest('hex')
+const fail = (error: string, status: number) =>
+	NextResponse.json({ error }, { status })
+const vals = (p?: Practice) =>
+	[p?.tipTitle || '', p?.goal || '', p?.context || '', p?.prompt || ''].filter(
+		Boolean,
+	)
+
+const fingerprint = (req: NextRequest) => {
+	const ip =
+		req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+	const ua = req.headers.get('user-agent') || 'unknown'
+	return hash(`${ip}|${ua}`)
 }
 
-function levenshteinDistance(left: string, right: string): number {
-	if (left === right) return 0
-	if (!left.length) return right.length
-	if (!right.length) return left.length
-	const previousRow = Array.from(
-		{ length: right.length + 1 },
-		(_, index) => index,
+const encode = (r: Rate) => {
+	const p = Buffer.from(JSON.stringify(r)).toString('base64url')
+	return `${p}.${sign(p)}`
+}
+
+const decode = (raw?: string): Rate | null => {
+	if (!raw) return null
+	const [p, sig] = raw.split('.')
+	if (!p || !sig) return null
+	const a = Buffer.from(sig),
+		b = Buffer.from(sign(p))
+	if (a.length !== b.length || !timingSafeEqual(a, b)) return null
+	try {
+		const data = JSON.parse(
+			Buffer.from(p, 'base64url').toString(),
+		) as Partial<Rate>
+		if (
+			typeof data.used !== 'number' ||
+			typeof data.resetAt !== 'number' ||
+			typeof data.fingerprint !== 'string'
+		)
+			return null
+		return data as Rate
+	} catch {
+		return null
+	}
+}
+
+const withCookie = (res: NextResponse, r: Rate) => {
+	res.cookies.set(COOKIE_NAME, encode(r), {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'lax',
+		path: '/',
+		maxAge: WINDOW_SEC,
+	})
+	return res
+}
+
+const isMsg = (v: unknown): v is Msg => {
+	if (!v || typeof v !== 'object') return false
+	const x = v as Record<string, unknown>
+	return (
+		(x.role === 'user' || x.role === 'assistant') &&
+		typeof x.content === 'string' &&
+		!!x.content.trim()
 	)
-	for (let leftIndex = 0; leftIndex < left.length; leftIndex += 1) {
-		let diagonal = previousRow[0]
-		previousRow[0] = leftIndex + 1
-		for (let rightIndex = 0; rightIndex < right.length; rightIndex += 1) {
-			const temp = previousRow[rightIndex + 1]
-			const cost = left[leftIndex] === right[rightIndex] ? 0 : 1
-			previousRow[rightIndex + 1] = Math.min(
-				previousRow[rightIndex + 1] + 1,
-				previousRow[rightIndex] + 1,
-				diagonal + cost,
-			)
-			diagonal = temp
+}
+
+const lev = (a: string, b: string) => {
+	if (a === b) return 0
+	if (!a.length) return b.length
+	if (!b.length) return a.length
+	const row = Array.from({ length: b.length + 1 }, (_, i) => i)
+	for (let i = 0; i < a.length; i++) {
+		let d = row[0]
+		row[0] = i + 1
+		for (let j = 0; j < b.length; j++) {
+			const t = row[j + 1],
+				c = a[i] === b[j] ? 0 : 1
+			row[j + 1] = Math.min(row[j + 1] + 1, row[j] + 1, d + c)
+			d = t
 		}
 	}
-	return previousRow[right.length]
+	return row[b.length]
 }
 
-function hasFuzzyBlockedTermMatch(normalizedInput: string) {
-	const inputTokens = tokenize(normalizedInput)
-	const blockedTerms = Object.values(BLOCKED_TOPIC_TERMS)
-		.flat()
-		.map((term) => normalizeText(term))
-		.filter((term) => term.length >= 4)
-	return blockedTerms.some((blockedTerm) =>
-		inputTokens.some((token) => {
-			if (token === blockedTerm) return true
-			if (token.includes(blockedTerm) || blockedTerm.includes(token))
-				return true
-			if (Math.abs(token.length - blockedTerm.length) > 1) return false
-			return levenshteinDistance(token, blockedTerm) <= 1
-		}),
+const hasBlocked = (input: string) => {
+	const n = norm(input)
+	if (blocked.some((w) => n.includes(w))) return true
+	const ws = toks(n)
+	return blocked.some((b) =>
+		ws.some(
+			(w) =>
+				w === b ||
+				w.includes(b) ||
+				b.includes(w) ||
+				(Math.abs(w.length - b.length) <= 1 && lev(w, b) <= 1),
+		),
 	)
 }
 
-function buildPracticeContext(practice?: PracticePayload) {
-	if (!practice) return null
-
-	const prompt = practice.prompt?.trim() || ''
-	const goal = practice.goal?.trim() || ''
-	const context = practice.context?.trim() || ''
-	const tipTitle = practice.tipTitle?.trim() || ''
-
-	if (!prompt) return null
-
+const practiceCtx = (p?: Practice) => {
+	if (!p?.prompt?.trim()) return null
 	return [
 		'Aktueller Uebungsfall:',
-		goal ? `- Uebungsziel: ${goal}` : '- Uebungsziel: (nicht angegeben)',
-		tipTitle ? `- Ausgewaehlter Tipp: ${tipTitle}` : '',
-		context ? `- Kontext: ${context}` : '',
-		`- Zu verbessernder Prompt: ${prompt}`,
+		p.goal?.trim()
+			? `- Uebungsziel: ${p.goal.trim()}`
+			: '- Uebungsziel: (nicht angegeben)',
+		p.tipTitle?.trim() ? `- Ausgewaehlter Tipp: ${p.tipTitle.trim()}` : '',
+		p.context?.trim() ? `- Kontext: ${p.context.trim()}` : '',
+		`- Zu verbessernder Prompt: ${p.prompt.trim()}`,
 		'Nutze diese Angaben explizit in deinem Feedback.',
 	]
 		.filter(Boolean)
 		.join('\n')
 }
 
-function containsBlockedTopics(input: string) {
-	const normalizedInput = normalizeText(input)
-
-	if (
-		Object.values(BLOCKED_TOPIC_TERMS).some((terms) =>
-			terms.some((term) => normalizedInput.includes(normalizeText(term))),
-		)
-	) {
-		return true
-	}
-
-	return hasFuzzyBlockedTermMatch(normalizedInput)
-}
-
-function buildSafetyCheckText(
-	messages: ApiMessage[],
-	practice?: PracticePayload,
-) {
-	const latestUserMessage = [...messages]
-		.filter((message) => message.role === 'user')
-		.pop()
-
-	return [
-		latestUserMessage?.content || '',
-		practice?.tipTitle || '',
-		practice?.goal || '',
-		practice?.context || '',
-		practice?.prompt || '',
-	]
-		.filter(Boolean)
-		.join('\n')
-}
-
-function buildTipSearchText(practice?: PracticePayload) {
-	return [
-		practice?.tipTitle || '',
-		practice?.goal || '',
-		practice?.context || '',
-		practice?.prompt || '',
-	]
-		.filter(Boolean)
-		.join(' ')
-}
-
-function scoreTipMatch(slide: PromptingTip, practice?: PracticePayload) {
-	const selectedTitle = normalizeText(practice?.tipTitle || '')
-	const slideTitle = normalizeText(slide.tip.title)
-	const slideContent = normalizeText(
+const score = (tip: Tip, p?: Practice) => {
+	const selected = norm(p?.tipTitle || ''),
+		title = norm(tip.tip.title)
+	const text = norm(
 		[
-			slide.tip.title,
-			slide.tip.description,
-			slide.bullets.join(' '),
-			slide.example,
+			tip.tip.title,
+			tip.tip.description,
+			tip.bullets.join(' '),
+			tip.example,
 		].join(' '),
 	)
-	const searchTokens = tokenize(buildTipSearchText(practice))
-
-	let score = 0
-
-	if (selectedTitle) {
-		if (slideTitle === selectedTitle) score += 100
-		else if (
-			slideTitle.includes(selectedTitle) ||
-			selectedTitle.includes(slideTitle)
-		) {
-			score += 70
-		}
-	}
-
-	for (const token of searchTokens) {
-		if (slideContent.includes(token)) score += 8
-	}
-
-	return score
+	let pts = !selected
+		? 0
+		: title === selected
+			? 100
+			: title.includes(selected) || selected.includes(title)
+				? 70
+				: 0
+	for (const t of toks(vals(p).join(' '))) if (text.includes(t)) pts += 8
+	return pts
 }
 
-async function getPromptingTips() {
+const tipsCtx = async (p?: Practice) => {
+	let slides: Tip[] = []
 	try {
-		const content = await sanityClient.fetch<PromptingContent>(promptingQuery)
-		const slides = content?.slides ?? []
-
-		if (slides.length > 0) {
-			cachedPromptingTips = slides
-			return slides
-		}
+		const content = await sanityClient.fetch<{ slides?: Tip[] }>(promptingQuery)
+		slides = content?.slides ?? []
+		if (slides.length) cache = slides
 	} catch {
-		if (cachedPromptingTips?.length) return cachedPromptingTips
+		slides = cache ?? []
 	}
+	if (!slides.length) throw new Error('PROMPTING_TIPS_UNAVAILABLE')
 
-	if (cachedPromptingTips?.length) return cachedPromptingTips
-
-	throw new Error('PROMPTING_TIPS_UNAVAILABLE')
-}
-
-async function buildTipsContext(practice?: PracticePayload) {
-	const slides = await getPromptingTips()
-	const rankedSlides = [...slides]
-		.map((slide) => ({ slide, score: scoreTipMatch(slide, practice) }))
-		.sort((left, right) => right.score - left.score)
-
-	const topScore = rankedSlides[0]?.score ?? 0
-	const prioritizedSlides =
-		topScore > 0
-			? rankedSlides
-					.filter((entry) => entry.score === topScore)
-					.map((entry) => entry.slide)
-			: rankedSlides
-					.slice(0, Math.min(3, rankedSlides.length))
-					.map((entry) => entry.slide)
-
-	const otherSlides = slides.filter(
-		(slide) =>
-			!prioritizedSlides.some((entry) => entry.tip.title === slide.tip.title),
+	const ranked = slides
+		.map((s) => ({ s, pts: score(s, p) }))
+		.sort((a, b) => b.pts - a.pts)
+	const top = ranked[0]?.pts ?? 0
+	const main =
+		top > 0
+			? ranked.filter((x) => x.pts === top).map((x) => x.s)
+			: ranked.slice(0, Math.min(3, ranked.length)).map((x) => x.s)
+	const rest = slides.filter(
+		(s) => !main.some((m) => m.tip.title === s.tip.title),
 	)
 
 	return [
-		'Diese Prompting-Tipps stammen direkt von der Website und muessen als Uebungsrahmen verwendet werden.',
+		'Diese Prompting-Tipps stammen direkt von der Webseite und muessen als Uebungsrahmen verwendet werden.',
 		'Primaer relevante Tipps fuer diesen Uebungsfall:',
-		...prioritizedSlides.map((slide, index) => {
-			const bullets = slide.bullets?.length
-				? ` KERNAUSSAGEN: ${slide.bullets.join(' | ')}`
-				: ''
-			const example = slide.example ? ` BEISPIEL: ${slide.example}` : ''
-
-			return `${index + 1}. ${slide.tip.title}: ${slide.tip.description}${bullets}${example}`
-		}),
-		otherSlides.length
-			? `Weitere verfuegbare Tipps: ${otherSlides.map((slide) => slide.tip.title).join(' | ')}`
+		...main.map(
+			(s, i) =>
+				`${i + 1}. ${s.tip.title}: ${s.tip.description}${s.bullets?.length ? ` KERNAUSSAGEN: ${s.bullets.join(' | ')}` : ''}${s.example ? ` BEISPIEL: ${s.example}` : ''}`,
+		),
+		rest.length
+			? `Weitere verfuegbare Tipps: ${rest.map((s) => s.tip.title).join(' | ')}`
 			: '',
 		'Waehle in deiner Antwort einen primaeren Tipp, nenne ihn unter "Passender Tipp" und begruende die Wahl am konkreten Prompt des Nutzers.',
 	]
@@ -413,124 +248,62 @@ async function buildTipsContext(practice?: PracticePayload) {
 }
 
 export async function POST(req: NextRequest) {
-	const now = Date.now()
-	const currentFp = getFingerprint(req)
-	const raw = req.cookies.get(COOKIE_NAME)?.value
-	let state = decodeState(raw)
-
-	if (!state || now > state.resetAt) {
-		state = {
-			used: 0,
-			resetAt: now + WINDOW_SEC * 1000,
-			fingerprint: currentFp,
-		}
-	}
-
-	// Zusätzliche Restriktion: Cookie darf nur vom gleichen Fingerprint genutzt werden
-	if (state.fingerprint !== currentFp) {
-		const res = NextResponse.json(
-			{
-				error: 'Session ungültig. Bitte später erneut versuchen.',
-				remaining: 0,
-			},
-			{ status: 429 },
+	const now = Date.now(),
+		fp = fingerprint(req)
+	let rate = decode(req.cookies.get(COOKIE_NAME)?.value)
+	if (!rate || now > rate.resetAt)
+		rate = { used: 0, resetAt: now + WINDOW_SEC * 1000, fingerprint: fp }
+	if (rate.fingerprint !== fp)
+		return withCookie(
+			NextResponse.json(
+				{ error: TXT.badSession, remaining: 0 },
+				{ status: 429 },
+			),
+			rate,
 		)
-		res.cookies.set(COOKIE_NAME, encodeState(state), {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'lax',
-			path: '/',
-			maxAge: WINDOW_SEC,
-		})
-		return res
-	}
-
-	if (state.used >= MAX_REQUESTS) {
-		const res = NextResponse.json(
-			{
-				error: `Limit erreicht (${MAX_REQUESTS} Anfragen pro Stunde).`,
-				remaining: 0,
-			},
-			{ status: 429 },
+	if (rate.used >= MAX_REQUESTS)
+		return withCookie(
+			NextResponse.json({ error: TXT.limit, remaining: 0 }, { status: 429 }),
+			rate,
 		)
-		res.cookies.set(COOKIE_NAME, encodeState(state), {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'lax',
-			path: '/',
-			maxAge: WINDOW_SEC,
-		})
-		return res
-	}
 
-	const body = await req.json()
-	const { messages, practice } = body as {
-		messages?: unknown
-		practice?: PracticePayload
-	}
+	const body = (await req.json()) as { messages?: unknown; practice?: Practice }
+	if (!body.messages || !Array.isArray(body.messages))
+		return fail(TXT.badReq, 400)
 
-	if (!messages || !Array.isArray(messages)) {
-		return NextResponse.json({ error: 'Ungültige Anfrage.' }, { status: 400 })
-	}
+	const msgs = body.messages.filter(isMsg)
+	if (!msgs.length) return fail(TXT.badMsgs, 400)
 
-	const validMessages = messages.filter(isValidApiMessage)
-	if (!validMessages.length) {
-		return NextResponse.json(
-			{ error: 'Keine gueltigen Nachrichten.' },
-			{ status: 400 },
-		)
-	}
+	const latestUser =
+		[...msgs].filter((m) => m.role === 'user').pop()?.content || ''
+	if (hasBlocked([latestUser, ...vals(body.practice)].join('\n')))
+		return fail(TXT.blocked, 400)
 
-	const safetyCheckText = buildSafetyCheckText(validMessages, practice)
-	if (containsBlockedTopics(safetyCheckText)) {
-		return NextResponse.json({ error: BLOCKED_TOPICS_MESSAGE }, { status: 400 })
-	}
-
-	const practiceContext = buildPracticeContext(practice)
-
-	let tipsContext: string
+	let tips = ''
 	try {
-		tipsContext = await buildTipsContext(practice)
+		tips = await tipsCtx(body.practice)
 	} catch {
-		return NextResponse.json(
-			{ error: TIPS_UNAVAILABLE_MESSAGE },
-			{ status: 503 },
-		)
+		return fail(TXT.tipsDown, 503)
 	}
+	const pctx = practiceCtx(body.practice)
 
-	const completion = await openAiClient.chat.completions.create({
+	const completion = await openai.chat.completions.create({
 		model: 'gpt-4o-mini',
 		messages: [
-			{ role: 'system', content: SYSTEM_PROMPT },
-			...(tipsContext
-				? [{ role: 'system' as const, content: tipsContext }]
-				: []),
-			...(practiceContext
-				? [{ role: 'system' as const, content: practiceContext }]
-				: []),
-			...validMessages
-				.filter(
-					(msg) => msg.role !== 'user' || !containsBlockedTopics(msg.content),
-				)
+			{ role: 'system', content: SYSTEM },
+			...(tips ? [{ role: 'system' as const, content: tips }] : []),
+			...(pctx ? [{ role: 'system' as const, content: pctx }] : []),
+			...msgs
+				.filter((m) => m.role !== 'user' || !hasBlocked(m.content))
 				.slice(-10),
 		],
 		max_tokens: 500,
 		temperature: 0,
 	})
 
-	state.used += 1
-	const remaining = Math.max(0, MAX_REQUESTS - state.used)
+	rate.used += 1
+	const remaining = Math.max(0, MAX_REQUESTS - rate.used)
 	const reply =
 		completion.choices[0]?.message?.content ?? 'Keine Antwort erhalten.'
-
-	const res = NextResponse.json({ reply, remaining })
-	res.cookies.set(COOKIE_NAME, encodeState(state), {
-		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'lax',
-		path: '/',
-		maxAge: WINDOW_SEC,
-	})
-
-	return res
+	return withCookie(NextResponse.json({ reply, remaining }), rate)
 }

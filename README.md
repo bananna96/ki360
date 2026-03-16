@@ -88,6 +88,7 @@ Web:
 - Build: npm run build
 - Start: npm run start
 - Lint: npm run lint
+- Test: npm tun test
 
 Studio:
 

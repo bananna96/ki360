@@ -14,11 +14,11 @@ const hexToNormalizedRGB = (hex: string): NormalizedRGB => {
 	return [r, g, b]
 }
 
-interface UniformValue<T = number | Color> {
+type UniformValue<T = number | Color> = {
 	value: T
 }
 
-interface SilkUniforms {
+type SilkUniforms = {
 	uSpeed: UniformValue<number>
 	uScale: UniformValue<number>
 	uNoiseIntensity: UniformValue<number>
@@ -85,7 +85,7 @@ void main() {
 }
 `
 
-interface SilkPlaneProps {
+type SilkPlaneProps = {
 	uniforms: SilkUniforms
 }
 
@@ -125,7 +125,7 @@ const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane(
 })
 SilkPlane.displayName = 'SilkPlane'
 
-export interface SilkProps {
+export type SilkProps = {
 	speed?: number
 	scale?: number
 	color?: string

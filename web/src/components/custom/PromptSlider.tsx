@@ -5,7 +5,7 @@ import CardSwap, { Card, CardSwapRef } from '@/components/CardSwap'
 import { IconButton } from '@/components/ui/button'
 import { SanityImage } from '../SanityImage'
 
-export interface PromptingSliderType {
+export type PromptingSliderType = {
 	tip: {
 		title: string
 		description: string

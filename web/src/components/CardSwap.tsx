@@ -15,7 +15,7 @@ import gsap from 'gsap'
 import './CardSwap.css'
 
 // TODO: Aufrüumen und KI markieren
-export interface CardSwapProps {
+export type CardSwapProps = {
 	width?: number | string
 	height?: number | string
 	cardDistance?: number
@@ -29,13 +29,13 @@ export interface CardSwapProps {
 	autoSwap?: boolean
 }
 
-export interface CardSwapRef {
+export type CardSwapRef = {
 	swapNext: () => void
 	swapPrev: () => void
 	isAnimating: () => boolean
 }
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+export type CardProps = React.HTMLAttributes<HTMLDivElement> & {
 	customClass?: string
 }
 
@@ -51,7 +51,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 Card.displayName = 'Card'
 
 type CardRef = RefObject<HTMLDivElement | null>
-interface Slot {
+type Slot = {
 	x: number
 	y: number
 	z: number

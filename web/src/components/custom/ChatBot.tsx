@@ -3,14 +3,14 @@
 import { useState, useRef, useEffect } from 'react'
 import { Button, IconButton } from '@/components/ui/button'
 
-interface Message {
+type Message = {
 	id: string
 	text: string
 	sender: 'user' | 'bot'
 	timestamp: Date
 }
 
-interface ApiMessage {
+type ApiMessage = {
 	role: 'user' | 'assistant'
 	content: string
 }

@@ -6,7 +6,7 @@ import { landingpageQuery } from '@/lib/sanity/queries'
 
 export const revalidate = 3600
 
-interface Content {
+type Content = {
 	title: string
 	intro?: string
 	subtitle: string

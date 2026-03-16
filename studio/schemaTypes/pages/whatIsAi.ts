@@ -2,7 +2,6 @@ import textDescImg from '../components/textDescImg'
 import titleListImgTitleSubtitle from '../components/titleListImgTitleSubtitle'
 import link from '../components/link'
 import titleListSublist from '../components/titleListSublist'
-import titleList from '../components/titleList'
 
 export default {
   name: 'whatIsAi',

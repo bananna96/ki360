@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring } from 'motion/react'
 import './TiltedCard.css'
 
-interface TiltedCardProps {
+type TiltedCardProps = {
 	imageSrc: React.ComponentProps<'img'>['src']
 	altText?: string
 	captionText?: string
