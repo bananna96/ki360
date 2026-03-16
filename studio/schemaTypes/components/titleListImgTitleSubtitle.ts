@@ -14,7 +14,20 @@ export default {
           title: 'Item',
           type: 'object',
           fields: [
-            {name: 'image', title: 'Image', type: 'image'},
+            {
+              name: 'image',
+              title: 'Image',
+              type: 'image',
+              options: {hotspot: true},
+              fields: [
+                {
+                  name: 'alt',
+                  type: 'string',
+                  title: 'Alt-Text',
+                  validation: (Rule: any) => Rule.required(),
+                },
+              ],
+            },
             {
               name: 'link',
               title: 'Link',
