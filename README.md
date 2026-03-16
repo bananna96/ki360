@@ -100,7 +100,6 @@ Studio:
 Hauptrouten:
 
 - /
-- /grundlagen (potentielles Feature)
 - /wasistki
 - /wasistki/technischemethodiken
 - /prompten
@@ -124,11 +123,6 @@ Registrierte Dokumenttypen:
 - privacyPolicy
 - imprint
 
-Hinweise:
-
-- prompting enthält Intro, Slides (Tipps, Bullets, Beispiel, Bild) und Button-Link.
-- whatIsAi ist in mehrere Sections aufgeteilt und steuert die Inhalte der Seite /wasistki.
-
 ## Datenfluss
 
 1. Sanity-Queries in web/src/lib/sanity/queries.ts
@@ -145,7 +139,7 @@ API-Endpunkt:
 Funktionen:
 
 - OpenAI-basierte Prompt-Coaching-Antworten auf Deutsch
-- Safety-Filter für sensible Themen (inkl. unscharfer Treffer, z. B. Tippfehler)
+- Safety-Filter für sensible Themen
 - Prompt-Tipp-Kontext aus Sanity (prompting.slides)
 - Cookie-basiertes Rate-Limiting (5 Requests pro Stunde)
 
