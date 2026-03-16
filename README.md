@@ -11,7 +11,6 @@ Die Inhalte werden in Sanity gepflegt und in der Web-App per GROQ geladen.
 
 - web: Frontend, Seiten, UI-Komponenten, API-Route für Prompt-Coaching
 - studio: Sanity Studio, Schemas und Redaktionsstruktur
-- static: zusätzliche statische Assets
 
 ## Tech-Stack
 
@@ -31,7 +30,7 @@ Studio:
 ## Voraussetzungen
 
 - Node.js 20+
-- npm 10+ (oder kompatibler Package-Manager)
+- npm 10+
 
 ## Lokale Entwicklung
 
@@ -161,33 +160,6 @@ Matomo wird im Layout nur aktiviert, wenn:
 - NODE_ENV = production
 - NEXT_PUBLIC_MATOMO_URL gesetzt
 - NEXT_PUBLIC_MATOMO_SITE_ID gesetzt
-
-## Typische Fehlerquellen
-
-1. Links funktionieren lokal, aber nicht in Produktion
-
-- Ursache oft: inkonsistente Linkformate im CMS (z. B. fehlender führender Slash oder externe URL ohne Protokoll).
-- Im Projekt werden Hrefs inzwischen normalisiert, um diese Unterschiede robuster abzufangen.
-
-2. Unterschiedliche Inhalte in Local und Prod
-
-- Prüfen, ob NEXT_PUBLIC_SANITY_PROJECT_ID und NEXT_PUBLIC_SANITY_DATASET auf dieselbe Sanity-Umgebung zeigen wie das Studio.
-
-3. Chat API liefert 503
-
-- Häufig fehlen Sanity-Daten für prompting oder die Verbindung zum Dataset ist nicht korrekt.
-
-## Relevante Dateien
-
-- [web/src/app/layout.tsx](web/src/app/layout.tsx)
-- [web/src/lib/sanity/client.ts](web/src/lib/sanity/client.ts)
-- [web/src/lib/sanity/queries.ts](web/src/lib/sanity/queries.ts)
-- [web/src/app/api/chat/route.ts](web/src/app/api/chat/route.ts)
-- [web/src/components/custom/nav/Nav.tsx](web/src/components/custom/nav/Nav.tsx)
-- [web/src/components/custom/nav/Footer.tsx](web/src/components/custom/nav/Footer.tsx)
-- [studio/sanity.config.ts](studio/sanity.config.ts)
-- [studio/sanity.cli.ts](studio/sanity.cli.ts)
-- [studio/schemaTypes/index.ts](studio/schemaTypes/index.ts)
 
 ## Lizenz
 
