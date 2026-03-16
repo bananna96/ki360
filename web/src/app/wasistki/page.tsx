@@ -233,14 +233,14 @@ export default async function Page() {
 				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-center pb-10'>
 					{content.section5.items.map((item, index) => {
 						const card = (
-							<div className='flex flex-col items-center cursor-pointer group'>
+							<div className='w-full max-w-[320px] mx-auto flex flex-col items-center cursor-pointer group'>
 								<h5 className='text-lg md:text-xl text-center'>
 									{item.itemTitle}
 								</h5>
 								<p className='text-sm md:text-base text-center'>
 									{item.subtitle}
 								</p>
-								<div className='relative w-full aspect-square max-w-[320px] mt-4 overflow-hidden rounded-lg'>
+								<div className='relative w-full aspect-square mt-4 overflow-hidden rounded-lg'>
 									<SanityImage
 										src={item.image.asset.url}
 										alt={item.image.alt ?? `Image ${index}`}
@@ -270,7 +270,7 @@ export default async function Page() {
 									key={index}
 									href={item.link || '/'}
 									aria-label={item.itemTitle}
-									className='focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-lg'
+									className='block w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 rounded-lg'
 								>
 									{card}
 								</Link>
