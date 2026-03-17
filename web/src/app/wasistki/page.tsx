@@ -329,7 +329,7 @@ export default async function Page() {
 										{item.subtitle}
 									</DrawerDescription>
 
-									<div className='px-4 md:px-20 pb-6 grid gap-4 overflow-y-auto mt-4'>
+									<div className='flex-1 min-h-0 overflow-y-auto [-webkit-overflow-scrolling:touch] overscroll-contain'>
 										{overlay?.items?.map((ovItem, ovIndex) => (
 											<div key={ovIndex}>
 												<h5 className='text-base md:text-lg font-bold'>
