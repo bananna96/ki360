@@ -62,7 +62,6 @@ export function WhatIsAiDrawerCard({
 			onOpenChange={handleOpen}
 			shouldScaleBackground={false}
 			setBackgroundColorOnScale={false}
-			noBodyStyles
 		>
 			<DrawerTrigger asChild>
 				<Button
@@ -71,7 +70,7 @@ export function WhatIsAiDrawerCard({
 					aria-label={`${itemTitle} öffnen`}
 					className='h-auto w-full rounded-lg p-0 text-left hover:bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
 				>
-					<div className='w-full max-w-[320px] mx-auto flex flex-col items-center cursor-pointer group'>
+					<div className='w-full max-w-[320px] mx-auto flex flex-col items-center cursor-pointer'>
 						<h5 className='text-lg md:text-xl text-center'>{itemTitle}</h5>
 						<p className='text-sm md:text-base text-center'>{subtitle}</p>
 						<div className='relative w-full aspect-square mt-4 overflow-hidden rounded-lg'>
@@ -97,7 +96,7 @@ export function WhatIsAiDrawerCard({
 				</Button>
 			</DrawerTrigger>
 
-			<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80svh] flex flex-col will-change-transform'>
+			<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80svh] flex flex-col'>
 				<DrawerHeader className='shrink-0 px-4 md:px-20 flex flex-row justify-between items-center gap-4'>
 					<ReadButton
 						text={fullOverlayText ?? subtitle}
