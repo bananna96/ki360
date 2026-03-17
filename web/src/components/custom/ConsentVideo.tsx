@@ -15,13 +15,12 @@ export function ConsentVideo({
 	title: string
 	className?: string
 }) {
-	const [allowed, setAllowed] = useState(() => {
-		if (typeof window === 'undefined') return false
-		return localStorage.getItem(COOKIE_KEY) === 'accepted'
-	})
+	const [allowed, setAllowed] = useState(false)
 	const { openPreferences } = useCookieConsent()
 
 	useEffect(() => {
+		setAllowed(localStorage.getItem(COOKIE_KEY) === 'accepted')
+
 		function handleStorage(e: StorageEvent) {
 			if (e.key === COOKIE_KEY) setAllowed(e.newValue === 'accepted')
 		}
