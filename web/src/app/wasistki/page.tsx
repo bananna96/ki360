@@ -302,7 +302,7 @@ export default async function Page() {
 								</DrawerTrigger>
 
 								<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80vh] flex flex-col'>
-									<DrawerHeader className='px-4 md:px-20 flex flex-row justify-between items-center gap-4'>
+									<DrawerHeader className='shrink-0 px-4 sm:px-6 md:px-10 flex flex-row justify-between items-center gap-2 sm:gap-4'>
 										<ReadButton
 											text={fullOverlayText ?? item.subtitle}
 											className='w-8 h-8 sm:w-10 sm:h-10 shrink-0'
