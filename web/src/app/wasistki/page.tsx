@@ -2,18 +2,8 @@ export const revalidate = 3600 // 3600 seconds = 1 hour, 86400 seconds = 1 day, 
 import { client } from '@/lib/sanity/client'
 import { whatIsAiQuery } from '@/lib/sanity/queries'
 import { SanityImage } from '@/components/SanityImage'
+import { WhatIsAiDrawerCard } from '@/components/custom/WhatIsAiDrawerCard'
 import Link from 'next/link'
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerDescription,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerTrigger,
-} from '@/components/ui/drawer'
-import { Button, IconButton } from '@/components/ui/button'
-import { ReadButton } from '@/components/custom/ReadBtn'
 import { ConsentVideo } from '@/components/custom/ConsentVideo'
 
 type SanityImageAsset = {
@@ -279,70 +269,17 @@ export default async function Page() {
 
 						const overlay = content.section5.overlayText[index - 1]
 
-						const fullOverlayText = overlay?.items
-							?.map((ovItem) => `${ovItem.itemTitle}. ${ovItem.subtitle}`)
-							.join('. ')
-
 						return (
-							<Drawer
+							<WhatIsAiDrawerCard
 								key={index}
-								shouldScaleBackground={false}
-								setBackgroundColorOnScale={false}
-								noBodyStyles
-							>
-								<DrawerTrigger asChild>
-									<Button
-										type='button'
-										variant='ghost'
-										aria-label={`${item.itemTitle} öffnen`}
-										className='h-auto w-full rounded-lg p-0 text-left hover:bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
-									>
-										{card}
-									</Button>
-								</DrawerTrigger>
-
-								<DrawerContent className='px-4 md:px-8 pb-8 max-h-[80vh] flex flex-col'>
-									<DrawerHeader className='shrink-0 px-4 sm:px-6 md:px-10 flex flex-row justify-between items-center gap-2 sm:gap-4'>
-										<ReadButton
-											text={fullOverlayText ?? item.subtitle}
-											className='w-8 h-8 sm:w-10 sm:h-10 shrink-0'
-										/>
-										<DrawerTitle
-											asChild
-											className='text-2xl sm:text-4xl md:text-4xl leading-none text-center flex-1'
-										>
-											<h3>{overlay?.title ?? item.itemTitle}</h3>
-										</DrawerTitle>
-										<DrawerClose asChild>
-											<IconButton
-												icon='cancel'
-												ariaLabel='Schließen'
-												iconColor='#db761c'
-												iconSize={36}
-												variant='ghost'
-												size='icon'
-											/>
-										</DrawerClose>
-									</DrawerHeader>
-
-									<DrawerDescription className='px-4 md:px-20 text-sm text-center'>
-										{item.subtitle}
-									</DrawerDescription>
-
-									<div className='flex-1 min-h-0 overflow-y-auto [-webkit-overflow-scrolling:touch] overscroll-contain'>
-										{overlay?.items?.map((ovItem, ovIndex) => (
-											<div key={ovIndex}>
-												<h5 className='text-base md:text-lg font-bold'>
-													{ovItem.itemTitle}
-												</h5>
-												<p className='text-sm text-justify'>
-													{ovItem.subtitle}
-												</p>
-											</div>
-										))}
-									</div>
-								</DrawerContent>
-							</Drawer>
+								itemTitle={item.itemTitle}
+								subtitle={item.subtitle}
+								imageSrc={item.image.asset.url}
+								imageAlt={item.image.alt ?? `Image ${index}`}
+								imageBlurDataURL={item.image.asset.metadata?.lqip}
+								overlayTitle={overlay?.title}
+								overlayItems={overlay?.items}
+							/>
 						)
 					})}
 				</div>
